@@ -1,11 +1,12 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Input, Textarea } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
 import { NoteEditor } from "./NoteEditor";
-import { Save, BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft } from "lucide-react";
+import { Save, BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft, Plus, MessageSquare } from "lucide-react";
+import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 
@@ -230,6 +231,24 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const { list, refresh } = useConversationList({ userId, mode: "INTERVIEW", taskId });
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const stickToBottom = useRef(true);
+
+  function onScroll() {
+    const el = scrollRef.current;
+    if (!el) return;
+    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    stickToBottom.current = distFromBottom < 80;
+  }
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !stickToBottom.current) return;
+    el.scrollTop = el.scrollHeight;
+  }, [messages, loadingHistory]);
   const sendIt = async () => {
     if (!input.trim()) return;
     const userMsg = { role: "user", content: input };
@@ -244,6 +263,7 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
         taskId,
         mode: "INTERVIEW",
         prompt: input,
+        conversationId,
       }),
     });
     if (!r.body) {
@@ -253,6 +273,7 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
     const reader = r.body.getReader();
     const dec = new TextDecoder();
     let acc = "";
+    let newConvId = conversationId;
     while (true) {
       const { value, done } = await reader.read();
       if (done) break;
@@ -275,26 +296,103 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
               }
               return copy;
             });
+          } else if (obj.type === "done") {
+            if (obj.conversationId) newConvId = obj.conversationId;
+          } else if (obj.type === "error") {
+            const msg = `⚠️ ${obj.message ?? "AI request failed"}${obj.kind ? ` (${obj.kind})` : ""}`;
+            acc = msg;
+            setMessages((cur) => {
+              const copy = [...cur];
+              const last = copy[copy.length - 1];
+              if (last && (last.role === "assistant-stream" || last.role === "assistant")) {
+                copy[copy.length - 1] = { role: "assistant", content: msg };
+              } else {
+                copy.push({ role: "assistant", content: msg });
+              }
+              return copy;
+            });
           }
         } catch {}
       }
     }
-    setMessages((cur) => {
-      const copy = [...cur];
-      const idx = copy.findIndex((m) => m.role === "assistant-stream");
-      if (idx >= 0) copy[idx] = { role: "assistant", content: acc };
-      return copy;
-    });
+    if (newConvId && newConvId !== conversationId) {
+      setConversationId(newConvId);
+      refresh();
+    }
     setLoading(false);
   };
+
+  async function openConversation(id: string) {
+    setLoadingHistory(true);
+    setConversationId(id);
+    setMessages([]);
+    try {
+      const q = userId ? `?userId=${encodeURIComponent(userId)}` : "";
+      const r = await fetch(`/api/ai/conversations/${encodeURIComponent(id)}${q}`);
+      if (!r.ok) return;
+      const j = await r.json();
+      const msgs = (j.messages ?? []).map((m: ConversationMessage) => ({
+        role: m.role === "USER" ? "user" : "assistant",
+        content: m.content,
+      }));
+      setMessages(msgs);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }
+
+  function startNewChat() {
+    setConversationId(null);
+    setMessages([
+      { role: "assistant", content: "Hi — I'm your interviewer for this task. Ready when you are. Tell me, at a high level, what does this task cover?" },
+    ]);
+    setInput("");
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Interview · {taskTitle}</CardTitle>
-        <p className="text-xs text-muted-foreground">I ask one question at a time. Be specific. I'll evaluate, then dig deeper.</p>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="max-h-[60vh] space-y-2 overflow-y-auto rounded-md border border-border bg-muted/20 p-3 scroll-thin">
+    <div className="grid gap-3 lg:grid-cols-[240px_1fr]">
+      {/* History sidebar */}
+      <Card className="flex h-[60vh] min-h-0 flex-col overflow-hidden lg:h-[calc(100vh-200px)]">
+        <CardHeader className="shrink-0 p-3">
+          <Button size="sm" onClick={startNewChat} className="w-full">
+            <Plus className="h-4 w-4" /> New interview
+          </Button>
+        </CardHeader>
+        <CardContent className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2 scroll-thin">
+          {list.length === 0 && (
+            <p className="px-2 py-3 text-xs text-muted-foreground">
+              No saved interviews for this task yet.
+            </p>
+          )}
+          {list.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => openConversation(c.id)}
+              className={cn(
+                "flex w-full items-start gap-2 rounded-md px-2 py-2 text-left text-xs hover:bg-accent",
+                c.id === conversationId && "bg-accent",
+              )}
+            >
+              <MessageSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+              <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
+            </button>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card className="flex h-[60vh] min-h-0 flex-col overflow-hidden lg:h-[calc(100vh-200px)]">
+        <CardHeader className="shrink-0">
+          <CardTitle>Interview · {taskTitle}</CardTitle>
+          <p className="text-xs text-muted-foreground">I ask one question at a time. Be specific. I'll evaluate, then dig deeper.</p>
+        </CardHeader>
+        <div
+          ref={scrollRef}
+          onScroll={onScroll}
+          className="min-h-0 flex-1 space-y-2 overflow-y-auto rounded-md border border-border bg-muted/20 p-3 scroll-thin"
+        >
+          {loadingHistory && (
+            <p className="text-xs text-muted-foreground">Loading interview…</p>
+          )}
           {messages.map((m, i) => (
             <div
               key={i}
@@ -309,21 +407,24 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
             </div>
           ))}
         </div>
-        <div className="flex gap-2">
-          <Input
-            placeholder="Your answer…"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendIt();
-              }
-            }}
-          />
-          <Button onClick={sendIt} disabled={loading || !input.trim()}>Send</Button>
+        <div className="shrink-0 border-t border-border p-3">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Your answer…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendIt();
+                }
+              }}
+              disabled={loading}
+            />
+            <Button onClick={sendIt} disabled={loading || !input.trim()}>Send</Button>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </Card>
+    </div>
   );
 }

@@ -10,14 +10,14 @@ export default async function GlobalAIPage() {
   return (
     <AppShell>
       <div className="mx-auto max-w-4xl p-4 lg:p-8">
-        <Card className="h-[calc(100vh-160px)]">
+        <Card className="h-[calc(100vh-160px)] overflow-hidden">
           <CardHeader>
             <CardTitle>Global AI Chat</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
               Cross-task queries. AI knows your roadmap, notes, and recent activity.
             </p>
           </CardHeader>
-          <CardContent className="h-[calc(100%-100px)]">
+          <CardContent className="h-[calc(100%-100px)] overflow-hidden">
             <GlobalAIChat userId={user.id} />
           </CardContent>
         </Card>

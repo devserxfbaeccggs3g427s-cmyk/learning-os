@@ -157,7 +157,17 @@ export async function POST(req: Request) {
         send({ type: "done", conversationId: convId, usage: result.usage });
       } catch (err) {
         const kind = err instanceof AIProviderError ? err.kind : "provider_failure";
-        send({ type: "error", kind, message: err instanceof Error ? err.message : "Unknown error" });
+        const message = err instanceof Error ? err.message : "Unknown error";
+        // Persist the error as an assistant turn so the conversation log
+        // isn't left hanging with a user message but no AI reply.
+        await db.insert(aiMessages).values({
+          id: ids.aiMsg(),
+          conversationId: convId!,
+          role: "ASSISTANT",
+          content: `⚠️ ${message} (${kind})`,
+          metadata: { error: true, kind },
+        });
+        send({ type: "error", kind, message });
       } finally {
         ctrlStream.close();
       }

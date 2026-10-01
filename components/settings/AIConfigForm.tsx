@@ -18,7 +18,15 @@ interface AIConfigFormProps {
 }
 
 const PRESETS = [
-  { id: "openrouter", name: "OpenRouter", baseUrl: "https://openrouter.ai/api/v1" },
+  {
+    id: "openrouter",
+    name: "OpenRouter",
+    baseUrl: "https://openrouter.ai/api/v1",
+    // Realistic default output cap for the model currently in use. OpenRouter
+    // charges per token reserved up to max_tokens, so an inflated value here
+    // can blow past the credit limit before the model even generates.
+    defaultMaxTokens: 8192,
+  },
 ];
 
 export function AIConfigForm({ userId, initial }: AIConfigFormProps) {
@@ -119,7 +127,13 @@ export function AIConfigForm({ userId, initial }: AIConfigFormProps) {
               const p = e.target.value;
               setProvider(p);
               const preset = PRESETS.find((x) => x.id === p);
-              if (preset) setBaseUrl(preset.baseUrl);
+              if (preset) {
+                setBaseUrl(preset.baseUrl);
+                // Reset max_tokens to a provider-realistic default so users
+                // don't keep a stale value from another provider (the previous
+                // value travels with the form and gets re-saved verbatim).
+                setMaxTokens(preset.defaultMaxTokens);
+              }
             }}
             className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
@@ -201,9 +215,14 @@ export function AIConfigForm({ userId, initial }: AIConfigFormProps) {
             type="number"
             value={maxTokens}
             min={100}
-            max={2000000}
+            max={128000}
             onChange={(e) => setMaxTokens(Number(e.target.value))}
           />
+          <p className="mt-1 text-[10px] text-muted-foreground">
+            Caps the model&apos;s <strong>output</strong> length, not its context
+            window. OpenRouter reserves this many tokens of credit per request,
+            so values above your plan&apos;s effective limit will return 402.
+          </p>
         </div>
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={streaming} onChange={(e) => setStreaming(e.target.checked)} />
