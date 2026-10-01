@@ -164,7 +164,7 @@ export function AIConfigForm({ userId, initial }: AIConfigFormProps) {
         <div className="sm:col-span-2">
           <Label className="block mb-1">Model</Label>
           <div className="flex gap-2">
-            <Input value={model} onChange={(e) => setModel(e.target.value)} placeholder="openai/gpt-4o-mini" className="flex-1" />
+            <Input value={model} onChange={(e) => setModel(e.target.value)} placeholder="minimax/minimax-m3" className="flex-1" />
             <Button variant="outline" onClick={loadModels} disabled={loadingModels}>
               {loadingModels ? <Loader2 className="h-4 w-4 animate-spin" /> : "Load models"}
             </Button>
