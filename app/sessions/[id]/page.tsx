@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { studySessions, tasks, taskNotes } from "@/lib/db/schema";
@@ -14,9 +13,13 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   const user = await getDefaultUser();
   const session = (await db.select().from(studySessions).where(eq(studySessions.id, id)).limit(1))[0];
   if (!session) notFound();
-  const task = (await db.select().from(tasks).where(eq(tasks.id, session.taskId)).limit(1))[0];
+
+  // Task + note both depend only on session.taskId → run in parallel.
+  const [task, note] = await Promise.all([
+    db.select().from(tasks).where(eq(tasks.id, session.taskId)).limit(1).then((r) => r[0]),
+    db.select().from(taskNotes).where(eq(taskNotes.taskId, session.taskId)).limit(1).then((r) => r[0]),
+  ]);
   if (!task) notFound();
-  const note = (await db.select().from(taskNotes).where(eq(taskNotes.taskId, session.taskId)).limit(1))[0];
 
   return (
     <AppShell>

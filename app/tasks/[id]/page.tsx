@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { eq, and, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/client";
@@ -14,27 +15,32 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
   const taskRow = (await db.select().from(tasks).where(eq(tasks.id, id)).limit(1))[0];
   if (!taskRow) notFound();
 
-  const moduleRow = (await db.select().from(modules).where(eq(modules.id, taskRow.moduleId)).limit(1))[0];
-  const trackRow = moduleRow
-    ? (await db.select().from(tracks).where(eq(tracks.id, moduleRow.trackId)).limit(1))[0]
-    : null;
+  // Round 1: in parallel — module lookup (used for its id) + all child
+  // collections that only depend on the taskId + the user (for note scope).
+  const moduleRow = (
+    await db.select().from(modules).where(eq(modules.id, taskRow.moduleId)).limit(1)
+  )[0];
 
-  const noteRow = (
-    await db
+  const [noteRow, deps, decks, taskQuizzes, trackRow] = await Promise.all([
+    db
       .select()
       .from(taskNotes)
       .where(and(eq(taskNotes.taskId, id), eq(taskNotes.userId, user.id)))
       .limit(1)
-  )[0];
+      .then((r) => r[0]),
+    db.select().from(taskDependencies).where(eq(taskDependencies.taskId, id)),
+    db.select().from(flashcardDecks).where(eq(flashcardDecks.taskId, id)),
+    db.select().from(quizzes).where(eq(quizzes.taskId, id)),
+    moduleRow
+      ? db.select().from(tracks).where(eq(tracks.id, moduleRow.trackId)).limit(1).then((r) => r[0])
+      : Promise.resolve(undefined),
+  ]);
 
-  const deps = await db.select().from(taskDependencies).where(eq(taskDependencies.taskId, id));
+  // Round 2: dep task titles — only if we have deps.
   const depTaskIds = deps.map((d) => d.dependsOnTaskId);
   const depTasks = depTaskIds.length
     ? await db.select().from(tasks).where(inArray(tasks.id, depTaskIds))
     : [];
-
-  const decks = await db.select().from(flashcardDecks).where(eq(flashcardDecks.taskId, id));
-  const taskQuizzes = await db.select().from(quizzes).where(eq(quizzes.taskId, id));
 
   return (
     <AppShell>

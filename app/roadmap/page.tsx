@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from "@/components/ui";
+import { CardSkeleton } from "@/components/ui";
 import { getDefaultUser } from "@/lib/ai/service";
 import { TASK_STATUSES } from "@/config/domain";
 import { getRoadmapTree, listRoadmaps } from "@/lib/db/queries/roadmap";
@@ -8,6 +10,7 @@ import { getRoadmapTree, listRoadmaps } from "@/lib/db/queries/roadmap";
 export const dynamic = "force-dynamic";
 
 export default async function RoadmapPage() {
+  // Both are cached → effectively instant on warm cache.
   const user = await getDefaultUser();
   const rms = await listRoadmaps(user.id);
 
@@ -23,13 +26,25 @@ export default async function RoadmapPage() {
     <AppShell>
       <div className="mx-auto max-w-4xl space-y-6 p-4 lg:p-8">
         {rms.map((rm) => (
-          <RoadmapCard
+          // Each roadmap streams in independently — the first renders
+          // immediately while later ones are still loading. Without the
+          // boundary, one bad query would gate the whole page.
+          <Suspense
             key={rm.id}
-            userId={user.id}
-            roadmapId={rm.id}
-            title={rm.title}
-            description={rm.description ?? null}
-          />
+            fallback={
+              <div className="space-y-3">
+                <CardSkeleton lines={2} />
+                <CardSkeleton lines={4} />
+              </div>
+            }
+          >
+            <RoadmapCard
+              userId={user.id}
+              roadmapId={rm.id}
+              title={rm.title}
+              description={rm.description ?? null}
+            />
+          </Suspense>
         ))}
       </div>
     </AppShell>

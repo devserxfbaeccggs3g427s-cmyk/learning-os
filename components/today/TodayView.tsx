@@ -85,36 +85,59 @@ export function TodayView({
     [blocks],
   );
   const progressPct = totalMin === 0 ? 0 : Math.round((doneMin / totalMin) * 100);
-  const [_, startTx] = useTransition();
+  const [isPending, startTx] = useTransition();
   const [items, setItems] = useState(blocks);
+  // Track in-flight mutations so per-block buttons can disable during the
+  // request — prevents double-click → two sessions for the same block.
+  const [busyBlockIds, setBusyBlockIds] = useState<Set<string>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerDate, setPickerDate] = useState(date);
 
-  async function setStatus(blockId: string, status: string) {
-    setItems((arr) => arr.map((b) => (b.id === blockId ? { ...b, status } : b)));
-    await fetch(`/api/schedule/blocks/${blockId}`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ status }),
+  function setBusy(blockId: string, on: boolean) {
+    setBusyBlockIds((prev) => {
+      const next = new Set(prev);
+      if (on) next.add(blockId);
+      else next.delete(blockId);
+      return next;
     });
   }
 
-  async function startSession(block: TodayBlock) {
-    if (!block.taskId) return;
-    startTx(async () => {
-      const r = await fetch(`/api/sessions/start`, {
-        method: "POST",
+  async function setStatus(blockId: string, status: string) {
+    if (busyBlockIds.has(blockId)) return;
+    setBusy(blockId, true);
+    setItems((arr) => arr.map((b) => (b.id === blockId ? { ...b, status } : b)));
+    try {
+      await fetch(`/api/schedule/blocks/${blockId}`, {
+        method: "PATCH",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          taskId: block.taskId,
-          blockId: block.id,
-          objective: block.objective ?? block.title,
-        }),
+        body: JSON.stringify({ status }),
       });
-      if (r.ok) {
-        const j = await r.json();
-        window.location.href = `/sessions/${j.sessionId}`;
+    } finally {
+      setBusy(blockId, false);
+    }
+  }
+
+  async function startSession(block: TodayBlock) {
+    if (!block.taskId || busyBlockIds.has(block.id)) return;
+    setBusy(block.id, true);
+    startTx(async () => {
+      try {
+        const r = await fetch(`/api/sessions/start`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            userId,
+            taskId: block.taskId,
+            blockId: block.id,
+            objective: block.objective ?? block.title,
+          }),
+        });
+        if (r.ok) {
+          const j = await r.json();
+          window.location.href = `/sessions/${j.sessionId}`;
+        }
+      } finally {
+        setBusy(block.id, false);
       }
     });
   }
@@ -280,31 +303,55 @@ export function TodayView({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  {b.status === "PLANNED" && (
-                    <Button size="sm" onClick={() => startSession(b)} className="gap-1">
-                      <PlayCircle className="h-4 w-4" /> Start
-                    </Button>
-                  )}
-                  {b.status === "IN_PROGRESS" && (
-                    <Button size="sm" variant="secondary" onClick={() => setStatus(b.id, "DONE")} className="gap-1">
-                      <CheckCircle2 className="h-4 w-4" /> Finish
-                    </Button>
-                  )}
-                  {b.status === "DONE" && (
-                    <Button size="sm" variant="ghost" disabled className="gap-1">
-                      <CheckCircle2 className="h-4 w-4" /> Done
-                    </Button>
-                  )}
-                  {(b.status === "PLANNED" || b.status === "IN_PROGRESS") && (
-                    <Button size="sm" variant="ghost" onClick={() => setStatus(b.id, "SKIPPED")} className="gap-1">
-                      <RefreshCcw className="h-4 w-4" /> Skip
-                    </Button>
-                  )}
-                  {b.taskId && (
-                    <Button asChild size="sm" variant="outline">
-                      <Link href={`/tasks/${b.taskId}`}>Open</Link>
-                    </Button>
-                  )}
+                  {(() => {
+                    const busy = busyBlockIds.has(b.id);
+                    return (
+                      <>
+                        {b.status === "PLANNED" && (
+                          <Button
+                            size="sm"
+                            onClick={() => startSession(b)}
+                            disabled={busy || isPending}
+                            className="gap-1"
+                          >
+                            <PlayCircle className="h-4 w-4" /> Start
+                          </Button>
+                        )}
+                        {b.status === "IN_PROGRESS" && (
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => setStatus(b.id, "DONE")}
+                            disabled={busy}
+                            className="gap-1"
+                          >
+                            <CheckCircle2 className="h-4 w-4" /> Finish
+                          </Button>
+                        )}
+                        {b.status === "DONE" && (
+                          <Button size="sm" variant="ghost" disabled className="gap-1">
+                            <CheckCircle2 className="h-4 w-4" /> Done
+                          </Button>
+                        )}
+                        {(b.status === "PLANNED" || b.status === "IN_PROGRESS") && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setStatus(b.id, "SKIPPED")}
+                            disabled={busy}
+                            className="gap-1"
+                          >
+                            <RefreshCcw className="h-4 w-4" /> Skip
+                          </Button>
+                        )}
+                        {b.taskId && (
+                          <Button asChild size="sm" variant="outline">
+                            <Link href={`/tasks/${b.taskId}`}>Open</Link>
+                          </Button>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </CardContent>
             </Card>

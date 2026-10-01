@@ -4,6 +4,7 @@
  * env directly; they just ask for a provider.
  */
 import { eq, and } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db/client";
 import { aiConfigurations, applicationSettings, users } from "@/lib/db/schema";
 import { decrypt } from "@/lib/security/crypto";
@@ -22,8 +23,9 @@ export interface ResolvedAIConfig {
   streaming: boolean;
 }
 
-/** Single-user app. Return the first user or create one on the fly. */
-export async function getDefaultUser() {
+/** Single-user app. Return the first user or create one on the fly.
+ * Cached for 1h because the user row never changes during a session. */
+async function _fetchDefaultUser() {
   const all = await db.select().from(users).limit(1);
   if (all.length > 0 && all[0]) return all[0];
   // Lazy create so the app works before a real onboarding step exists.
@@ -32,6 +34,13 @@ export async function getDefaultUser() {
   await db.insert(users).values({ id });
   const created = await db.select().from(users).where(eq(users.id, id)).limit(1);
   return created[0]!;
+}
+
+export async function getDefaultUser() {
+  return unstable_cache(_fetchDefaultUser, ["default-user"], {
+    revalidate: 3600,
+    tags: ["user"],
+  })();
 }
 
 /**
