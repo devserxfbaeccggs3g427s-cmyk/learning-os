@@ -18,19 +18,23 @@ import { AIProviderError } from "@/lib/ai/provider";
 import { nowIso } from "@/lib/utils/time";
 
 const Body = z.object({
-  conversationId: z.string().optional(),
-  userId: z.string().optional(),
-  taskId: z.string().optional(),
+  conversationId: z.string().nullable().optional(),
+  userId: z.string().nullable().optional(),
+  taskId: z.string().nullable().optional(),
   mode: z.enum(["TUTOR", "INTERVIEW", "FAILURE_DRILL", "DEBUG_DRILL", "KNOWLEDGE_GAP", "GLOBAL"]).default("TUTOR"),
   prompt: z.string(),
   /** Pre-built context (overrides auto context assembly). */
-  contextOverride: z.string().optional(),
+  contextOverride: z.string().nullable().optional(),
 });
 
 export async function POST(req: Request) {
-  const parsed = Body.safeParse(await req.json().catch(() => null));
+  const raw = await req.json().catch(() => null);
+  const parsed = Body.safeParse(raw);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid body", issues: parsed.error.flatten() },
+      { status: 400 },
+    );
   }
   const user = parsed.data.userId
     ? { id: parsed.data.userId }
