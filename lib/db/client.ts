@@ -52,10 +52,12 @@ function createClient() {
     prepare: false,
     idle_timeout: 20,
     connect_timeout: 10,
-    // Abort slow queries early rather than freezing the UI.
+    // Don't set a server-side statement_timeout: bulk import (205 tasks
+    // + tags + dependencies in one transaction) takes longer than 30s
+    // on Supabase's pooler. UI requests that actually time out will
+    // fail with a clearer error from the request layer instead.
     connection: {
       application_name: "learning-os",
-      statement_timeout: 30_000, // 30s per query
     },
     onnotice: () => {},
     // eslint-disable-next-line no-console
