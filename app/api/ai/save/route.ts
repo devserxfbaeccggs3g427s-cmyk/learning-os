@@ -15,7 +15,7 @@ const Body = z.object({
   baseUrl: z.string().nullable().optional(),
   // Accept numbers OR numeric strings; coerce to number, clamp to range.
   temperature: z.coerce.number().min(0).max(2).default(0.4),
-  maxTokens: z.coerce.number().int().min(100).max(32_000).default(2000),
+  maxTokens: z.coerce.number().int().min(100).max(2_000_000).default(2000),
   streaming: z.coerce.boolean().default(true),
   apiKey: z.string().nullable().optional(),
 });

@@ -201,7 +201,7 @@ export function AIConfigForm({ userId, initial }: AIConfigFormProps) {
             type="number"
             value={maxTokens}
             min={100}
-            max={8000}
+            max={2000000}
             onChange={(e) => setMaxTokens(Number(e.target.value))}
           />
         </div>
