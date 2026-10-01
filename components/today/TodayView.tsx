@@ -118,7 +118,14 @@ export function TodayView({
   }
 
   async function startSession(block: TodayBlock) {
-    if (!block.taskId || busyBlockIds.has(block.id)) return;
+    if (busyBlockIds.has(block.id)) return;
+    if (!block.taskId) {
+      alert(
+        "Block này chưa liên kết với task nào trong roadmap — không thể bắt đầu session.\n\n" +
+        "Hãy tạo task tương ứng trong roadmap rồi liên kết lại, hoặc dùng nút Skip để bỏ qua block.",
+      );
+      return;
+    }
     setBusy(block.id, true);
     // 15s timeout — if Supabase is lagging we abort and surface a clear
     // error so the user isn't staring at a frozen button.
@@ -307,6 +314,14 @@ export function TodayView({
                     ) : (
                       <h3 className="text-base font-semibold leading-tight">{b.title}</h3>
                     )}
+                    {!b.taskId && (
+                      <span
+                        className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-amber-700"
+                        title="Block này chưa liên kết task — không thể Start session. Hãy tạo task trong roadmap rồi liên kết, hoặc Skip block."
+                      >
+                        No task
+                      </span>
+                    )}
                     <span
                       className={cn(
                         "rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider",
@@ -316,13 +331,17 @@ export function TodayView({
                       {b.status}
                     </span>
                   </div>
-                  {b.taskId && (
+                  {b.taskId ? (
                     <Link
                       href={`/tasks/${b.taskId}`}
                       className="mt-0.5 inline-block text-xs text-muted-foreground hover:underline"
                     >
                       {b.taskCode ? `${b.taskCode} · ` : ""}{b.taskTitle}
                     </Link>
+                  ) : (
+                    <p className="mt-0.5 text-xs italic text-muted-foreground">
+                      Chưa liên kết task — không thể Start hoặc xem chi tiết.
+                    </p>
                   )}
                   {b.objective && (
                     <p className="mt-2 text-sm text-muted-foreground">{b.objective}</p>
