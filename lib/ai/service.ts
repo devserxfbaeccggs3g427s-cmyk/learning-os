@@ -59,10 +59,14 @@ export async function resolveAIConfig(userId: string): Promise<ResolvedAIConfig>
     let apiKey: string | undefined;
     if (cfg.apiKeyCiphertext && cfg.apiKeyIv && cfg.apiKeyCiphertext.startsWith("v1:")) {
       try {
+        // Stored format (save route): "v1:<ciphertextB64>.<authTagB64>"
+        const body = cfg.apiKeyCiphertext.slice(3);
+        const dot = body.lastIndexOf(".");
+        if (dot < 0) throw new Error("malformed ciphertext: missing auth tag separator");
         apiKey = decrypt({
           iv: cfg.apiKeyIv,
-          ciphertext: cfg.apiKeyCiphertext.slice(3),
-          authTag: "",
+          ciphertext: body.slice(0, dot),
+          authTag: body.slice(dot + 1),
         });
       } catch {
         apiKey = "";

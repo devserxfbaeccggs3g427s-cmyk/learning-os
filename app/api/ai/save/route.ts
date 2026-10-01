@@ -51,10 +51,10 @@ export async function POST(req: Request) {
   let last4: string | null = null;
   if (b.apiKey) {
     const enc = encrypt(b.apiKey);
-    apiCipher = "v1:" + enc.ciphertext;
     iv = enc.iv;
     last4 = mask(b.apiKey);
-    // authTag is concatenated for now to keep schema stable
+    // authTag is concatenated to ciphertext to keep the schema stable
+    // (no dedicated auth_tag column). Format: "v1:<ciphertextB64>.<authTagB64>".
     apiCipher = "v1:" + enc.ciphertext + "." + enc.authTag;
   }
 
