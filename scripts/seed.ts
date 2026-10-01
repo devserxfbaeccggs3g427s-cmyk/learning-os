@@ -128,86 +128,89 @@ async function seedRoadmap(userId: string) {
   }
 
   const roadmapId = ids.roadmap();
-  await db.insert(roadmaps).values({
-    id: roadmapId,
-    userId,
-    title: rm.title,
-    description: rm.description ?? null,
-    source: "seed",
-  });
-
   const codeToId = new Map<string, string>();
-  let trackOrder = 0;
-  for (const tr of rm.tracks) {
-    const trackId = ids.track();
-    await db.insert(tracks).values({
-      id: trackId,
-      roadmapId,
-      title: tr.title,
-      summary: tr.summary ?? null,
-      color: tr.color ?? null,
-      orderIndex: trackOrder++,
-    });
-    let moduleOrder = 0;
-    for (const mo of tr.modules) {
-      const moduleId = ids.module();
-      await db.insert(modules).values({
-        id: moduleId,
-        trackId,
-        title: mo.title,
-        summary: mo.summary ?? null,
-        orderIndex: moduleOrder++,
-      });
-      let taskOrder = 0;
-      for (const t of mo.tasks) {
-        const taskId = ids.task();
-        if (t.code) codeToId.set(t.code, taskId);
-        await db.insert(tasks).values({
-          id: taskId,
-          code: t.code ?? null,
-          moduleId,
-          title: t.title,
-          description: t.description ?? null,
-          relatedProject: t.relatedProject ?? null,
-          relatedCvClaim: t.relatedCvClaim ?? null,
-          whyThisMatters: t.whyThisMatters ?? null,
-          prerequisites: JSON.stringify(t.prerequisites ?? []),
-          concepts: JSON.stringify(t.concepts ?? []),
-          deepDiveSubtopics: JSON.stringify(t.deepDiveSubtopics ?? []),
-          internalsToUnderstand: JSON.stringify(t.internalsToUnderstand ?? []),
-          failureScenarios: JSON.stringify(t.failureScenarios ?? []),
-          productionQuestions: JSON.stringify(t.productionQuestions ?? []),
-          interviewQuestions: JSON.stringify(t.interviewQuestions ?? []),
-          handsOnLab: t.handsOnLab ?? null,
-          expectedOutput: t.expectedOutput ?? null,
-          definitionOfDone: t.definitionOfDone ?? null,
-          status: t.status ?? "BACKLOG",
-          priority: t.priority ?? "P2",
-          difficulty: t.difficulty ?? "INTERMEDIATE",
-          estimatedMinutes: t.estimatedMinutes ?? 45,
-          orderIndex: taskOrder++,
-        });
-      }
-    }
-  }
 
-  // dependencies
-  for (const tr of rm.tracks) {
-    for (const mo of tr.modules) {
-      for (const t of mo.tasks) {
-        const taskId = t.code ? codeToId.get(t.code) : null;
-        if (!taskId) continue;
-        for (const dep of t.dependencies ?? []) {
-          const depId = codeToId.get(dep);
-          if (!depId) continue;
-          await db
-            .insert(taskDependencies)
-            .values({ id: ids.taskDep(), taskId, dependsOnTaskId: depId, kind: "HARD" })
-            .onConflictDoNothing();
+  await db.transaction(async (tx) => {
+    await tx.insert(roadmaps).values({
+      id: roadmapId,
+      userId,
+      title: rm.title,
+      description: rm.description ?? null,
+      source: "seed",
+    });
+
+    let trackOrder = 0;
+    for (const tr of rm.tracks) {
+      const trackId = ids.track();
+      await tx.insert(tracks).values({
+        id: trackId,
+        roadmapId,
+        title: tr.title,
+        summary: tr.summary ?? null,
+        color: tr.color ?? null,
+        orderIndex: trackOrder++,
+      });
+      let moduleOrder = 0;
+      for (const mo of tr.modules) {
+        const moduleId = ids.module();
+        await tx.insert(modules).values({
+          id: moduleId,
+          trackId,
+          title: mo.title,
+          summary: mo.summary ?? null,
+          orderIndex: moduleOrder++,
+        });
+        let taskOrder = 0;
+        for (const t of mo.tasks) {
+          const taskId = ids.task();
+          if (t.code) codeToId.set(t.code, taskId);
+          await tx.insert(tasks).values({
+            id: taskId,
+            code: t.code ?? null,
+            moduleId,
+            title: t.title,
+            description: t.description ?? null,
+            relatedProject: t.relatedProject ?? null,
+            relatedCvClaim: t.relatedCvClaim ?? null,
+            whyThisMatters: t.whyThisMatters ?? null,
+            prerequisites: t.prerequisites ?? [],
+            concepts: t.concepts ?? [],
+            deepDiveSubtopics: t.deepDiveSubtopics ?? [],
+            internalsToUnderstand: t.internalsToUnderstand ?? [],
+            failureScenarios: t.failureScenarios ?? [],
+            productionQuestions: t.productionQuestions ?? [],
+            interviewQuestions: t.interviewQuestions ?? [],
+            handsOnLab: t.handsOnLab ?? null,
+            expectedOutput: t.expectedOutput ?? null,
+            definitionOfDone: t.definitionOfDone ?? null,
+            status: t.status ?? "BACKLOG",
+            priority: t.priority ?? "P2",
+            difficulty: t.difficulty ?? "INTERMEDIATE",
+            estimatedMinutes: t.estimatedMinutes ?? 45,
+            orderIndex: taskOrder++,
+          });
         }
       }
     }
-  }
+
+    // dependencies
+    for (const tr of rm.tracks) {
+      for (const mo of tr.modules) {
+        for (const t of mo.tasks) {
+          const taskId = t.code ? codeToId.get(t.code) : null;
+          if (!taskId) continue;
+          for (const dep of t.dependencies ?? []) {
+            const depId = codeToId.get(dep);
+            if (!depId) continue;
+            await tx
+              .insert(taskDependencies)
+              .values({ id: ids.taskDep(), taskId, dependsOnTaskId: depId, kind: "HARD" })
+              .onConflictDoNothing();
+          }
+        }
+      }
+    }
+  });
   console.log("[seed] roadmap inserted");
 }
 
@@ -219,59 +222,62 @@ async function seedTodaySchedule(userId: string) {
     return;
   }
   const scheduleId = ids.schedule();
-  await db.insert(schedules).values({
-    id: scheduleId,
-    userId,
-    date: today,
-    objective: "Foundation day — get into the JVM memory model and ACID isolation levels.",
+
+  await db.transaction(async (tx) => {
+    await tx.insert(schedules).values({
+      id: scheduleId,
+      userId,
+      date: today,
+      objective: "Foundation day — get into the JVM memory model and ACID isolation levels.",
+    });
+    // Find tasks
+    const jc01 = (await tx.select().from(tasks).where(eq(tasks.code, "JAVA-CONC-01")).limit(1))[0];
+    const db01 = (await tx.select().from(tasks).where(eq(tasks.code, "DB-TX-01")).limit(1))[0];
+    let order = 0;
+    if (jc01) {
+      await tx.insert(studyBlocks).values({
+        id: ids.block(),
+        scheduleId,
+        taskId: jc01.id,
+        type: "LEARN",
+        title: "Learn — Thread lifecycle & JVM memory",
+        objective: "Understand thread states and where memory lives.",
+        startMinute: 20 * 60 + 5,
+        durationMinutes: 45,
+        deliverable: "Diagram of stack vs heap with thread stacks.",
+        status: "PLANNED",
+        orderIndex: order++,
+      });
+      await tx.insert(studyBlocks).values({
+        id: ids.block(),
+        scheduleId,
+        taskId: jc01.id,
+        type: "INTERVIEW",
+        title: "Interview drill — happens-before",
+        objective: "Answer one interview question out loud.",
+        startMinute: 22 * 60 + 25,
+        durationMinutes: 20,
+        deliverable: "Recording or written answer.",
+        status: "PLANNED",
+        orderIndex: order++,
+      });
+    }
+    if (db01) {
+      await tx.insert(studyBlocks).values({
+        id: ids.block(),
+        scheduleId,
+        taskId: db01.id,
+        type: "DEEP_DIVE",
+        title: "Deep dive — Isolation levels & MVCC",
+        objective: "Read phenomena across PG isolation levels.",
+        startMinute: 21 * 60 + 15,
+        durationMinutes: 45,
+        deliverable: "Notes on read phenomena with examples.",
+        status: "PLANNED",
+        orderIndex: order++,
+      });
+    }
   });
-  // Find tasks
-  const jc01 = (await db.select().from(tasks).where(eq(tasks.code, "JAVA-CONC-01")).limit(1))[0];
-  const db01 = (await db.select().from(tasks).where(eq(tasks.code, "DB-TX-01")).limit(1))[0];
-  let order = 0;
-  if (jc01) {
-    await db.insert(studyBlocks).values({
-      id: ids.block(),
-      scheduleId,
-      taskId: jc01.id,
-      type: "LEARN",
-      title: "Learn — Thread lifecycle & JVM memory",
-      objective: "Understand thread states and where memory lives.",
-      startMinute: 20 * 60 + 5,
-      durationMinutes: 45,
-      deliverable: "Diagram of stack vs heap with thread stacks.",
-      status: "PLANNED",
-      orderIndex: order++,
-    });
-    await db.insert(studyBlocks).values({
-      id: ids.block(),
-      scheduleId,
-      taskId: jc01.id,
-      type: "INTERVIEW",
-      title: "Interview drill — happens-before",
-      objective: "Answer one interview question out loud.",
-      startMinute: 22 * 60 + 25,
-      durationMinutes: 20,
-      deliverable: "Recording or written answer.",
-      status: "PLANNED",
-      orderIndex: order++,
-    });
-  }
-  if (db01) {
-    await db.insert(studyBlocks).values({
-      id: ids.block(),
-      scheduleId,
-      taskId: db01.id,
-      type: "DEEP_DIVE",
-      title: "Deep dive — Isolation levels & MVCC",
-      objective: "Read phenomena across PG isolation levels.",
-      startMinute: 21 * 60 + 15,
-      durationMinutes: 45,
-      deliverable: "Notes on read phenomena with examples.",
-      status: "PLANNED",
-      orderIndex: order++,
-    });
-  }
   console.log("[seed] today's schedule inserted");
 }
 

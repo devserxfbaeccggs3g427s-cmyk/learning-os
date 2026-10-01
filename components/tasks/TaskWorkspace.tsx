@@ -20,8 +20,8 @@ interface TaskWorkspaceProps {
     description: string | null;
     relatedProject: string | null;
     whyThisMatters: string | null;
-    failureScenarios: string | null;
-    interviewQuestions: string | null;
+    failureScenarios: unknown[] | null;
+    interviewQuestions: string[] | null;
     handsOnLab: string | null;
     definitionOfDone: string | null;
     status: string;
@@ -184,16 +184,21 @@ export function TaskWorkspace(props: TaskWorkspaceProps) {
   );
 }
 
-function renderJson(s: string): string {
-  try {
-    const arr = JSON.parse(s);
-    if (Array.isArray(arr)) {
-      return arr.map((x) => (typeof x === "string" ? `- ${x}` : `- **${x.title ?? ""}** — ${x.body ?? ""}`)).join("\n");
+function renderJson(value: unknown): string {
+  let arr: unknown = value;
+  if (typeof arr === "string") {
+    try {
+      arr = JSON.parse(arr) as unknown;
+    } catch {
+      return value as string;
     }
-  } catch {
-    /* fall through */
   }
-  return s;
+  if (Array.isArray(arr)) {
+    return arr
+      .map((x) => (typeof x === "string" ? `- ${x}` : `- **${(x as { title?: string }).title ?? ""}** — ${(x as { body?: string }).body ?? ""}`))
+      .join("\n");
+  }
+  return String(arr ?? "");
 }
 
 function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: string; taskTitle: string }) {

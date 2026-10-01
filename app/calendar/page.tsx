@@ -1,4 +1,6 @@
 import { AppShell } from "@/components/layout/AppShell";
+
+export const dynamic = "force-dynamic";
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { eq, and, gte, lte } from "drizzle-orm";
 import { db } from "@/lib/db/client";

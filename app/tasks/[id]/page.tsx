@@ -47,8 +47,12 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
           description: taskRow.description,
           relatedProject: taskRow.relatedProject,
           whyThisMatters: taskRow.whyThisMatters,
-          failureScenarios: taskRow.failureScenarios,
-          interviewQuestions: taskRow.interviewQuestions,
+          failureScenarios: Array.isArray(taskRow.failureScenarios)
+            ? (taskRow.failureScenarios as unknown[])
+            : null,
+          interviewQuestions: Array.isArray(taskRow.interviewQuestions)
+            ? taskRow.interviewQuestions
+            : null,
           handsOnLab: taskRow.handsOnLab,
           definitionOfDone: taskRow.definitionOfDone,
           status: taskRow.status,

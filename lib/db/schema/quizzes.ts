@@ -1,10 +1,10 @@
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, boolean, jsonb, index } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { tasks } from "./tasks";
 import { users } from "./users";
 import { flashcards } from "./flashcards";
 
-export const quizzes = sqliteTable(
+export const quizzes = pgTable(
   "quizzes",
   {
     id: text("id").primaryKey(),
@@ -31,7 +31,7 @@ export const quizzes = sqliteTable(
   }),
 );
 
-export const quizQuestions = sqliteTable(
+export const quizQuestions = pgTable(
   "quiz_questions",
   {
     id: text("id").primaryKey(),
@@ -41,11 +41,11 @@ export const quizQuestions = sqliteTable(
     orderIndex: integer("order_index").notNull().default(0),
     questionType: text("question_type").notNull().default("SINGLE_CHOICE"),
     prompt: text("prompt").notNull(),
-    options: text("options").notNull(), // JSON array of {id,text}
-    correctAnswer: text("correct_answer").notNull(), // JSON (id list or bool)
+    options: jsonb("options").$type<unknown[]>().notNull(),
+    correctAnswer: jsonb("correct_answer").$type<unknown>().notNull(),
     explanation: text("explanation"),
     difficulty: text("difficulty").notNull().default("INTERMEDIATE"),
-    tags: text("tags"), // JSON array
+    tags: jsonb("tags").$type<string[]>().notNull().default([]),
     sourceRef: text("source_ref"), // optional pointer to flashcard/note
     relatedFlashcardId: text("related_flashcard_id").references(() => flashcards.id, {
       onDelete: "set null",
@@ -57,7 +57,7 @@ export const quizQuestions = sqliteTable(
   }),
 );
 
-export const quizAttempts = sqliteTable(
+export const quizAttempts = pgTable(
   "quiz_attempts",
   {
     id: text("id").primaryKey(),
@@ -69,7 +69,7 @@ export const quizAttempts = sqliteTable(
       .references(() => users.id, { onDelete: "cascade" }),
     startedAt: text("started_at").notNull(),
     submittedAt: text("submitted_at"),
-    score: real("score"), // 0..1
+    score: doublePrecision("score"), // 0..1
     correctCount: integer("correct_count").notNull().default(0),
     incorrectCount: integer("incorrect_count").notNull().default(0),
     status: text("status").notNull().default("IN_PROGRESS"),
@@ -80,7 +80,7 @@ export const quizAttempts = sqliteTable(
   }),
 );
 
-export const quizAnswers = sqliteTable(
+export const quizAnswers = pgTable(
   "quiz_answers",
   {
     id: text("id").primaryKey(),
@@ -90,8 +90,8 @@ export const quizAnswers = sqliteTable(
     questionId: text("question_id")
       .notNull()
       .references(() => quizQuestions.id, { onDelete: "cascade" }),
-    answer: text("answer").notNull(), // JSON
-    isCorrect: integer("is_correct", { mode: "boolean" }).notNull().default(false),
+    answer: jsonb("answer").$type<unknown>().notNull(),
+    isCorrect: boolean("is_correct").notNull().default(false),
     confidence: integer("confidence"),
     timeSpentSeconds: integer("time_spent_seconds").notNull().default(0),
     createdAt: createdAt(),

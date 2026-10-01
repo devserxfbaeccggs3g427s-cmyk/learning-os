@@ -15,7 +15,11 @@ const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   APP_URL: z.string().url().default("http://localhost:3000"),
 
-  DATABASE_URL: z.string().default("./data/learning-os.db"),
+  // Postgres connection (Supabase transaction pooler recommended, port 6543).
+  // Falls back to other names so existing local setups keep working.
+  LEARNING_OS_POSTGRES_URL: z.string().optional(),
+  LEARNING_OS_SUPABASE_DATABASE_URL: z.string().optional(),
+  DATABASE_URL: z.string().optional(),
   APP_ENCRYPTION_KEY: z.string().min(16).default("dev-encryption-key-change-me-please-32b"),
   APP_TRUSTED_ORIGINS: z.string().default("http://localhost:3000"),
 

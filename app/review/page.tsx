@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 import { eq, and, lte, desc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { flashcards, flashcardDecks, reviewHistory, tasks } from "@/lib/db/schema";

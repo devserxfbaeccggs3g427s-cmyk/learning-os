@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, jsonb, index } from "drizzle-orm/pg-core";
 import { createdAt } from "./_helpers";
 import { users } from "./users";
 
@@ -6,7 +6,7 @@ import { users } from "./users";
  * Append-only audit log. We use this sparingly (feature toggles, schema
  * changes, important user actions) and never log secrets.
  */
-export const auditLog = sqliteTable(
+export const auditLog = pgTable(
   "audit_log",
   {
     id: text("id").primaryKey(),
@@ -14,7 +14,7 @@ export const auditLog = sqliteTable(
     action: text("action").notNull(),
     subjectType: text("subject_type"),
     subjectId: text("subject_id"),
-    metadata: text("metadata"), // JSON
+    metadata: jsonb("metadata").$type<Record<string, unknown>>(),
     createdAt: createdAt(),
   },
   (t) => ({

@@ -142,13 +142,13 @@ export async function POST(req: Request) {
           conversationId: convId!,
           role: "ASSISTANT",
           content: result.text || acc,
-          metadata: JSON.stringify({
+          metadata: {
             provider: result.provider,
             model: result.model,
             usage: result.usage,
             promptName: sysPrompt.name,
             promptVersion: sysPrompt.version,
-          }),
+          },
         });
         send({ type: "done", conversationId: convId, usage: result.usage });
       } catch (err) {

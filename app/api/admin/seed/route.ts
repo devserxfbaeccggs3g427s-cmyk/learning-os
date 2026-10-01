@@ -7,8 +7,16 @@ import { spawn } from "node:child_process";
 
 export async function POST() {
   return new Promise<Response>((resolve) => {
+    const env = {
+      ...process.env,
+      LEARNING_OS_POSTGRES_URL:
+        process.env.LEARNING_OS_POSTGRES_URL ??
+        process.env.LEARNING_OS_SUPABASE_DATABASE_URL ??
+        process.env.DATABASE_URL ??
+        "",
+    };
     const proc = spawn("npx", ["tsx", "scripts/seed.ts"], {
-      env: { ...process.env, DATABASE_URL: process.env.DATABASE_URL ?? "./data/learning-os.db" },
+      env,
       stdio: ["ignore", "pipe", "pipe"],
     });
     let out = "";

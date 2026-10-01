@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { studySessions } from "@/lib/db/schema";
+import { studySessions, studyBlocks } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
-import { nowIso } from "@/lib/utils/time";
+import { nowIso, nowDate } from "@/lib/utils/time";
 
 const Body = z.object({
   userId: z.string(),
@@ -32,9 +32,9 @@ export async function POST(req: Request) {
   if (parsed.data.blockId) {
     // mark block as in_progress
     await db
-      .update((await import("@/lib/db/schema")).studyBlocks)
-      .set({ status: "IN_PROGRESS", updatedAt: nowIso() })
-      .where(eq((await import("@/lib/db/schema")).studyBlocks.id, parsed.data.blockId));
+      .update(studyBlocks)
+      .set({ status: "IN_PROGRESS", updatedAt: nowDate() })
+      .where(eq(studyBlocks.id, parsed.data.blockId));
   }
   return NextResponse.json({ sessionId: id });
 }

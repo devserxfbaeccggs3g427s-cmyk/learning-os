@@ -1,4 +1,6 @@
 "use client";
+
+export const dynamic = "force-dynamic";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from "@/components/ui";
 import { Loader2, Sprout, RotateCcw } from "lucide-react";

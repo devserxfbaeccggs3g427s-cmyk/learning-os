@@ -1,4 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
+
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 
 export default function GeneralSettingsPage() {

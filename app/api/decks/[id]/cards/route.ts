@@ -17,7 +17,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       back: c.back,
       explanation: c.explanation,
       difficulty: c.difficulty,
-      tags: c.tags ? (JSON.parse(c.tags) as string[]) : [],
+      tags: Array.isArray(c.tags) ? c.tags : [],
     })),
   });
 }

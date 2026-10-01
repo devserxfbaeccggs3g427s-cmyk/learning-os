@@ -3,7 +3,7 @@ import { z } from "zod";
 import { eq, and, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { studySessions, taskProgress } from "@/lib/db/schema";
-import { nowIso, diffSeconds } from "@/lib/utils/time";
+import { nowIso, nowDate, diffSeconds } from "@/lib/utils/time";
 
 const FinishBody = z.object({
   status: z.enum(["COMPLETED", "ABANDONED", "PARTIAL"]).optional(),
@@ -25,6 +25,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
   const sess = existing[0];
   const endedAt = nowIso();
+  const endedAtDate = nowDate();
   const totalSeconds = diffSeconds(sess.startedAt, endedAt);
 
   await db
@@ -37,7 +38,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       difficultyFeedback: parsed.data.difficultyFeedback ?? null,
       confidence: parsed.data.confidence ?? null,
       sessionNotes: parsed.data.sessionNotes ?? sess.sessionNotes,
-      updatedAt: endedAt,
+      updatedAt: endedAtDate,
     })
     .where(eq(studySessions.id, id));
 
@@ -56,7 +57,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         sessionsCompleted: sql`${taskProgress.sessionsCompleted} + 1`,
         lastSessionAt: endedAt,
         completionRatio: Math.min(1, (existingProgress[0].totalStudySeconds + delta) / 60 / 45),
-        updatedAt: endedAt,
+        updatedAt: endedAtDate,
       })
       .where(eq(taskProgress.taskId, sess.taskId));
   } else {
@@ -66,6 +67,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       sessionsCompleted: 1,
       lastSessionAt: endedAt,
       completionRatio: Math.min(1, delta / 60 / 45),
+      updatedAt: endedAtDate,
     });
   }
 

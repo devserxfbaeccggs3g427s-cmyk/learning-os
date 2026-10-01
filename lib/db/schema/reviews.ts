@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, index } from "drizzle-orm/pg-core";
 import { createdAt } from "./_helpers";
 import { flashcards } from "./flashcards";
 import { users } from "./users";
@@ -7,7 +7,7 @@ import { users } from "./users";
  * One row per individual flashcard review. We keep this append-only so we
  * can compute retention analytics later.
  */
-export const reviewHistory = sqliteTable(
+export const reviewHistory = pgTable(
   "review_history",
   {
     id: text("id").primaryKey(),
@@ -18,10 +18,10 @@ export const reviewHistory = sqliteTable(
       .notNull()
       .references(() => flashcards.id, { onDelete: "cascade" }),
     rating: text("rating").notNull(), // AGAIN | HARD | GOOD | EASY
-    previousIntervalDays: real("previous_interval_days"),
-    newIntervalDays: real("new_interval_days"),
-    previousEase: real("previous_ease"),
-    newEase: real("new_ease"),
+    previousIntervalDays: doublePrecision("previous_interval_days"),
+    newIntervalDays: doublePrecision("new_interval_days"),
+    previousEase: doublePrecision("previous_ease"),
+    newEase: doublePrecision("new_ease"),
     durationSeconds: integer("duration_seconds"),
     reviewedAt: text("reviewed_at").notNull(),
   },
@@ -35,7 +35,7 @@ export const reviewHistory = sqliteTable(
  * ReviewSession groups a contiguous burst of flashcard reviews (e.g. a
  * 15-minute recall block). Used for analytics.
  */
-export const reviewSessions = sqliteTable("review_sessions", {
+export const reviewSessions = pgTable("review_sessions", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()

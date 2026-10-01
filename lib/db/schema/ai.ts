@@ -1,13 +1,24 @@
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, boolean, jsonb, index } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { tasks } from "./tasks";
 import { users } from "./users";
+
+export interface AIMessageMetadata {
+  provider?: string;
+  model?: string;
+  promptName?: string;
+  promptVersion?: string;
+  tokensIn?: number;
+  tokensOut?: number;
+  usage?: unknown;
+  [k: string]: unknown;
+}
 
 /**
  * AI Conversations live per task. One "global" conversation per user has
  * taskId = NULL.
  */
-export const aiConversations = sqliteTable(
+export const aiConversations = pgTable(
   "ai_conversations",
   {
     id: text("id").primaryKey(),
@@ -17,7 +28,7 @@ export const aiConversations = sqliteTable(
     taskId: text("task_id").references(() => tasks.id, { onDelete: "cascade" }),
     title: text("title").notNull().default("Conversation"),
     mode: text("mode").notNull().default("TUTOR"), // TUTOR | INTERVIEW | FAILURE_DRILL | DEBUG_DRILL | KNOWLEDGE_GAP | GLOBAL
-    archived: integer("archived", { mode: "boolean" }).notNull().default(false),
+    archived: boolean("archived").notNull().default(false),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
@@ -26,7 +37,7 @@ export const aiConversations = sqliteTable(
   }),
 );
 
-export const aiMessages = sqliteTable(
+export const aiMessages = pgTable(
   "ai_messages",
   {
     id: text("id").primaryKey(),
@@ -36,7 +47,7 @@ export const aiMessages = sqliteTable(
     role: text("role").notNull(), // SYSTEM | USER | ASSISTANT | TOOL
     content: text("content").notNull(),
     /** JSON: model, provider, promptName, promptVersion, tokensIn, tokensOut, cost, etc. */
-    metadata: text("metadata"),
+    metadata: jsonb("metadata").$type<AIMessageMetadata>(),
     createdAt: createdAt(),
   },
   (t) => ({
@@ -49,7 +60,7 @@ export const aiMessages = sqliteTable(
  *   - explain to the user which model produced it
  *   - preserve history even if prompt templates change later
  */
-export const aiArtifactRecords = sqliteTable(
+export const aiArtifactRecords = pgTable(
   "ai_artifact_records",
   {
     id: text("id").primaryKey(),
@@ -64,9 +75,9 @@ export const aiArtifactRecords = sqliteTable(
     promptVersion: text("prompt_version"),
     tokensIn: integer("tokens_in"),
     tokensOut: integer("tokens_out"),
-    costUsd: real("cost_usd"),
+    costUsd: doublePrecision("cost_usd"),
     durationMs: integer("duration_ms"),
-    success: integer("success", { mode: "boolean" }).notNull().default(true),
+    success: boolean("success").notNull().default(true),
     error: text("error"),
     createdAt: createdAt(),
   },

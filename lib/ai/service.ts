@@ -8,6 +8,7 @@ import { db } from "@/lib/db/client";
 import { aiConfigurations, applicationSettings, users } from "@/lib/db/schema";
 import { decrypt } from "@/lib/security/crypto";
 import { aiDefaults } from "@/config/app";
+import { nowDate } from "@/lib/utils/time";
 import { getProvider } from "./registry";
 import type { AIProvider } from "./provider";
 
@@ -83,7 +84,7 @@ export async function getAIProvider(userId: string): Promise<AIProvider> {
   return getProvider(cfg.provider, { apiKey: cfg.apiKey, baseUrl: cfg.baseUrl });
 }
 
-/** Read a single application setting by key (JSON-decoded). */
+/** Read a single application setting by key (jsonb column). */
 export async function readSetting<T = unknown>(
   userId: string,
   key: string,
@@ -95,16 +96,12 @@ export async function readSetting<T = unknown>(
     .where(and(eq(applicationSettings.userId, userId), eq(applicationSettings.key, key)))
     .limit(1);
   if (!row[0]) return fallback;
-  try {
-    return JSON.parse(row[0].value) as T;
-  } catch {
-    return fallback;
-  }
+  return (row[0].value ?? fallback) as T | undefined;
 }
 
 export async function writeSetting(userId: string, key: string, value: unknown): Promise<void> {
   const { ids } = await import("@/lib/utils/ids");
-  const json = JSON.stringify(value ?? null);
+  const stored = value ?? null;
   const existing = await db
     .select()
     .from(applicationSettings)
@@ -113,14 +110,14 @@ export async function writeSetting(userId: string, key: string, value: unknown):
   if (existing[0]) {
     await db
       .update(applicationSettings)
-      .set({ value: json, updatedAt: new Date().toISOString() })
+      .set({ value: stored, updatedAt: nowDate() })
       .where(eq(applicationSettings.id, existing[0].id));
   } else {
     await db.insert(applicationSettings).values({
       id: ids.setting(),
       userId,
       key,
-      value: json,
+      value: stored,
     });
   }
 }

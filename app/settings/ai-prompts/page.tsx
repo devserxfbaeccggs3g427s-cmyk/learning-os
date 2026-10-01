@@ -1,4 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
+
+export const dynamic = "force-dynamic";
 import { listPromptNames, getPrompt } from "@/lib/ai/prompts";
 
 export default function AIPromptsPage() {

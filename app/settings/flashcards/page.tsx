@@ -1,4 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
+
+export const dynamic = "force-dynamic";
 import { SRS_DEFAULTS, REVIEW_RATINGS } from "@/config/domain";
 
 export default function FlashcardSettingsPage() {

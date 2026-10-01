@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, index } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { tasks } from "./tasks";
 import { studyBlocks } from "./schedule";
@@ -9,7 +9,7 @@ import { users } from "./users";
  * have multiple sessions if a user pauses/resumes or re-attempts the same
  * block on the same day.
  */
-export const studySessions = sqliteTable(
+export const studySessions = pgTable(
   "study_sessions",
   {
     id: text("id").primaryKey(),
@@ -48,14 +48,14 @@ export const studySessions = sqliteTable(
  * Per-task aggregated progress that we update on session completion.
  * Kept as a row-per-task instead of recomputing each query.
  */
-export const taskProgress = sqliteTable("task_progress", {
+export const taskProgress = pgTable("task_progress", {
   taskId: text("task_id")
     .primaryKey()
     .references(() => tasks.id, { onDelete: "cascade" }),
   totalStudySeconds: integer("total_study_seconds").notNull().default(0),
   sessionsCompleted: integer("sessions_completed").notNull().default(0),
   lastSessionAt: text("last_session_at"),
-  completionRatio: real("completion_ratio").notNull().default(0),
+  completionRatio: doublePrecision("completion_ratio").notNull().default(0),
   updatedAt: updatedAt(),
 });
 

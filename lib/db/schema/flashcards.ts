@@ -1,9 +1,9 @@
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, boolean, jsonb, index } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { tasks } from "./tasks";
 import { users } from "./users";
 
-export const flashcardDecks = sqliteTable(
+export const flashcardDecks = pgTable(
   "flashcard_decks",
   {
     id: text("id").primaryKey(),
@@ -30,7 +30,7 @@ export const flashcardDecks = sqliteTable(
   }),
 );
 
-export const flashcards = sqliteTable(
+export const flashcards = pgTable(
   "flashcards",
   {
     id: text("id").primaryKey(),
@@ -45,17 +45,17 @@ export const flashcards = sqliteTable(
     explanation: text("explanation"),
 
     difficulty: text("difficulty").notNull().default("MEDIUM"),
-    tags: text("tags"), // JSON array
+    tags: jsonb("tags").$type<string[]>().notNull().default([]),
     sourceType: text("source_type"), // NOTES | AI | MANUAL
 
     // SRS scheduling fields
-    intervalDays: real("interval_days").notNull().default(0),
-    easeFactor: real("ease_factor").notNull().default(2.5),
+    intervalDays: doublePrecision("interval_days").notNull().default(0),
+    easeFactor: doublePrecision("ease_factor").notNull().default(2.5),
     repetitions: integer("repetitions").notNull().default(0),
     lapses: integer("lapses").notNull().default(0),
     dueAt: text("due_at"), // null => new (never reviewed)
     lastReviewedAt: text("last_reviewed_at"),
-    suspended: integer("suspended", { mode: "boolean" }).notNull().default(false),
+    suspended: boolean("suspended").notNull().default(false),
 
     createdAt: createdAt(),
     updatedAt: updatedAt(),

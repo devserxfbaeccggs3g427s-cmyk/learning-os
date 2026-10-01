@@ -21,7 +21,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ attempt
 
   const question = (await db.select().from(quizQuestions).where(eq(quizQuestions.id, parsed.data.questionId)).limit(1))[0];
   if (!question) return NextResponse.json({ error: "Question not found" }, { status: 404 });
-  const correctIds = (JSON.parse(question.correctAnswer) as string[]).sort();
+  const correctIds = (Array.isArray(question.correctAnswer) ? question.correctAnswer : []) as string[];
   const submitted = [...parsed.data.answer].sort();
   const isCorrect = correctIds.length === submitted.length && correctIds.every((v, i) => v === submitted[i]);
 
@@ -29,7 +29,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ attempt
     id: ids.answer(),
     attemptId,
     questionId: parsed.data.questionId,
-    answer: JSON.stringify(parsed.data.answer),
+    answer: parsed.data.answer,
     isCorrect,
   });
 

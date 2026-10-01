@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, index, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, doublePrecision, jsonb, index, uniqueIndex } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { modules } from "./roadmap";
 
@@ -8,7 +8,7 @@ import { modules } from "./roadmap";
  * "research worksheet" content (Why This Matters, Failure Scenarios, etc.)
  * lives on the task itself; long-form free notes are in `taskNotes`.
  */
-export const tasks = sqliteTable(
+export const tasks = pgTable(
   "tasks",
   {
     id: text("id").primaryKey(),
@@ -24,13 +24,13 @@ export const tasks = sqliteTable(
     relatedProject: text("related_project"),
     relatedCvClaim: text("related_cv_claim"),
     whyThisMatters: text("why_this_matters"),
-    prerequisites: text("prerequisites"), // JSON array of strings
-    concepts: text("concepts"), // JSON array
-    deepDiveSubtopics: text("deep_dive_subtopics"), // JSON array
-    internalsToUnderstand: text("internals_to_understand"), // JSON array
-    failureScenarios: text("failure_scenarios"), // JSON array of {id,title,body}
-    productionQuestions: text("production_questions"), // JSON array
-    interviewQuestions: text("interview_questions"), // JSON array
+    prerequisites: jsonb("prerequisites").$type<string[]>().notNull().default([]),
+    concepts: jsonb("concepts").$type<string[]>().notNull().default([]),
+    deepDiveSubtopics: jsonb("deep_dive_subtopics").$type<string[]>().notNull().default([]),
+    internalsToUnderstand: jsonb("internals_to_understand").$type<string[]>().notNull().default([]),
+    failureScenarios: jsonb("failure_scenarios").$type<unknown[]>().notNull().default([]),
+    productionQuestions: jsonb("production_questions").$type<string[]>().notNull().default([]),
+    interviewQuestions: jsonb("interview_questions").$type<string[]>().notNull().default([]),
     handsOnLab: text("hands_on_lab"), // free markdown
     expectedOutput: text("expected_output"),
     definitionOfDone: text("definition_of_done"),
@@ -43,7 +43,7 @@ export const tasks = sqliteTable(
     actualMinutes: integer("actual_minutes").notNull().default(0),
 
     // Mastery / review scheduling
-    masteryScore: real("mastery_score").notNull().default(0),
+    masteryScore: doublePrecision("mastery_score").notNull().default(0),
     nextReviewAt: text("next_review_at"),
     lastReviewedAt: text("last_review_at"),
 
@@ -64,7 +64,7 @@ export const tasks = sqliteTable(
  * Many-to-many self-relation for task dependencies.
  * `(taskId) depends on (dependsOnTaskId)`.
  */
-export const taskDependencies = sqliteTable(
+export const taskDependencies = pgTable(
   "task_dependencies",
   {
     id: text("id").primaryKey(),

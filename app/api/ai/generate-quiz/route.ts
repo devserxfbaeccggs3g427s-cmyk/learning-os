@@ -93,49 +93,52 @@ export async function POST(req: Request) {
   }
 
   const quizId = ids.quiz();
-  await db.insert(quizzes).values({
-    id: quizId,
-    taskId: parsed.data.taskId,
-    userId: user.id,
-    title: parsed.data.title,
-    source: parsed.data.source,
-    focus: parsed.data.focus,
-    difficulty: parsed.data.difficulty,
-    questionCount: result.data.questions.length,
-    generatedBy: `${result.provider}:${result.model}`,
-    promptName: sysPrompt.name,
-    promptVersion: sysPrompt.version,
-  });
-  for (let i = 0; i < result.data.questions.length; i++) {
-    const q = result.data.questions[i]!;
-    await db.insert(quizQuestions).values({
-      id: ids.question(),
-      quizId,
-      orderIndex: i,
-      questionType: q.questionType,
-      prompt: q.prompt,
-      options: JSON.stringify(q.options),
-      correctAnswer: JSON.stringify(q.correctOptionIds),
-      explanation: q.explanation,
-      difficulty: q.difficulty,
-      tags: JSON.stringify(q.tags ?? []),
-      sourceRef: q.source ?? null,
+  await db.transaction(async (tx) => {
+    await tx.insert(quizzes).values({
+      id: quizId,
+      taskId: parsed.data.taskId,
+      userId: user.id,
+      title: parsed.data.title,
+      source: parsed.data.source,
+      focus: parsed.data.focus,
+      difficulty: parsed.data.difficulty,
+      questionCount: result.data.questions.length,
+      generatedBy: `${result.provider}:${result.model}`,
+      promptName: sysPrompt.name,
+      promptVersion: sysPrompt.version,
     });
-  }
-  await db.insert(aiArtifactRecords).values({
-    id: ids.aiArtifact(),
-    userId: user.id,
-    artifactType: "QUIZ",
-    artifactId: quizId,
-    provider: result.provider,
-    model: result.model,
-    promptName: sysPrompt.name,
-    promptVersion: sysPrompt.version,
-    tokensIn: (result.usage as { inputTokens?: number } | undefined)?.inputTokens ?? null,
-    tokensOut: (result.usage as { outputTokens?: number } | undefined)?.outputTokens ?? null,
-    costUsd: (result.usage as { costUsd?: number } | undefined)?.costUsd ?? null,
-    durationMs: Date.now() - start,
-    success: true,
+    if (result.data.questions.length > 0) {
+      await tx.insert(quizQuestions).values(
+        result.data.questions.map((q, i) => ({
+          id: ids.question(),
+          quizId,
+          orderIndex: i,
+          questionType: q.questionType,
+          prompt: q.prompt,
+          options: q.options,
+          correctAnswer: q.correctOptionIds,
+          explanation: q.explanation,
+          difficulty: q.difficulty,
+          tags: q.tags ?? [],
+          sourceRef: q.source ?? null,
+        })),
+      );
+    }
+    await tx.insert(aiArtifactRecords).values({
+      id: ids.aiArtifact(),
+      userId: user.id,
+      artifactType: "QUIZ",
+      artifactId: quizId,
+      provider: result.provider,
+      model: result.model,
+      promptName: sysPrompt.name,
+      promptVersion: sysPrompt.version,
+      tokensIn: (result.usage as { inputTokens?: number } | undefined)?.inputTokens ?? null,
+      tokensOut: (result.usage as { outputTokens?: number } | undefined)?.outputTokens ?? null,
+      costUsd: (result.usage as { costUsd?: number } | undefined)?.costUsd ?? null,
+      durationMs: Date.now() - start,
+      success: true,
+    });
   });
 
   return NextResponse.json({ quizId, questionCount: result.data.questions.length });

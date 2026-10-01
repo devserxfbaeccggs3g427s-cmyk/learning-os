@@ -5,7 +5,7 @@ import { db } from "@/lib/db/client";
 import { aiConfigurations } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
 import { encrypt, mask } from "@/lib/security/crypto";
-import { nowIso } from "@/lib/utils/time";
+import { nowDate } from "@/lib/utils/time";
 
 const Body = z.object({
   userId: z.string().min(1),
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   // Mark all other configs for this user/provider as not default, then upsert.
   await db
     .update(aiConfigurations)
-    .set({ isDefault: false, updatedAt: nowIso() })
+    .set({ isDefault: false, updatedAt: nowDate() })
     .where(eq(aiConfigurations.userId, b.userId));
 
   const existing = await db
@@ -71,8 +71,8 @@ export async function POST(req: Request) {
     apiKeyIv: iv,
     apiKeyLast4: last4,
     isDefault: true,
-    updatedAt: nowIso(),
-  } as const;
+    updatedAt: nowDate(),
+  };
 
   if (existing[0]) {
     const patch = { ...values };

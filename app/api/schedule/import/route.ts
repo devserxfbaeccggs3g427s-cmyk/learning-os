@@ -33,47 +33,61 @@ export async function POST(req: Request) {
     });
   }
 
-  // ensure schedule exists
-  let row = (await db.select().from(schedules).where(and(eq(schedules.userId, user.id), eq(schedules.date, sch.date))).limit(1))[0];
-  if (!row) {
-    const id = ids.schedule();
-    await db.insert(schedules).values({
-      id,
-      userId: user.id,
-      date: sch.date,
-      objective: sch.objective ?? null,
-    });
-    row = (await db.select().from(schedules).where(eq(schedules.id, id)).limit(1))[0]!;
-  }
-
   let inserted = 0;
   let skipped = 0;
-  let order = 0;
-  for (const b of sch.blocks) {
-    let taskId: string | null = b.taskId ?? null;
-    if (!taskId && b.taskCode) {
-      const t = (await db.select().from(tasks).where(eq(tasks.code, b.taskCode)).limit(1))[0];
-      if (t) taskId = t.id;
-    }
-    if (!taskId) {
-      skipped++;
-      continue;
-    }
-    await db.insert(studyBlocks).values({
-      id: ids.block(),
-      scheduleId: row.id,
-      taskId,
-      type: b.type,
-      title: b.title,
-      objective: b.objective ?? null,
-      startMinute: b.startMinute,
-      durationMinutes: b.durationMinutes,
-      deliverable: b.deliverable ?? null,
-      status: "PLANNED",
-      orderIndex: order++,
-    });
-    inserted++;
-  }
+  let scheduleId = "";
 
-  return NextResponse.json({ ok: true, scheduleId: row.id, inserted, skipped });
+  await db.transaction(async (tx) => {
+    let row = (
+      await tx
+        .select()
+        .from(schedules)
+        .where(and(eq(schedules.userId, user.id), eq(schedules.date, sch.date)))
+        .limit(1)
+    )[0];
+    if (!row) {
+      const id = ids.schedule();
+      await tx.insert(schedules).values({
+        id,
+        userId: user.id,
+        date: sch.date,
+        objective: sch.objective ?? null,
+      });
+      row = (
+        await tx.select().from(schedules).where(eq(schedules.id, id)).limit(1)
+      )[0]!;
+    }
+    scheduleId = row.id;
+
+    let order = 0;
+    for (const b of sch.blocks) {
+      let taskId: string | null = b.taskId ?? null;
+      if (!taskId && b.taskCode) {
+        const t = (
+          await tx.select().from(tasks).where(eq(tasks.code, b.taskCode)).limit(1)
+        )[0];
+        if (t) taskId = t.id;
+      }
+      if (!taskId) {
+        skipped++;
+        continue;
+      }
+      await tx.insert(studyBlocks).values({
+        id: ids.block(),
+        scheduleId: row.id,
+        taskId,
+        type: b.type,
+        title: b.title,
+        objective: b.objective ?? null,
+        startMinute: b.startMinute,
+        durationMinutes: b.durationMinutes,
+        deliverable: b.deliverable ?? null,
+        status: "PLANNED",
+        orderIndex: order++,
+      });
+      inserted++;
+    }
+  });
+
+  return NextResponse.json({ ok: true, scheduleId, inserted, skipped });
 }

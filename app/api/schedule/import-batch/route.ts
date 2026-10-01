@@ -7,6 +7,9 @@
  *
  * Each day is validated against ScheduleImportSchema before any DB write;
  * failures are reported in the response so the caller can fix & retry.
+ *
+ * Each day's writes happen inside its own transaction so a partial-day
+ * failure doesn't roll back already-imported days.
  */
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -44,55 +47,61 @@ export async function POST(req: Request) {
 
   for (const sch of days) {
     try {
-      // ensure schedule exists
-      let row = (
-        await db
-          .select()
-          .from(schedules)
-          .where(and(eq(schedules.userId, user.id), eq(schedules.date, sch.date)))
-          .limit(1)
-      )[0];
-      if (!row) {
-        const id = ids.schedule();
-        await db.insert(schedules).values({
-          id,
-          userId: user.id,
-          date: sch.date,
-          objective: sch.objective ?? null,
-        });
-        row = (await db.select().from(schedules).where(eq(schedules.id, id)).limit(1))[0]!;
-      }
-
-      let inserted = 0;
-      let skipped = 0;
-      let order = 0;
-      for (const b of sch.blocks) {
-        let taskId: string | null = b.taskId ?? null;
-        if (!taskId && b.taskCode) {
-          const t = (await db.select().from(tasks).where(eq(tasks.code, b.taskCode)).limit(1))[0];
-          if (t) taskId = t.id;
+      const result = await db.transaction(async (tx) => {
+        let row = (
+          await tx
+            .select()
+            .from(schedules)
+            .where(and(eq(schedules.userId, user.id), eq(schedules.date, sch.date)))
+            .limit(1)
+        )[0];
+        if (!row) {
+          const id = ids.schedule();
+          await tx.insert(schedules).values({
+            id,
+            userId: user.id,
+            date: sch.date,
+            objective: sch.objective ?? null,
+          });
+          row = (
+            await tx.select().from(schedules).where(eq(schedules.id, id)).limit(1)
+          )[0]!;
         }
-        if (!taskId) {
-          skipped++;
-          continue;
-        }
-        await db.insert(studyBlocks).values({
-          id: ids.block(),
-          scheduleId: row.id,
-          taskId,
-          type: b.type,
-          title: b.title,
-          objective: b.objective ?? null,
-          startMinute: b.startMinute,
-          durationMinutes: b.durationMinutes,
-          deliverable: b.deliverable ?? null,
-          status: "PLANNED",
-          orderIndex: order++,
-        });
-        inserted++;
-      }
 
-      results.push({ date: sch.date, scheduleId: row.id, inserted, skipped });
+        let inserted = 0;
+        let skipped = 0;
+        let order = 0;
+        for (const b of sch.blocks) {
+          let taskId: string | null = b.taskId ?? null;
+          if (!taskId && b.taskCode) {
+            const t = (
+              await tx.select().from(tasks).where(eq(tasks.code, b.taskCode)).limit(1)
+            )[0];
+            if (t) taskId = t.id;
+          }
+          if (!taskId) {
+            skipped++;
+            continue;
+          }
+          await tx.insert(studyBlocks).values({
+            id: ids.block(),
+            scheduleId: row.id,
+            taskId,
+            type: b.type,
+            title: b.title,
+            objective: b.objective ?? null,
+            startMinute: b.startMinute,
+            durationMinutes: b.durationMinutes,
+            deliverable: b.deliverable ?? null,
+            status: "PLANNED",
+            orderIndex: order++,
+          });
+          inserted++;
+        }
+
+        return { date: sch.date, scheduleId: row.id, inserted, skipped };
+      });
+      results.push(result);
     } catch (err) {
       failures.push({ date: sch.date, error: err instanceof Error ? err.message : "unknown" });
     }

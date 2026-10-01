@@ -6,6 +6,16 @@ export function nowIso(): string {
   return new Date().toISOString();
 }
 
+/**
+ * Current Date for Postgres `timestamp with time zone` columns. The
+ * Postgres driver serializes Date objects natively; we keep `nowIso()`
+ * for `text`-typed timestamp columns (legacy/compat) where round-tripping
+ * through a string is preferable.
+ */
+export function nowDate(): Date {
+  return new Date();
+}
+
 export function isoFromDate(d: Date): string {
   return d.toISOString();
 }

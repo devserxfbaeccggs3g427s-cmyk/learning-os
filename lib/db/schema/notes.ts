@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, index } from "drizzle-orm/pg-core";
 import { createdAt } from "./_helpers";
 import { tasks } from "./tasks";
 import { users } from "./users";
@@ -7,8 +7,11 @@ import { users } from "./users";
  * Each task has one "current" note (TaskNote). Every save snapshots the
  * previous version into NoteRevision. This gives free revision history
  * without a heavyweight git-like system.
+ *
+ * `task_notes.content` is plain markdown (not structured JSON) — keep it
+ * as `text` so it round-trips losslessly.
  */
-export const taskNotes = sqliteTable(
+export const taskNotes = pgTable(
   "task_notes",
   {
     id: text("id").primaryKey(),
@@ -28,7 +31,7 @@ export const taskNotes = sqliteTable(
   }),
 );
 
-export const noteRevisions = sqliteTable(
+export const noteRevisions = pgTable(
   "note_revisions",
   {
     id: text("id").primaryKey(),

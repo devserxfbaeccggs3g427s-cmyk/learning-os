@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, index } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { users } from "./users";
 import { tasks } from "./tasks";
@@ -8,7 +8,7 @@ import { tasks } from "./tasks";
  * calendar day. We keep one row per (user, date) so we can query Today and
  * the surrounding week.
  */
-export const schedules = sqliteTable(
+export const schedules = pgTable(
   "schedules",
   {
     id: text("id").primaryKey(),
@@ -26,7 +26,7 @@ export const schedules = sqliteTable(
   }),
 );
 
-export const studyBlocks = sqliteTable(
+export const studyBlocks = pgTable(
   "study_blocks",
   {
     id: text("id").primaryKey(),

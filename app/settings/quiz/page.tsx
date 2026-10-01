@@ -1,4 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
+
+export const dynamic = "force-dynamic";
 import { AI_GENERATION, QUIZ_DIFFICULTIES, QUIZ_FOCUS, QUIZ_SOURCES, QUESTION_TYPES } from "@/config/domain";
 
 export default function QuizSettingsPage() {

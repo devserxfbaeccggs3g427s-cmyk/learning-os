@@ -106,50 +106,53 @@ export async function POST(req: Request) {
     );
   }
 
-  // Persist deck + cards
+  // Persist deck + cards atomically.
   const deckId = ids.deck();
-  await db.insert(flashcardDecks).values({
-    id: deckId,
-    taskId: parsed.data.taskId,
-    userId: user.id,
-    title: parsed.data.title,
-    source: parsed.data.source,
-    focus: parsed.data.focus,
-    difficulty: parsed.data.difficulty,
-    cardCount: result.data.cards.length,
-    generatedBy: `${result.provider}:${result.model}`,
-    promptName: sysPrompt.name,
-    promptVersion: sysPrompt.version,
-  });
-  for (let i = 0; i < result.data.cards.length; i++) {
-    const c = result.data.cards[i]!;
-    await db.insert(flashcards).values({
-      id: ids.card(),
-      deckId,
-      orderIndex: i,
-      cardType: c.cardType,
-      front: c.front.text,
-      back: c.back.text,
-      explanation: c.explanation ?? null,
-      difficulty: c.difficulty,
-      tags: JSON.stringify(c.tags ?? []),
-      sourceType: "AI",
+  await db.transaction(async (tx) => {
+    await tx.insert(flashcardDecks).values({
+      id: deckId,
+      taskId: parsed.data.taskId,
+      userId: user.id,
+      title: parsed.data.title,
+      source: parsed.data.source,
+      focus: parsed.data.focus,
+      difficulty: parsed.data.difficulty,
+      cardCount: result.data.cards.length,
+      generatedBy: `${result.provider}:${result.model}`,
+      promptName: sysPrompt.name,
+      promptVersion: sysPrompt.version,
     });
-  }
-  await db.insert((await import("@/lib/db/schema")).aiArtifactRecords).values({
-    id: ids.aiArtifact(),
-    userId: user.id,
-    artifactType: "FLASHCARD_DECK",
-    artifactId: deckId,
-    provider: result.provider,
-    model: result.model,
-    promptName: sysPrompt.name,
-    promptVersion: sysPrompt.version,
-    tokensIn: (result.usage as { inputTokens?: number } | undefined)?.inputTokens ?? null,
-    tokensOut: (result.usage as { outputTokens?: number } | undefined)?.outputTokens ?? null,
-    costUsd: (result.usage as { costUsd?: number } | undefined)?.costUsd ?? null,
-    durationMs: Date.now() - start,
-    success: true,
+    if (result.data.cards.length > 0) {
+      await tx.insert(flashcards).values(
+        result.data.cards.map((c, i) => ({
+          id: ids.card(),
+          deckId,
+          orderIndex: i,
+          cardType: c.cardType,
+          front: c.front.text,
+          back: c.back.text,
+          explanation: c.explanation ?? null,
+          difficulty: c.difficulty,
+          tags: c.tags ?? [],
+          sourceType: "AI",
+        })),
+      );
+    }
+    await tx.insert((await import("@/lib/db/schema")).aiArtifactRecords).values({
+      id: ids.aiArtifact(),
+      userId: user.id,
+      artifactType: "FLASHCARD_DECK",
+      artifactId: deckId,
+      provider: result.provider,
+      model: result.model,
+      promptName: sysPrompt.name,
+      promptVersion: sysPrompt.version,
+      tokensIn: (result.usage as { inputTokens?: number } | undefined)?.inputTokens ?? null,
+      tokensOut: (result.usage as { outputTokens?: number } | undefined)?.outputTokens ?? null,
+      costUsd: (result.usage as { costUsd?: number } | undefined)?.costUsd ?? null,
+      durationMs: Date.now() - start,
+      success: true,
+    });
   });
 
   return NextResponse.json({ deckId, cardCount: result.data.cards.length });

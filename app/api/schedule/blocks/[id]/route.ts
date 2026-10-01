@@ -3,7 +3,7 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { studyBlocks } from "@/lib/db/schema";
-import { nowIso } from "@/lib/utils/time";
+import { nowDate } from "@/lib/utils/time";
 
 const Body = z.object({
   status: z.enum(["PLANNED", "IN_PROGRESS", "DONE", "SKIPPED"]).optional(),
@@ -24,7 +24,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
   await db
     .update(studyBlocks)
-    .set({ ...parsed.data, updatedAt: nowIso() })
+    .set({ ...parsed.data, updatedAt: nowDate() })
     .where(eq(studyBlocks.id, id));
   return NextResponse.json({ ok: true });
 }

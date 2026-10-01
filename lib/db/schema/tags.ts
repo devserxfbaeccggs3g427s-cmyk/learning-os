@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { pgTable, text, index, uniqueIndex } from "drizzle-orm/pg-core";
 import { createdAt } from "./_helpers";
 import { tasks } from "./tasks";
 
@@ -6,7 +6,7 @@ import { tasks } from "./tasks";
  * Tags are user-defined strings (e.g. "kafka", "idempotency", "P0").
  * They attach many-to-many to tasks.
  */
-export const tags = sqliteTable(
+export const tags = pgTable(
   "tags",
   {
     id: text("id").primaryKey(),
@@ -19,7 +19,7 @@ export const tags = sqliteTable(
   }),
 );
 
-export const taskTags = sqliteTable(
+export const taskTags = pgTable(
   "task_tags",
   {
     taskId: text("task_id")

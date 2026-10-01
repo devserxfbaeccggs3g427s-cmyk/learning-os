@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, index } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 import { users } from "./users";
 
@@ -10,7 +10,7 @@ import { users } from "./users";
  * reconstructed without relying on creation order.
  */
 
-export const roadmaps = sqliteTable("roadmaps", {
+export const roadmaps = pgTable("roadmaps", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -24,7 +24,7 @@ export const roadmaps = sqliteTable("roadmaps", {
   updatedAt: updatedAt(),
 });
 
-export const tracks = sqliteTable(
+export const tracks = pgTable(
   "tracks",
   {
     id: text("id").primaryKey(),
@@ -43,7 +43,7 @@ export const tracks = sqliteTable(
   }),
 );
 
-export const modules = sqliteTable(
+export const modules = pgTable(
   "modules",
   {
     id: text("id").primaryKey(),

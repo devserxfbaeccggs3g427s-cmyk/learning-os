@@ -1,26 +1,20 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 /**
- * ISO 8601 strings for cross-language / cross-DB portability.
- * Always use these helpers so timestamps are consistent.
+ * ISO 8601 timestamps stored as `timestamp with time zone` (Postgres).
+ * All callers should treat these as JS `Date` objects; the Drizzle layer
+ * serializes/deserializes automatically.
  */
-export const nowMs = () => sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`;
+export const nowMs = () => sql`(now())`;
 
 export const createdAt = () =>
-  text("created_at")
-    .notNull()
-    .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`);
+  timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
 
 export const updatedAt = () =>
-  text("updated_at")
-    .notNull()
-    .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`);
+  timestamp("updated_at", { withTimezone: true }).notNull().defaultNow();
 
-export const id = () => text("id").primaryKey();
-export const fk = (col: string) =>
-  text(col)
-    .notNull()
-    .references(() => /* dummy */ (undefined as never));
+export const id = (name = "id") => text(name).primaryKey();
+export const fk = (col: string) => text(col).notNull();
 
-export { sqliteTable, text, integer, uniqueIndex, sql };
+export { pgTable, text, uniqueIndex, sql };

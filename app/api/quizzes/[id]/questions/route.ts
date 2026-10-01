@@ -15,8 +15,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       id: q.id,
       questionType: q.questionType,
       prompt: q.prompt,
-      options: q.options ? (JSON.parse(q.options) as Array<{ id: string; text: string }>) : [],
-      correctAnswer: q.correctAnswer ? (JSON.parse(q.correctAnswer) as string[]) : [],
+      options: Array.isArray(q.options)
+        ? (q.options as Array<{ id: string; text: string }>)
+        : [],
+      correctAnswer: Array.isArray(q.correctAnswer)
+        ? (q.correctAnswer as string[])
+        : [],
       explanation: q.explanation,
     })),
   });

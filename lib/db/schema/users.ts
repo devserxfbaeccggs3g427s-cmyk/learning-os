@@ -1,11 +1,11 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "./_helpers";
 
 /**
  * User. The app is single-user today, but the schema is ready for
  * multi-user (auth) without refactoring.
  */
-export const users = sqliteTable("users", {
+export const users = pgTable("users", {
   id: text("id").primaryKey(),
   email: text("email").unique(),
   displayName: text("display_name"),

@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { flashcards, reviewHistory } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
-import { nowIso } from "@/lib/utils/time";
+import { nowIso, nowDate } from "@/lib/utils/time";
 import { scheduleCard } from "@/lib/srs/scheduler";
 
 const Body = z.object({
@@ -42,7 +42,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       lapses: next.lapses,
       dueAt: next.dueAt,
       lastReviewedAt: nowIso(),
-      updatedAt: nowIso(),
+      updatedAt: nowDate(),
     })
     .where(eq(flashcards.id, cardId));
 
