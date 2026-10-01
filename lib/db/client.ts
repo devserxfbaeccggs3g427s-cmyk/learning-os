@@ -44,15 +44,22 @@ declare global {
 
 function createClient() {
   return postgres(dbUrl, {
-    max: 1,
+    // Supabase free tier allows ~15 concurrent connections. We use a
+    // small pool so multiple parallel page-render queries don't queue
+    // up behind a single connection. Postgres-js serializes them across
+    // the pool internally.
+    max: 5,
     prepare: false,
     idle_timeout: 20,
     connect_timeout: 10,
+    // Abort slow queries early rather than freezing the UI.
+    connection: {
+      application_name: "learning-os",
+      statement_timeout: 30_000, // 30s per query
+    },
     onnotice: () => {},
     // eslint-disable-next-line no-console
     debug: (_conn, query, params) => {
-      // Postgres-js uses an internal logging channel; gated by env var to
-      // avoid noise during normal runs.
       if (process.env.LEARNING_OS_PG_DEBUG === "1") {
         // eslint-disable-next-line no-console
         console.log(`[pg] ${query} -- ${JSON.stringify(params ?? [])}`);
