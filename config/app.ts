@@ -27,7 +27,7 @@ const EnvSchema = z.object({
   AI_DEFAULT_MODEL: z.string().default("minimax/minimax-m3"),
   AI_DEFAULT_BASE_URL: z.string().default("https://openrouter.ai/api/v1"),
   AI_DEFAULT_TEMPERATURE: z.coerce.number().min(0).max(2).default(0.4),
-  AI_DEFAULT_MAX_TOKENS: z.coerce.number().int().positive().default(2000),
+  AI_DEFAULT_MAX_TOKENS: z.coerce.number().int().positive().default(128000),
 
   FEATURE_PWA: z.coerce.boolean().default(true),
   FEATURE_GLOBAL_AI: z.coerce.boolean().default(true),
