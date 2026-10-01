@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import {
   BookOpen, Microscope, ShieldAlert, MessageCircleQuestion, BrainCircuit,
-  Clock, PlayCircle, PauseCircle, RefreshCcw, CheckCircle2,
-  CalendarDays, RotateCcw, ArrowRight,
+  Clock, PlayCircle, PauseCircle, RefreshCcw, CheckCircle2, Loader2,
+  CalendarDays, RotateCcw, ArrowRight, ExternalLink,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Input } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
@@ -85,7 +85,7 @@ export function TodayView({
     [blocks],
   );
   const progressPct = totalMin === 0 ? 0 : Math.round((doneMin / totalMin) * 100);
-  const [isPending, startTx] = useTransition();
+  const [, startTx] = useTransition();
   const [items, setItems] = useState(blocks);
   // Track in-flight mutations so per-block buttons can disable during the
   // request — prevents double-click → two sessions for the same block.
@@ -120,6 +120,10 @@ export function TodayView({
   async function startSession(block: TodayBlock) {
     if (!block.taskId || busyBlockIds.has(block.id)) return;
     setBusy(block.id, true);
+    // 15s timeout — if Supabase is lagging we abort and surface a clear
+    // error so the user isn't staring at a frozen button.
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 15000);
     startTx(async () => {
       try {
         const r = await fetch(`/api/sessions/start`, {
@@ -131,12 +135,29 @@ export function TodayView({
             blockId: block.id,
             objective: block.objective ?? block.title,
           }),
+          signal: ctrl.signal,
         });
         if (r.ok) {
           const j = await r.json();
+          if (!j.sessionId) {
+            alert("Session created but no id returned. Check the console.");
+            // eslint-disable-next-line no-console
+            console.error("sessions/start: no sessionId in response", j);
+            return;
+          }
           window.location.href = `/sessions/${j.sessionId}`;
+        } else {
+          const err = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+          alert(`Start failed: ${err.error ?? r.statusText ?? "unknown"}`);
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          alert("Request timed out after 15s. Database may be slow — try again or open the task directly.");
+        } else {
+          alert(`Start failed: ${err instanceof Error ? err.message : "unknown"}`);
         }
       } finally {
+        clearTimeout(timeout);
         setBusy(block.id, false);
       }
     });
@@ -276,7 +297,16 @@ export function TodayView({
 
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-base font-semibold leading-tight">{b.title}</h3>
+                    {b.taskId ? (
+                      <Link
+                        href={`/tasks/${b.taskId}`}
+                        className="text-base font-semibold leading-tight hover:underline"
+                      >
+                        {b.title}
+                      </Link>
+                    ) : (
+                      <h3 className="text-base font-semibold leading-tight">{b.title}</h3>
+                    )}
                     <span
                       className={cn(
                         "rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider",
@@ -311,10 +341,19 @@ export function TodayView({
                           <Button
                             size="sm"
                             onClick={() => startSession(b)}
-                            disabled={busy || isPending}
+                            // Don't disable — show a spinner instead so the
+                            // user sees the request is in flight, not frozen.
                             className="gap-1"
                           >
-                            <PlayCircle className="h-4 w-4" /> Start
+                            {busy ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin" /> Starting…
+                              </>
+                            ) : (
+                              <>
+                                <PlayCircle className="h-4 w-4" /> Start
+                              </>
+                            )}
                           </Button>
                         )}
                         {b.status === "IN_PROGRESS" && (
@@ -345,8 +384,10 @@ export function TodayView({
                           </Button>
                         )}
                         {b.taskId && (
-                          <Button asChild size="sm" variant="outline">
-                            <Link href={`/tasks/${b.taskId}`}>Open</Link>
+                          <Button asChild size="sm" variant="outline" className="gap-1">
+                            <Link href={`/tasks/${b.taskId}`}>
+                              <ExternalLink className="h-3.5 w-3.5" /> Open
+                            </Link>
                           </Button>
                         )}
                       </>
