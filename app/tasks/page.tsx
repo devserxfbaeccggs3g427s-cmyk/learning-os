@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { eq, asc, sql } from "drizzle-orm";
-import { db } from "@/lib/db/client";
-import { tasks, modules, tracks, roadmaps } from "@/lib/db/schema";
 import { AppShell } from "@/components/layout/AppShell";
-import { Card, CardContent, Badge } from "@/components/ui";
+import { Card, CardContent, Badge, Button } from "@/components/ui";
 import { TASK_STATUSES } from "@/config/domain";
 import { ListTree } from "lucide-react";
+import { getDefaultUser } from "@/lib/ai/service";
+import { listHierarchy, listTasks } from "@/lib/db/queries/tasks";
 
 export const dynamic = "force-dynamic";
 
@@ -19,49 +18,83 @@ const STATUS_TONE: Record<string, string> = {
   BLOCKED: "bg-red-500/10 text-red-600",
 };
 
-export default async function TasksListPage() {
-  const all = await db.select().from(tasks).orderBy(asc(tasks.orderIndex));
-  const allModules = await db.select().from(modules);
-  const allTracks = await db.select().from(tracks);
-  const allRoadmaps = await db.select().from(roadmaps);
+const PAGE_SIZE = 100;
 
-  const modMap = new Map(allModules.map((m) => [m.id, m]));
-  const trackMap = new Map(allTracks.map((t) => [t.id, t]));
-  const rmMap = new Map(allRoadmaps.map((r) => [r.id, r]));
+type SearchParams = Promise<{ status?: string; page?: string }>;
 
-  // Group by status
-  const groups: Record<string, typeof all> = {};
-  for (const t of all) {
-    const s = TASK_STATUSES.includes(t.status as (typeof TASK_STATUSES)[number]) ? t.status : "BACKLOG";
+export default async function TasksListPage({ searchParams }: { searchParams: SearchParams }) {
+  const user = await getDefaultUser();
+  const sp = await searchParams;
+
+  const statusFilter = TASK_STATUSES.includes(sp.status as (typeof TASK_STATUSES)[number])
+    ? sp.status
+    : undefined;
+  const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
+
+  // Single batched query — paginated, status-filterable, projection-only.
+  const { items, total } = await listTasks({
+    userId: user.id,
+    status: statusFilter,
+    page,
+    pageSize: PAGE_SIZE,
+  });
+
+  // Tiny lookup tables (a few hundred short rows).
+  const hierarchy = await listHierarchy(user.id);
+  const modMap = new Map(hierarchy.modules.map((m) => [m.id, m]));
+  const trackMap = new Map(hierarchy.tracks.map((t) => [t.id, t]));
+  const rmMap = new Map(hierarchy.roadmaps.map((r) => [r.id, r]));
+
+  // Group by status (within the current page). For all-status view we keep
+  // the legacy "sections by status" UX; for filtered view we render a flat
+  // list with pagination controls.
+  const groups: Record<string, typeof items> = {};
+  for (const t of items) {
+    const s = TASK_STATUSES.includes(t.status as (typeof TASK_STATUSES)[number])
+      ? t.status
+      : "BACKLOG";
     (groups[s] ??= []).push(t);
   }
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <AppShell>
       <div className="mx-auto max-w-6xl space-y-6 p-4 lg:p-8">
-        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-          <ListTree className="h-6 w-6 text-primary" /> All Tasks
-        </h1>
+        <header className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+            <ListTree className="h-6 w-6 text-primary" /> All Tasks
+          </h1>
+          <div className="flex flex-wrap items-center gap-1">
+            <FilterChip href="/tasks" label="All" active={!statusFilter} />
+            {TASK_STATUSES.map((s) => (
+              <FilterChip key={s} href={`/tasks?status=${s}`} label={s} active={statusFilter === s} />
+            ))}
+          </div>
+        </header>
 
-        {all.length === 0 && (
+        {items.length === 0 && (
           <Card>
             <CardContent className="py-8 text-center text-sm text-muted-foreground">
               No tasks yet. Import a roadmap from{" "}
-              <Link className="text-primary underline" href="/settings/import">Settings → Import</Link>.
+              <Link className="text-primary underline" href="/settings/import">
+                Settings → Import
+              </Link>
+              .
             </CardContent>
           </Card>
         )}
 
         {TASK_STATUSES.map((status) => {
-          const items = groups[status] ?? [];
-          if (items.length === 0) return null;
+          const grouped = groups[status] ?? [];
+          if (grouped.length === 0) return null;
           return (
             <section key={status}>
               <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                {status} <Badge>{items.length}</Badge>
+                {status} <Badge>{grouped.length}</Badge>
               </h2>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((t) => {
+                {grouped.map((t) => {
                   const m = modMap.get(t.moduleId);
                   const tr = m ? trackMap.get(m.trackId) : null;
                   const rm = tr ? rmMap.get(tr.roadmapId) : null;
@@ -89,7 +122,52 @@ export default async function TasksListPage() {
             </section>
           );
         })}
+
+        {/* Pagination footer — only show when a filter narrows results. */}
+        {statusFilter && total > PAGE_SIZE && (
+          <nav className="flex items-center justify-between border-t border-border pt-4 text-sm">
+            <span className="text-muted-foreground">
+              Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} of {total}
+            </span>
+            <div className="flex gap-2">
+              <Button asChild={page > 1} variant="outline" size="sm" disabled={page <= 1}>
+                {page > 1 ? (
+                  <Link href={`/tasks?status=${statusFilter}&page=${page - 1}`}>← Prev</Link>
+                ) : (
+                  <span>← Prev</span>
+                )}
+              </Button>
+              <Button
+                asChild={page < totalPages}
+                variant="outline"
+                size="sm"
+                disabled={page >= totalPages}
+              >
+                {page < totalPages ? (
+                  <Link href={`/tasks?status=${statusFilter}&page=${page + 1}`}>Next →</Link>
+                ) : (
+                  <span>Next →</span>
+                )}
+              </Button>
+            </div>
+          </nav>
+        )}
       </div>
     </AppShell>
+  );
+}
+
+function FilterChip({ href, label, active }: { href: string; label: string; active: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition ${
+        active
+          ? "bg-primary text-primary-foreground"
+          : "bg-muted text-muted-foreground hover:bg-muted/70"
+      }`}
+    >
+      {label}
+    </Link>
   );
 }

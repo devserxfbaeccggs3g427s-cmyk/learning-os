@@ -1,16 +1,16 @@
 import { AppShell } from "@/components/layout/AppShell";
-
-export const dynamic = "force-dynamic";
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
-import { eq, and, gte, lte } from "drizzle-orm";
-import { db } from "@/lib/db/client";
-import { schedules, studyBlocks, tasks } from "@/lib/db/schema";
 import { getDefaultUser } from "@/lib/ai/service";
 import { CalendarDays } from "lucide-react";
 import { getStudyDate, getRealToday, isStudyDateOverridden } from "@/lib/utils/study-date";
 import { cn } from "@/lib/utils/cn";
+import { getCalendarRange } from "@/lib/db/queries/schedule";
 
-function fmtDate(d: Date) { return d.toISOString().slice(0, 10); }
+export const dynamic = "force-dynamic";
+
+function fmtDate(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
 
 export default async function CalendarPage() {
   const user = await getDefaultUser();
@@ -20,14 +20,16 @@ export default async function CalendarPage() {
   const end = new Date(today);
   end.setUTCDate(end.getUTCDate() + 21);
 
-  const rows = await db
-    .select()
-    .from(schedules)
-    .where(and(eq(schedules.userId, user.id), gte(schedules.date, fmtDate(start)), lte(schedules.date, fmtDate(end))));
-  const blocks = await db.select().from(studyBlocks).limit(2000);
-  const blockBySchedule: Record<string, typeof blocks> = {};
-  for (const b of blocks) {
-    (blockBySchedule[b.scheduleId] ??= []).push(b);
+  const startStr = fmtDate(start);
+  const endStr = fmtDate(end);
+
+  // One round-trip per shape (schedules + filtered blocks). No 2000-row
+  // studyBlocks scan, no N+1.
+  const entries = await getCalendarRange(user.id, startStr, endStr);
+
+  const blocksByDate = new Map<string, typeof entries[number]["blocks"]>();
+  for (const e of entries) {
+    blocksByDate.set(e.schedule.date, e.blocks);
   }
 
   const days: Date[] = [];
@@ -46,14 +48,13 @@ export default async function CalendarPage() {
           </h1>
           <p className="text-sm text-muted-foreground">
             4 weeks view {overridden ? `(đang highlight ${fmtDate(today)}; real hôm nay ${realToday})` : ""}.
-            Use Today page's "Đổi ngày" để xem lịch ngày khác.
+            Use Today page&apos;s &quot;Đổi ngày&quot; để xem lịch ngày khác.
           </p>
         </header>
         <div className="grid gap-2 sm:grid-cols-7">
           {days.map((d) => {
             const key = fmtDate(d);
-            const sched = rows.find((r) => r.date === key);
-            const dayBlocks = sched ? (blockBySchedule[sched.id] ?? []).sort((a, b) => a.startMinute - b.startMinute) : [];
+            const dayBlocks = blocksByDate.get(key) ?? [];
             const isStudyDate = fmtDate(today) === key;
             const isRealToday = realToday === key;
             return (
@@ -74,7 +75,7 @@ export default async function CalendarPage() {
                     <p className="text-[10px] italic text-muted-foreground">no blocks</p>
                   )}
                   {dayBlocks.slice(0, 4).map((b) => (
-                    <div key={b.id} className="truncate rounded bg-muted/50 px-1.5 py-0.5 text-[10px]">
+                    <div key={b.id} className="truncate rounded bg-muted/50 px-1.5 py-1 text-[10px]">
                       <span className="font-mono">{Math.floor(b.startMinute / 60)}:00</span>{" "}
                       {b.title}
                     </div>
