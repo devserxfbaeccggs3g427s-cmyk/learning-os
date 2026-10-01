@@ -1,0 +1,176 @@
+"use client";
+import { useState, useRef, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
+import { MarkdownRenderer } from "@/components/markdown/Renderer";
+import { Send, Loader2, MessageCircleQuestion, ListChecks, Layers, Sparkles, AlertTriangle, FlaskConical, Microscope, RefreshCw } from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+
+interface AITutorProps {
+  userId: string;
+  taskId: string;
+  taskTitle: string;
+  note: string;
+}
+
+interface ChatMsg {
+  role: "user" | "assistant";
+  content: string;
+  streaming?: boolean;
+}
+
+const QUICK = [
+  { label: "Explain this", prompt: "Explain this task to me from scratch." },
+  { label: "Why it matters", prompt: "Why does this matter in production?" },
+  { label: "Internals", prompt: "Walk me through the internals." },
+  { label: "Failure mode", prompt: "What is the most common production failure mode for this?" },
+  { label: "Example", prompt: "Show me a concrete code example." },
+  { label: "Interview Q", prompt: "Ask me one interview question on this task." },
+];
+
+export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages]);
+
+  async function send(prompt: string) {
+    if (!prompt.trim() || loading) return;
+    setMessages((m) => [...m, { role: "user", content: prompt }]);
+    setInput("");
+    setLoading(true);
+
+    const r = await fetch("/api/ai/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ userId, taskId, mode: "TUTOR", prompt, conversationId }),
+    });
+    if (!r.body) {
+      setLoading(false);
+      return;
+    }
+    const reader = r.body.getReader();
+    const dec = new TextDecoder();
+    let acc = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      const chunk = dec.decode(value, { stream: true });
+      const lines = chunk.split("\n\n");
+      for (const l of lines) {
+        const m = l.match(/^data: (.*)$/);
+        if (!m) continue;
+        try {
+          const obj = JSON.parse(m[1]!);
+          if (obj.type === "delta" && typeof obj.text === "string") {
+            acc += obj.text;
+            setMessages((cur) => {
+              const copy = [...cur];
+              const last = copy[copy.length - 1];
+              if (last?.streaming) {
+                copy[copy.length - 1] = { role: "assistant", content: acc, streaming: true };
+              } else {
+                copy.push({ role: "assistant", content: acc, streaming: true });
+              }
+              return copy;
+            });
+          } else if (obj.type === "done") {
+            setConversationId(obj.conversationId);
+          }
+        } catch {
+          /* ignore parse */
+        }
+      }
+    }
+    setMessages((cur) => {
+      const copy = [...cur];
+      const idx = copy.findIndex((m) => m.streaming);
+      if (idx >= 0) copy[idx] = { role: "assistant", content: acc };
+      return copy;
+    });
+    setLoading(false);
+  }
+
+  return (
+    <div className="grid gap-3 lg:grid-cols-[1fr_280px]">
+      <Card className="flex h-[70vh] flex-col lg:h-[calc(100vh-220px)]">
+        <CardHeader className="border-b border-border">
+          <CardTitle className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" /> AI Tutor · {taskTitle}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1 space-y-2 overflow-y-auto p-3 scroll-thin">
+          <div ref={scrollRef as unknown as React.Ref<HTMLDivElement>}>
+            {messages.length === 0 && (
+              <div className="rounded-md bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
+                Ask anything. I'll keep them tied to your task and notes.
+              </div>
+            )}
+            {messages.map((m, i) => (
+              <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
+                <div
+                  className={cn(
+                    "max-w-[85%] rounded-lg px-3 py-2 text-sm",
+                    m.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "border border-border bg-card",
+                  )}
+                >
+                  {m.role === "assistant" ? (
+                    <MarkdownRenderer source={m.content} />
+                  ) : (
+                    <p className="whitespace-pre-wrap">{m.content}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+        <div className="border-t border-border p-3">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Ask the tutor…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send(input);
+                }
+              }}
+              disabled={loading}
+            />
+            <Button onClick={() => send(input)} disabled={loading || !input.trim()}>
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      <Card className="h-fit">
+        <CardHeader>
+          <CardTitle className="text-sm">Quick actions</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-2">
+          {QUICK.map((q) => (
+            <button
+              key={q.label}
+              onClick={() => send(q.prompt)}
+              disabled={loading}
+              className="rounded-md border border-border bg-background p-2 text-left text-xs hover:bg-accent disabled:opacity-50"
+            >
+              {q.label}
+            </button>
+          ))}
+          <div className="mt-2 text-[10px] text-muted-foreground">
+            Conversations auto-save per task. <span className="font-mono">{note.length}</span> chars of notes available as context.
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

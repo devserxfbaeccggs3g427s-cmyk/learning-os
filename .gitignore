@@ -1,0 +1,49 @@
+node_modules/
+.next/
+out/
+dist/
+build/
+*.log
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# TypeScript incremental cache
+*.tsbuildinfo
+
+# Local SQLite DBs and uploaded files
+data/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# Drizzle migrations are committed; meta snapshots are not
+drizzle/meta/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary
+tmp/
+temp/
+.tmp/
+.cache/
+
+# User-imported data (regenerable from scripts/build-imports.ts)
+data/roadmap-import.json
+data/schedule-bulk.json
+data/schedule-index.json
+data/schedule/
