@@ -28,6 +28,9 @@ export const taskNotes = pgTable(
   },
   (t) => ({
     taskIdx: index("task_notes_task_idx").on(t.taskId),
+    // The task detail query looks up by (taskId, userId). Composite
+    // beats single-column here because the WHERE uses both columns.
+    taskUserIdx: index("task_notes_task_user_idx").on(t.taskId, t.userId),
   }),
 );
 

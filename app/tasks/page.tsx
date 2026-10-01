@@ -4,7 +4,7 @@ import { Card, CardContent, Badge, Button } from "@/components/ui";
 import { TASK_STATUSES } from "@/config/domain";
 import { ListTree } from "lucide-react";
 import { getDefaultUser } from "@/lib/ai/service";
-import { listHierarchy, listTasks } from "@/lib/db/queries/tasks";
+import { listTasks } from "@/lib/db/queries/tasks";
 
 export const dynamic = "force-dynamic";
 
@@ -31,19 +31,14 @@ export default async function TasksListPage({ searchParams }: { searchParams: Se
     : undefined;
   const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
 
-  // Single batched query — paginated, status-filterable, projection-only.
+  // Single JOINed query — paginated, status-filterable, projection-only.
+  // The breadcrumb (roadmap › track › module) is already on each row.
   const { items, total } = await listTasks({
     userId: user.id,
     status: statusFilter,
     page,
     pageSize: PAGE_SIZE,
   });
-
-  // Tiny lookup tables (a few hundred short rows).
-  const hierarchy = await listHierarchy(user.id);
-  const modMap = new Map(hierarchy.modules.map((m) => [m.id, m]));
-  const trackMap = new Map(hierarchy.tracks.map((t) => [t.id, t]));
-  const rmMap = new Map(hierarchy.roadmaps.map((r) => [r.id, r]));
 
   // Group by status (within the current page). For all-status view we keep
   // the legacy "sections by status" UX; for filtered view we render a flat
@@ -94,30 +89,25 @@ export default async function TasksListPage({ searchParams }: { searchParams: Se
                 {status} <Badge>{grouped.length}</Badge>
               </h2>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {grouped.map((t) => {
-                  const m = modMap.get(t.moduleId);
-                  const tr = m ? trackMap.get(m.trackId) : null;
-                  const rm = tr ? rmMap.get(tr.roadmapId) : null;
-                  return (
-                    <Link
-                      key={t.id}
-                      href={`/tasks/${t.id}`}
-                      className="rounded-md border border-border bg-card p-3 hover:bg-accent"
-                    >
-                      <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                        <span className="font-mono">{t.code ?? ""}</span>
-                        <span className={STATUS_TONE[t.status] ?? ""}>{t.priority}</span>
-                      </div>
-                      <div className="mt-1 line-clamp-2 text-sm font-medium leading-5">{t.title}</div>
-                      <div className="mt-2 flex flex-wrap items-center gap-1 text-[10px] text-muted-foreground">
-                        {rm && <span>{rm.title}</span>}
-                        {tr && <span>› {tr.title}</span>}
-                        {m && <span>› {m.title}</span>}
-                        <span className="ml-auto">{t.estimatedMinutes}m</span>
-                      </div>
-                    </Link>
-                  );
-                })}
+                {grouped.map((t) => (
+                  <Link
+                    key={t.id}
+                    href={`/tasks/${t.id}`}
+                    className="rounded-md border border-border bg-card p-3 hover:bg-accent"
+                  >
+                    <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                      <span className="font-mono">{t.code ?? ""}</span>
+                      <span className={STATUS_TONE[t.status] ?? ""}>{t.priority}</span>
+                    </div>
+                    <div className="mt-1 line-clamp-2 text-sm font-medium leading-5">{t.title}</div>
+                    <div className="mt-2 flex flex-wrap items-center gap-1 text-[10px] text-muted-foreground">
+                      <span>{t.roadmapTitle}</span>
+                      <span>› {t.trackTitle}</span>
+                      <span>› {t.moduleTitle}</span>
+                      <span className="ml-auto">{t.estimatedMinutes}m</span>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </section>
           );

@@ -1,15 +1,38 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Input, Textarea } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
-import { AITutor } from "./AITutor";
-import { FlashcardPanel } from "./FlashcardPanel";
-import { QuizPanel } from "./QuizPanel";
 import { NoteEditor } from "./NoteEditor";
 import { Save, BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
+
+// Lazy-load heavy panels — they ship with their own AI/fetch deps and
+// most users only visit one tab per task. The skeleton matches their
+// outer container so the layout doesn't shift on tab switch.
+const AITutor = dynamic(() => import("./AITutor").then((m) => m.AITutor), {
+  ssr: false,
+  loading: () => <PanelSkeleton label="AI tutor" />,
+});
+const FlashcardPanel = dynamic(() => import("./FlashcardPanel").then((m) => m.FlashcardPanel), {
+  loading: () => <PanelSkeleton label="Flashcards" />,
+});
+const QuizPanel = dynamic(() => import("./QuizPanel").then((m) => m.QuizPanel), {
+  loading: () => <PanelSkeleton label="Quiz" />,
+});
+
+function PanelSkeleton({ label }: { label: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-card p-6">
+      <div className="flex animate-pulse items-center gap-2 text-xs text-muted-foreground">
+        <span className="h-2 w-2 rounded-full bg-muted-foreground/40" />
+        Loading {label}…
+      </div>
+    </div>
+  );
+}
 
 interface TaskWorkspaceProps {
   userId: string;

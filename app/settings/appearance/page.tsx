@@ -1,6 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import { setTheme } from "@/components/providers/ThemeProvider";
 import { Sun, Moon, Monitor } from "lucide-react";

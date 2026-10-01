@@ -10,19 +10,27 @@ import { users } from "./users";
  * reconstructed without relying on creation order.
  */
 
-export const roadmaps = pgTable("roadmaps", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  title: text("title").notNull(),
-  description: text("description"),
-  source: text("source").notNull().default("manual"), // manual | imported
-  startDate: text("start_date"),
-  targetEndDate: text("target_end_date"),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
+export const roadmaps = pgTable(
+  "roadmaps",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    source: text("source").notNull().default("manual"), // manual | imported
+    startDate: text("start_date"),
+    targetEndDate: text("target_end_date"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => ({
+    // listRoadmaps + listHierarchy filter by userId constantly. Without
+    // this index every read does a sequential scan of the table.
+    userIdx: index("roadmaps_user_idx").on(t.userId),
+  }),
+);
 
 export const tracks = pgTable(
   "tracks",

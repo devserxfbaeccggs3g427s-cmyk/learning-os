@@ -3,6 +3,7 @@
  * Centralizing this here means feature services never deal with database +
  * env directly; they just ask for a provider.
  */
+import { cache } from "react";
 import { eq, and } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db/client";
@@ -36,12 +37,12 @@ async function _fetchDefaultUser() {
   return created[0]!;
 }
 
-export async function getDefaultUser() {
+export const getDefaultUser = cache(async () => {
   return unstable_cache(_fetchDefaultUser, ["default-user"], {
     revalidate: 3600,
     tags: ["user"],
   })();
-}
+});
 
 /**
  * Return the resolved AI config: stored default → env defaults.

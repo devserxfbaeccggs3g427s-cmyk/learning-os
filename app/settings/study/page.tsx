@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 
-export const dynamic = "force-dynamic";
 import { domainConfig } from "@/config/app";
 import { STUDY_BLOCK_TYPES } from "@/config/domain";
 

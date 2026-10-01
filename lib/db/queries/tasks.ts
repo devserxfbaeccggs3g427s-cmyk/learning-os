@@ -3,8 +3,11 @@
  * tracks, and roadmaps with no filter — fine while there were 5 tasks,
  * painful at 205. This module adds a paginated, status-filtered list and
  * a light projection for the cards.
+ *
+ * listTasks() now JOINs the hierarchy in a single query so the page does
+ * NOT need a separate listHierarchy() round-trip.
  */
-import { and, asc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db/client";
 import { tasks, modules, tracks, roadmaps } from "@/lib/db/schema";
@@ -17,6 +20,11 @@ const TASK_CARD_PROJECTION = {
   priority: tasks.priority,
   estimatedMinutes: tasks.estimatedMinutes,
   moduleId: tasks.moduleId,
+  moduleTitle: modules.title,
+  trackId: tracks.id,
+  trackTitle: tracks.title,
+  roadmapId: roadmaps.id,
+  roadmapTitle: roadmaps.title,
 } as const;
 
 export type TaskCard = {
@@ -27,6 +35,11 @@ export type TaskCard = {
   priority: string;
   estimatedMinutes: number;
   moduleId: string;
+  moduleTitle: string;
+  trackId: string;
+  trackTitle: string;
+  roadmapId: string;
+  roadmapTitle: string;
 };
 
 export type ListTasksResult = {
@@ -68,6 +81,9 @@ async function _listTasks(input: ListTasksInput): Promise<ListTasksResult> {
   if (input.status) conds.push(eq(tasks.status, input.status));
   const where = conds.length === 1 ? conds[0] : and(...conds);
 
+  // Single batched query — replaces the previous 2-step (listTasks +
+  // listHierarchy) round-trip. Modules/tracks/roadmaps are pulled in via
+  // INNER JOIN since the breadcrumb is required for the UI.
   const countRow = await db
     .select({ count: sql<number>`cast(count(*) as int)` })
     .from(tasks)
@@ -76,6 +92,9 @@ async function _listTasks(input: ListTasksInput): Promise<ListTasksResult> {
   const items = await db
     .select(TASK_CARD_PROJECTION)
     .from(tasks)
+    .innerJoin(modules, eq(modules.id, tasks.moduleId))
+    .innerJoin(tracks, eq(tracks.id, modules.trackId))
+    .innerJoin(roadmaps, eq(roadmaps.id, tracks.roadmapId))
     .where(where!)
     .orderBy(asc(tasks.orderIndex))
     .limit(pageSize)
@@ -99,9 +118,9 @@ export function listTasks(input: ListTasksInput) {
 }
 
 /**
- * Side-car lookup tables for the /tasks page card chrome:
- * roadmap / track / module titles by id. Tiny in absolute terms (a few
- * hundred short rows).
+ * Side-car lookup tables for pages that need ALL of the user's roadmaps /
+ * tracks / modules (e.g. task-creation forms). The /tasks list view no
+ * longer needs this — listTasks() now JOINs the breadcrumb in.
  */
 async function _listHierarchy(userId: string) {
   const rms = await db
@@ -110,6 +129,7 @@ async function _listHierarchy(userId: string) {
     .where(eq(roadmaps.userId, userId));
   if (rms.length === 0) return { modules: [], tracks: [], roadmaps: [] };
 
+  const { inArray } = await import("drizzle-orm");
   const rmIds = rms.map((r) => r.id);
   const trs = await db
     .select({ id: tracks.id, title: tracks.title, roadmapId: tracks.roadmapId })
