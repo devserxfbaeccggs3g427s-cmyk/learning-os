@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { PromptTopic } from "@/components/ai/PromptSuggestions";
+import type { PromptTopic } from "@/components/ai/ChatSuggestions";
 
 export type SuggestionSource = "fallback" | "cache" | "fresh";
 
@@ -10,6 +10,13 @@ export interface UsePromptSuggestionsParams {
   /** taskId for TUTOR mode; undefined for GLOBAL. */
   taskId?: string | null;
   fallbackTopics: PromptTopic[];
+  /** When true, persist into localStorage so cross-tab navigation is instant. */
+  useLocalStorage?: boolean;
+  /**
+   * Bump this when you want a fresh fetch (bypass cache) — e.g. after each
+   * AI response. Pass `stream.done` or a counter that increments on `done`.
+   */
+  refreshTrigger?: number | string;
   /** When true, no fetch happens. Caller still gets fallbackTopics. */
   disabled?: boolean;
 }
@@ -22,7 +29,7 @@ export interface UsePromptSuggestionsResult {
   refresh: () => void;
 }
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const PREFIX = "ai-suggestions";
 
 /** YYYY-MM-DD in local time — rotates the cache daily. */
@@ -34,8 +41,9 @@ function todayKey(): string {
   return `${y}-${m}-${day}`;
 }
 
-function cacheKey(userId: string, mode: string, taskId: string | null | undefined, day: string): string {
-  return `${PREFIX}:${CACHE_VERSION}:${userId}:${mode}:${taskId ?? "_global"}:${day}`;
+function cacheKey(userId: string, mode: string, taskId: string | null | undefined, day: string, useLocal: boolean): string {
+  const store = useLocal ? "local" : "session";
+  return `${PREFIX}:${CACHE_VERSION}:${store}:${userId}:${mode}:${taskId ?? "_global"}:${day}`;
 }
 
 interface CachedEntry {
@@ -43,10 +51,20 @@ interface CachedEntry {
   topics: PromptTopic[];
 }
 
-function readCache(key: string): PromptTopic[] | null {
+function pickStore(useLocal: boolean): Storage | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = window.sessionStorage.getItem(key);
+    return useLocal ? window.localStorage : window.sessionStorage;
+  } catch {
+    return null;
+  }
+}
+
+function readCache(key: string, useLocal: boolean): PromptTopic[] | null {
+  const store = pickStore(useLocal);
+  if (!store) return null;
+  try {
+    const raw = store.getItem(key);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as CachedEntry;
     if (parsed.day !== todayKey()) return null;
@@ -57,13 +75,14 @@ function readCache(key: string): PromptTopic[] | null {
   }
 }
 
-function writeCache(key: string, topics: PromptTopic[]): void {
-  if (typeof window === "undefined") return;
+function writeCache(key: string, topics: PromptTopic[], useLocal: boolean): void {
+  const store = pickStore(useLocal);
+  if (!store) return;
   try {
     const entry: CachedEntry = { day: todayKey(), topics };
-    window.sessionStorage.setItem(key, JSON.stringify(entry));
+    store.setItem(key, JSON.stringify(entry));
   } catch {
-    // sessionStorage may be unavailable (private mode, quota); silently skip.
+    // storage may be unavailable (private mode, quota); silently skip.
   }
 }
 
@@ -71,31 +90,30 @@ function writeCache(key: string, topics: PromptTopic[]): void {
  * Load topic-organized prompt suggestions.
  *
  *  1. Show `fallbackTopics` immediately so the UI never looks empty.
- *  2. Hit `sessionStorage` for today's cached AI suggestions → swap in.
+ *  2. Hit storage (local or session) for today's cached AI suggestions → swap in.
  *  3. Fire-and-forget fetch to `/api/ai/suggestions` → on success, cache + swap.
- *  4. `refresh()` bypasses the cache and re-fetches.
+ *  4. `refresh()` (or `refreshTrigger` change) bypasses the cache and re-fetches.
+ *  5. For localStorage mode, suggestions persist across page loads and tabs.
  */
 export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePromptSuggestionsResult {
-  const { userId, mode, taskId, fallbackTopics, disabled } = params;
+  const { userId, mode, taskId, fallbackTopics, useLocalStorage = false, refreshTrigger, disabled } = params;
   const [topics, setTopics] = useState<PromptTopic[]>(fallbackTopics);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [source, setSource] = useState<SuggestionSource>("fallback");
 
-  // Keep latest params in a ref so the effect's identity doesn't churn.
-  const key = cacheKey(userId, mode, taskId, todayKey());
+  const key = cacheKey(userId, mode, taskId, todayKey(), useLocalStorage);
   const abortRef = useRef<AbortController | null>(null);
 
   const fetchFresh = useCallback(
     async (bypassCache: boolean) => {
       if (disabled) return;
-      // Cancel any in-flight request.
       if (abortRef.current) abortRef.current.abort();
       const ctrl = new AbortController();
       abortRef.current = ctrl;
 
       if (!bypassCache) {
-        const cached = readCache(key);
+        const cached = readCache(key, useLocalStorage);
         if (cached && cached.length > 0) {
           setTopics(cached);
           setSource("cache");
@@ -115,9 +133,6 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
         });
         if (!r.ok) {
           const j = (await r.json().catch(() => ({}))) as { error?: string };
-          // Don't alarm the user when AI just isn't configured — fallback
-          // prompts are still visible. Surface a soft hint instead of a
-          // generic "HTTP 500" message.
           if (r.status === 400 && /not configured/i.test(j.error ?? "")) {
             throw new Error("AI not configured — showing generic prompts. Add an API key in Settings → AI to personalize them.");
           }
@@ -130,27 +145,34 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
         if (ctrl.signal.aborted) return;
         setTopics(j.topics);
         setSource("fresh");
-        writeCache(key, j.topics);
+        writeCache(key, j.topics, useLocalStorage);
       } catch (err) {
         if (ctrl.signal.aborted) return;
         const msg = err instanceof Error ? err.message : "Failed to load suggestions";
         setError(msg);
-        // Keep fallback visible.
         setSource("fallback");
       } finally {
         if (!ctrl.signal.aborted) setLoading(false);
       }
     },
-    [userId, mode, taskId, disabled, key],
+    [userId, mode, taskId, disabled, key, useLocalStorage],
   );
 
-  // Initial load (and re-load when key changes — i.e. task/user/day rotates).
+  // Initial load + re-load when scope key changes.
   useEffect(() => {
     fetchFresh(false);
     return () => {
       if (abortRef.current) abortRef.current.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchFresh]);
+
+  // External refresh signal (e.g. after each AI response).
+  useEffect(() => {
+    if (refreshTrigger === undefined) return;
+    fetchFresh(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshTrigger]);
 
   const refresh = useCallback(() => {
     fetchFresh(true);

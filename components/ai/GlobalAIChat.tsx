@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Card, CardContent, Input, Button, Textarea } from "@/components/ui";
+import { Card, CardContent, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "./ChatTranscript";
 import { ChatModeToggle } from "./ChatModeToggle";
-import { PromptSuggestions } from "./PromptSuggestions";
+import { ChatSuggestions } from "./ChatSuggestions";
 import { Send, Loader2, Plus, MessageSquare, History, X, Sparkles, Wand2 } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
@@ -26,23 +26,26 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   const { list, refresh } = useConversationList({ userId, scope: "global", mode: "GLOBAL" });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [aiResponseTick, setAiResponseTick] = useState(0);
+
   const suggestions = usePromptSuggestions({
     userId,
     mode: "GLOBAL",
     fallbackTopics: GLOBAL_PROMPT_TOPICS,
+    useLocalStorage: true,
+    refreshTrigger: aiResponseTick,
   });
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     preloadTaskLinks();
   }, []);
 
-  // Show "thinking" dots while the request is in flight but no text yet.
   const thinking = stream.loading && !stream.text;
+  const isStreaming = stream.loading || !!stream.text;
 
-  // When the streamed message completes, freeze it into `messages` and reset
-  // the stream. While `stream.text` is non-empty, ChatTranscript renders it
-  // directly without re-parsing markdown.
+  // After each AI response, refresh suggestions. Incrementing a counter
+  // triggers the hook's refresh-trigger effect to refetch fresh (bypass cache).
   useEffect(() => {
     if (!stream.done) return;
     const finalText = stream.error
@@ -64,6 +67,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
       setConversationId(stream.conversationId);
       refresh();
     }
+    setAiResponseTick((t) => t + 1);
     stream.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stream.done]);
@@ -151,7 +155,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   );
 
   return (
-    <div className="grid h-full gap-4 lg:grid-cols-[280px_minmax(0,1fr)_360px]">
+    <div className="grid h-full gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
       {/* Sidebar — conversation history (desktop inline) */}
       <Card className="hidden h-full min-h-0 flex-col overflow-hidden border-border/80 shadow-sm lg:flex">
         {historyList}
@@ -213,6 +217,19 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
             </p>
           </div>
 
+          {/* Suggestions row — visible when chat empty or AI is done, hidden while streaming */}
+          {!isStreaming && (
+            <ChatSuggestions
+              topics={suggestions.topics}
+              onSelect={sendPrompt}
+              disabled={stream.loading}
+              loading={suggestions.loading}
+              error={suggestions.error}
+              source={suggestions.source}
+              onRefresh={suggestions.refresh}
+            />
+          )}
+
           <div className="min-h-0 flex-1 overflow-y-auto bg-muted/10 scroll-thin">
             {loadingHistory ? (
               <p className="p-6 text-sm text-muted-foreground">Loading conversation…</p>
@@ -230,7 +247,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
                     </div>
                     <h3 className="text-base font-semibold">Ask anything across your roadmap</h3>
                     <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                      Pick a suggested question on the right, or type your own. The AI uses your schedule, notes, and open tasks as context.
+                      Pick a suggested prompt above, or type your own. The AI uses your schedule, notes, and open tasks as context.
                     </p>
                   </div>
                 }
@@ -281,41 +298,6 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* Suggested questions (desktop) */}
-      <div className="hidden min-h-0 lg:block">
-        <PromptSuggestions
-          topics={suggestions.topics}
-          onSelect={sendPrompt}
-          disabled={stream.loading}
-          loading={suggestions.loading}
-          error={suggestions.error}
-          source={suggestions.source}
-          onRefresh={suggestions.refresh}
-          className="h-full"
-          subtitle="Click a prompt to send it instantly."
-        />
-      </div>
-
-      {/* Suggested questions (mobile, collapsible above chat) */}
-      <details className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm lg:hidden">
-        <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-muted-foreground hover:bg-accent">
-          Suggested questions
-        </summary>
-        <div className="p-3">
-          <PromptSuggestions
-            topics={suggestions.topics}
-            onSelect={sendPrompt}
-            disabled={stream.loading}
-            loading={suggestions.loading}
-            error={suggestions.error}
-            source={suggestions.source}
-            onRefresh={suggestions.refresh}
-            className="border-0 shadow-none"
-            subtitle="Click a prompt to send it."
-          />
-        </div>
-      </details>
     </div>
   );
 }

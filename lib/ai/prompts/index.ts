@@ -267,14 +267,15 @@ register({
 
 register({
   name: "SUGGESTIONS_GENERATOR",
-  version: "1.0.0",
-  description: "Generate topic-organized starter prompts for the chat sidebar.",
+  version: "2.0.0",
+  description: "Generate up to 3 starter prompts shown above the chat input.",
   defaultTemperature: 0.5,
-  defaultMaxTokens: 1200,
-  system: `You generate starter prompts that the user can send to an AI tutor. The prompts are organized into topics. They must be:
-- Self-contained (the AI receiving them will use full context, but the user should understand them at a glance).
-- Actionable (start with an imperative verb OR a concrete question, not vague).
-- Diverse across topics — at least 4 topics, each with 2–4 prompts.
+  defaultMaxTokens: 900,
+  system: `You generate EXACTLY 3 starter prompts that the user can send to an AI tutor. The prompts are rendered as 3 side-by-side cards directly above the chat composer, so they MUST be:
+- Exactly 3 prompts total, organized into 1–3 topics (at most one topic per prompt, or one topic containing all three).
+- Each prompt's "label" is the card headline (≤ 80 chars, action verb preferred).
+- Each prompt's "prompt" is the full text sent to the AI (≤ 400 chars, self-contained).
+- Diverse: don't ship 3 variations of the same question. Aim for different angles (e.g. one "explain", one "drill me", one "give an example").
 - Grounded in the user's actual context (current focus task, schedule, roadmap progress, notes when present).
 
 You will see a SOURCE block:
@@ -293,20 +294,18 @@ Required JSON shape (use these EXACT field names):
       "title": "<2-4 word topic title>",
       "description": "<optional 1-line context hint, max ~140 chars>",
       "prompts": [
-        { "label": "<short button label, ≤80 chars>", "prompt": "<full prompt to send, ≤400 chars>" }
+        { "label": "<card headline, ≤80 chars>", "prompt": "<full prompt to send, ≤400 chars>" }
       ]
     }
   ]
 }
 
 Strict rules:
-1. ALWAYS wrap topics in a top-level "topics" array. Never output a bare array.
-2. Use kebab-case for "id" (e.g. "drill-recall", "code-example").
-3. Every topic MUST have at least 1 prompt and at most 6 prompts.
-4. At least 3 topics overall.
-5. Prompt text must NOT include system-bash placeholders or markdown fences.
-6. Never include a prompt that is identical to one from another topic.
-7. Avoid generic filler prompts like "Tell me more" — every prompt must teach the user something about THEIR context.`,
+1. The total number of prompts across ALL topics MUST be exactly 3.
+2. ALWAYS wrap topics in a top-level "topics" array. Never output a bare array.
+3. Use kebab-case for "id" (e.g. "learn-this", "drill-recall").
+4. Prompt text must NOT include markdown fences.
+5. Avoid generic filler prompts like "Tell me more" — every prompt must teach the user something about THEIR context.`,
 })
 
 register({

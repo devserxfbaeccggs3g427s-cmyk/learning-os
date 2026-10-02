@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
 import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
-import { PromptSuggestions } from "@/components/ai/PromptSuggestions";
+import { ChatSuggestions } from "@/components/ai/ChatSuggestions";
 import { Send, Loader2, Sparkles, MessageSquare, Plus, Wand2 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
@@ -33,14 +33,20 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   const { list, refresh } = useConversationList({ userId, mode: "TUTOR", taskId });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [aiResponseTick, setAiResponseTick] = useState(0);
+
   const suggestions = usePromptSuggestions({
     userId,
     mode: "TUTOR",
     taskId,
     fallbackTopics: TUTOR_PROMPT_TOPICS(taskTitle),
+    useLocalStorage: true,
+    refreshTrigger: aiResponseTick,
   });
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const thinking = stream.loading && !stream.text;
+  const isStreaming = stream.loading || !!stream.text;
 
   useEffect(() => {
     if (!stream.done) return;
@@ -63,6 +69,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
       setConversationId(stream.conversationId);
       refresh();
     }
+    setAiResponseTick((t) => t + 1);
     stream.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stream.done]);
@@ -108,7 +115,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   }
 
   return (
-    <div className="grid h-full min-h-0 gap-4 lg:grid-cols-[280px_minmax(0,1fr)_360px]">
+    <div className="grid h-full min-h-0 gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
       {/* History sidebar */}
       <Card className="flex h-full flex-col border-border/80 shadow-sm">
         <div className="shrink-0 border-b border-border p-4">
@@ -136,6 +143,12 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
             </button>
           ))}
         </div>
+        {/* Notes context hint */}
+        <div className="shrink-0 border-t border-border bg-muted/20 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+          <p>
+            <span className="font-semibold text-foreground">{note.length}</span> chars of notes available as context. Conversations auto-save per task.
+          </p>
+        </div>
       </Card>
 
       {/* Chat pane */}
@@ -152,6 +165,19 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
             Ask anything. Answers are grounded in your task notes and the roadmap.
           </p>
         </div>
+
+        {/* Suggestions row — visible when chat empty or AI is done, hidden while streaming */}
+        {!isStreaming && (
+          <ChatSuggestions
+            topics={suggestions.topics}
+            onSelect={(p) => send(p)}
+            disabled={stream.loading}
+            loading={suggestions.loading}
+            error={suggestions.error}
+            source={suggestions.source}
+            onRefresh={suggestions.refresh}
+          />
+        )}
 
         <div className="min-h-0 flex-1 overflow-y-auto bg-muted/10 scroll-thin">
           {loadingHistory ? (
@@ -172,7 +198,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
                   </div>
                   <h3 className="text-base font-semibold">Ask anything about this task</h3>
                   <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                    I'll tie every answer to your task and notes. Try one of the suggested questions on the right, or type your own.
+                    I'll tie every answer to your task and notes. Try one of the suggested prompts above, or type your own.
                   </p>
                 </div>
               }
@@ -222,30 +248,6 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
           </div>
         </div>
       </Card>
-
-      {/* Suggested questions + notes hint */}
-      <div className="flex min-h-0 flex-col gap-4">
-        <div className="min-h-0 flex-1">
-          <PromptSuggestions
-            topics={suggestions.topics}
-            onSelect={(p) => send(p)}
-            disabled={stream.loading}
-            loading={suggestions.loading}
-            error={suggestions.error}
-            source={suggestions.source}
-            onRefresh={suggestions.refresh}
-            defaultOpenId={suggestions.topics[0]?.id}
-            title="Prompt ideas"
-            subtitle="Click a prompt to send it instantly."
-            className="h-full"
-          />
-        </div>
-        <div className="shrink-0 rounded-lg border border-dashed border-border bg-muted/20 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
-          <p>
-            <span className="font-semibold text-foreground">{note.length}</span> chars of notes available as context. Conversations auto-save per task.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
