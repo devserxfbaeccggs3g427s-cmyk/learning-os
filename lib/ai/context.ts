@@ -350,68 +350,86 @@ export async function assembleGlobalContext(args: {
   const opt: ContextOptions = { ...defaultContextOptions, ...(args.options ?? {}) };
   const sections: ContextSection[] = [];
 
+  // Fire the three independent sections in parallel. The roadmap tree is the
+  // most expensive fetch and is often skipped for lightweight callers (e.g.
+  // starter-prompt suggestions) via `options.includeRoadmap = false`.
+  const tasks: Promise<void>[] = [];
+
   if (opt.includeRelatedTasks) {
-    try {
-      const idx = await listTaskCodeIndex(args.userId);
-      if (idx.length > 0) {
-        const lines = idx.map(
-          (t) =>
-            `- ${t.code ?? "—"} | ${t.status} | ${t.priority} | ${t.trackTitle} › ${t.moduleTitle} › ${t.title}`,
-        );
-        sections.push({
-          label: "TASK INDEX",
-          content: clamp(lines.join("\n"), opt.budgetChars),
-        });
-      }
-    } catch {
-      // Non-fatal — the chat still works without the index.
-    }
+    tasks.push(
+      (async () => {
+        try {
+          const idx = await listTaskCodeIndex(args.userId);
+          if (idx.length > 0) {
+            const lines = idx.map(
+              (t) =>
+                `- ${t.code ?? "—"} | ${t.status} | ${t.priority} | ${t.trackTitle} › ${t.moduleTitle} › ${t.title}`,
+            );
+            sections.push({
+              label: "TASK INDEX",
+              content: clamp(lines.join("\n"), opt.budgetChars),
+            });
+          }
+        } catch {
+          // Non-fatal — the chat still works without the index.
+        }
+      })(),
+    );
   }
 
   if (opt.includeRoadmap) {
-    try {
-      const { listRoadmaps, getRoadmapTree } = await import("@/lib/db/queries/roadmap");
-      const rms = await listRoadmaps(args.userId);
-      const first = rms[0];
-      if (first) {
-        const tree = await getRoadmapTree(args.userId, first.id);
-        if (tree) {
+    tasks.push(
+      (async () => {
+        try {
+          const { listRoadmaps, getRoadmapTree } = await import("@/lib/db/queries/roadmap");
+          const rms = await listRoadmaps(args.userId);
+          const first = rms[0];
+          if (first) {
+            const tree = await getRoadmapTree(args.userId, first.id);
+            if (tree) {
+              sections.push({
+                label: "ROADMAP TREE",
+                content: clamp(renderRoadmapTree(tree, null), opt.budgetChars),
+              });
+            }
+          }
+        } catch {
+          // Non-fatal.
+        }
+      })(),
+    );
+  }
+
+  tasks.push(
+    (async () => {
+      try {
+        const today = await getTodayView(args.userId, args.studyDate);
+        if (today && today.blocks.length > 0) {
+          const lines = today.blocks.map((b) => {
+            const start = `${Math.floor(b.startMinute / 60)
+              .toString()
+              .padStart(2, "0")}:${(b.startMinute % 60).toString().padStart(2, "0")}`;
+            const endMin = b.startMinute + b.durationMinutes;
+            const end = `${Math.floor(endMin / 60)
+              .toString()
+              .padStart(2, "0")}:${(endMin % 60).toString().padStart(2, "0")}`;
+            const ref = b.taskCode ? `${b.taskCode} — ${b.taskTitle ?? ""}` : b.title;
+            return `- [${b.status}] ${start}–${end} (${b.durationMinutes}m) ${b.type} — ${ref}`;
+          });
           sections.push({
-            label: "ROADMAP TREE",
-            content: clamp(renderRoadmapTree(tree, null), opt.budgetChars),
+            label: "USER SCHEDULE",
+            content: clamp(
+              `Date: ${today.schedule.date}${today.schedule.objective ? `\nObjective: ${today.schedule.objective}` : ""}\n\n${lines.join("\n")}`,
+              opt.budgetChars,
+            ),
           });
         }
+      } catch {
+        // Non-fatal.
       }
-    } catch {
-      // Non-fatal.
-    }
-  }
+    })(),
+  );
 
-  try {
-    const today = await getTodayView(args.userId, args.studyDate);
-    if (today && today.blocks.length > 0) {
-      const lines = today.blocks.map((b) => {
-        const start = `${Math.floor(b.startMinute / 60)
-          .toString()
-          .padStart(2, "0")}:${(b.startMinute % 60).toString().padStart(2, "0")}`;
-        const endMin = b.startMinute + b.durationMinutes;
-        const end = `${Math.floor(endMin / 60)
-          .toString()
-          .padStart(2, "0")}:${(endMin % 60).toString().padStart(2, "0")}`;
-        const ref = b.taskCode ? `${b.taskCode} — ${b.taskTitle ?? ""}` : b.title;
-        return `- [${b.status}] ${start}–${end} (${b.durationMinutes}m) ${b.type} — ${ref}`;
-      });
-      sections.push({
-        label: "USER SCHEDULE",
-        content: clamp(
-          `Date: ${today.schedule.date}${today.schedule.objective ? `\nObjective: ${today.schedule.objective}` : ""}\n\n${lines.join("\n")}`,
-          opt.budgetChars,
-        ),
-      });
-    }
-  } catch {
-    // Non-fatal.
-  }
-
+  await Promise.all(tasks);
   return sections;
 }
