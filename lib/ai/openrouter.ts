@@ -37,7 +37,10 @@ interface ChatCompletionUsage {
 }
 
 interface ChatCompletionChoice {
+  /** Non-streaming response: full message. */
   message?: { role?: string; content?: string };
+  /** Streaming chunk: incremental message content. */
+  delta?: { role?: string; content?: string };
   finish_reason?: string;
 }
 
@@ -176,7 +179,7 @@ export class OpenRouterProvider implements AIProvider {
         try {
           const json = JSON.parse(payload) as ChatCompletionResponse;
           if (json.model) model = json.model;
-          const delta = json.choices?.[0]?.message?.content ?? "";
+          const delta = json.choices?.[0]?.delta?.content ?? "";
           if (delta) {
             acc += delta;
             onChunk({ delta });
