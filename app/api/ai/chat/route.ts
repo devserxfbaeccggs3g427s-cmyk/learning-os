@@ -15,6 +15,7 @@ import { resolveAIConfig, getDefaultUser } from "@/lib/ai/service";
 import { getProvider } from "@/lib/ai/registry";
 import { assembleContext } from "@/lib/ai/context";
 import { AIProviderError } from "@/lib/ai/provider";
+import { applyLanguageDirective, getDefaultLanguage } from "@/lib/ai/language";
 import { nowIso } from "@/lib/utils/time";
 
 const Body = z.object({
@@ -105,6 +106,8 @@ export async function POST(req: Request) {
 
   // Build messages: system + history + user
   const sysPrompt = getPrompt("TUTOR_SYSTEM");
+  const userLang = await getDefaultLanguage(user.id);
+  const systemContent = applyLanguageDirective(sysPrompt.system, userLang);
   const history = await db
     .select()
     .from(aiMessages)
@@ -113,7 +116,7 @@ export async function POST(req: Request) {
     .limit(40);
 
   const messages = [
-    { role: "system" as const, content: sysPrompt.system },
+    { role: "system" as const, content: systemContent },
     ...history
       .filter((m) => m.role !== "SYSTEM")
       .map((m) => ({ role: m.role.toLowerCase() as "user" | "assistant", content: m.content })),
@@ -132,14 +135,44 @@ export async function POST(req: Request) {
         ctrlStream.enqueue(enc.encode(`data: ${JSON.stringify(obj)}\n\n`));
       };
       let acc = "";
+
+      // Coalesce upstream deltas so we flush at most every FLUSH_INTERVAL_MS
+      // (or sooner if the buffer hits FLUSH_MAX_CHARS). This dramatically
+      // reduces SSE event count + React state updates per token, making the
+      // client stream feel smooth instead of jittery.
+      const FLUSH_INTERVAL_MS = 40;
+      const FLUSH_MAX_CHARS = 40;
+      let buffer = "";
+      let lastFlush = Date.now();
+      let flushTimer: ReturnType<typeof setTimeout> | null = null;
+      const flushBuffer = (force = false) => {
+        if (flushTimer) {
+          clearTimeout(flushTimer);
+          flushTimer = null;
+        }
+        if (!buffer) return;
+        if (!force && Date.now() - lastFlush < FLUSH_INTERVAL_MS && buffer.length < FLUSH_MAX_CHARS) {
+          flushTimer = setTimeout(() => flushBuffer(true), FLUSH_INTERVAL_MS);
+          return;
+        }
+        const out = buffer;
+        buffer = "";
+        lastFlush = Date.now();
+        send({ type: "delta", text: out });
+      };
+
       try {
         const result = await provider.stream(
           { messages, model: cfg.model, temperature: cfg.temperature, maxTokens: cfg.maxTokens },
           (chunk) => {
+            if (!chunk.delta) return;
             acc += chunk.delta;
-            send({ type: "delta", text: chunk.delta });
+            buffer += chunk.delta;
+            flushBuffer(false);
           },
         );
+        // Flush whatever is still buffered before the final "done" event.
+        flushBuffer(true);
         // persist assistant message
         await db.insert(aiMessages).values({
           id: ids.aiMsg(),

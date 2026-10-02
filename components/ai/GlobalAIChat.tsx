@@ -1,9 +1,12 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, Input, Button } from "@/components/ui";
-import { MarkdownRenderer } from "@/components/markdown/Renderer";
+import { ChatTranscript } from "./ChatTranscript";
+import { ChatModeToggle } from "./ChatModeToggle";
 import { Send, Loader2, Plus, MessageSquare } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
+import { useStreamedChat } from "@/lib/ai/useStreamedChat";
+import { useChatMode } from "@/lib/ai/useChatMode";
 import { cn } from "@/lib/utils/cn";
 
 interface GlobalAIChatProps { userId: string }
@@ -13,85 +16,49 @@ interface Msg { role: "user" | "assistant"; content: string; streaming?: boolean
 export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const { list, refresh } = useConversationList({ userId, scope: "global", mode: "GLOBAL" });
-  const scrollRef = useRef<HTMLDivElement>(null);
-  // Track whether the user is "at the bottom" so we only auto-scroll when
-  // they're following along. If they scroll up to read history, don't yank
-  // them back to the tail on every streaming delta.
-  const stickToBottom = useRef(true);
+  const stream = useStreamedChat();
+  const [mode] = useChatMode();
 
-  function onScroll() {
-    const el = scrollRef.current;
-    if (!el) return;
-    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-    stickToBottom.current = distFromBottom < 80;
-  }
+  // Show "thinking" dots while the request is in flight but no text yet.
+  const thinking = stream.loading && !stream.text;
 
+  // When the streamed message completes, freeze it into `messages` and reset
+  // the stream. While `stream.text` is non-empty, ChatTranscript renders it
+  // directly without re-parsing markdown.
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || !stickToBottom.current) return;
-    el.scrollTop = el.scrollHeight;
-  }, [messages, loadingHistory]);
+    if (!stream.done) return;
+    const finalText = stream.error
+      ? `⚠️ ${stream.error.message} (${stream.error.kind})`
+      : stream.text;
+    if (finalText) {
+      setMessages((cur) => {
+        const copy = [...cur];
+        const last = copy[copy.length - 1];
+        if (last?.role === "assistant" && last.streaming) {
+          copy[copy.length - 1] = { role: "assistant", content: finalText };
+        } else if (last?.role !== "assistant" || last.content !== finalText) {
+          copy.push({ role: "assistant", content: finalText });
+        }
+        return copy;
+      });
+    }
+    if (stream.conversationId && stream.conversationId !== conversationId) {
+      setConversationId(stream.conversationId);
+      refresh();
+    }
+    stream.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stream.done]);
 
-  async function send() {
-    if (!input.trim() || loading) return;
+  function send() {
+    if (!input.trim() || stream.loading) return;
     const prompt = input;
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
-    setLoading(true);
-
-    const r = await fetch("/api/ai/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ userId, mode: "GLOBAL", prompt, conversationId }),
-    });
-    if (!r.body) { setLoading(false); return; }
-    const reader = r.body.getReader();
-    const dec = new TextDecoder();
-    let acc = "";
-    let newConvId = conversationId;
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      const chunk = dec.decode(value, { stream: true });
-      for (const l of chunk.split("\n\n")) {
-        const m = l.match(/^data: (.*)$/);
-        if (!m) continue;
-        try {
-          const obj = JSON.parse(m[1]!);
-          if (obj.type === "delta" && typeof obj.text === "string") {
-            acc += obj.text;
-            setMessages((cur) => {
-              const copy = [...cur];
-              const last = copy[copy.length - 1];
-              if (last?.streaming) copy[copy.length - 1] = { role: "assistant", content: acc, streaming: true };
-              else copy.push({ role: "assistant", content: acc, streaming: true });
-              return copy;
-            });
-          } else if (obj.type === "done") {
-            if (obj.conversationId) newConvId = obj.conversationId;
-          } else if (obj.type === "error") {
-            const msg = `⚠️ ${obj.message ?? "AI request failed"}${obj.kind ? ` (${obj.kind})` : ""}`;
-            acc = msg;
-            setMessages((cur) => {
-              const copy = [...cur];
-              const last = copy[copy.length - 1];
-              if (last?.role === "assistant") copy[copy.length - 1] = { role: "assistant", content: msg };
-              else copy.push({ role: "assistant", content: msg });
-              return copy;
-            });
-          }
-        } catch {}
-      }
-    }
-    if (newConvId && newConvId !== conversationId) {
-      setConversationId(newConvId);
-      refresh();
-    }
-    setLoading(false);
+    stream.send({ userId, mode: "GLOBAL", prompt, conversationId, renderMode: mode });
   }
 
   async function openConversation(id: string) {
@@ -153,35 +120,25 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
       {/* Chat pane */}
       <Card className="flex h-full min-h-0 flex-col overflow-hidden">
         <CardContent className="flex min-h-0 flex-1 flex-col gap-0 p-0">
-          <div
-            ref={scrollRef}
-            onScroll={onScroll}
-            className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-muted/10 p-4 scroll-thin"
-          >
-            {messages.length === 0 && !loadingHistory && (
-              <p className="text-sm text-muted-foreground">
-                Ask anything across your roadmap.
-              </p>
+          <div className="min-h-0 flex-1 overflow-y-auto bg-muted/10 scroll-thin">
+            {loadingHistory ? (
+              <p className="p-4 text-sm text-muted-foreground">Loading conversation…</p>
+            ) : (
+              <ChatTranscript
+                items={messages.map((m, i) => ({ id: i, role: m.role, content: m.content }))}
+                streamingText={stream.text}
+                thinking={thinking}
+                className="space-y-3 p-4"
+                emptyState={
+                  <p className="text-sm text-muted-foreground">
+                    Ask anything across your roadmap.
+                  </p>
+                }
+              />
             )}
-            {loadingHistory && (
-              <p className="text-sm text-muted-foreground">Loading conversation…</p>
-            )}
-            {messages.map((m, i) => (
-              <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
-                <div
-                  className={cn(
-                    "max-w-[85%] rounded-lg px-3 py-2 text-sm",
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "border border-border bg-card",
-                  )}
-                >
-                  {m.role === "assistant" ? <MarkdownRenderer source={m.content} /> : <p className="whitespace-pre-wrap">{m.content}</p>}
-                </div>
-              </div>
-            ))}
           </div>
-          <div className="flex shrink-0 gap-2 border-t border-border p-3">
+          <div className="flex shrink-0 items-center gap-2 border-t border-border p-3">
+            <ChatModeToggle />
             <Input
               placeholder="Ask anything…"
               value={input}
@@ -189,10 +146,10 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
               }}
-              disabled={loading}
+              disabled={stream.loading}
             />
-            <Button onClick={send} disabled={loading || !input.trim()}>
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            <Button onClick={send} disabled={stream.loading || !input.trim()}>
+              {stream.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </Button>
           </div>
         </CardContent>

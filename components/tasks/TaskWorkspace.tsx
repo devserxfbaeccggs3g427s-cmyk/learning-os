@@ -4,9 +4,13 @@ import dynamic from "next/dynamic";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Input, Textarea } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
+import { ChatTranscript } from "@/components/ai/ChatTranscript";
 import { NoteEditor } from "./NoteEditor";
 import { Save, BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft, Plus, MessageSquare } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
+import { useStreamedChat } from "@/lib/ai/useStreamedChat";
+import { useChatMode } from "@/lib/ai/useChatMode";
+import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 
@@ -230,96 +234,44 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
     { role: "assistant", content: "Hi — I'm your interviewer for this task. Ready when you are. Tell me, at a high level, what does this task cover?" },
   ]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const { list, refresh } = useConversationList({ userId, mode: "INTERVIEW", taskId });
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const stickToBottom = useRef(true);
-
-  function onScroll() {
-    const el = scrollRef.current;
-    if (!el) return;
-    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-    stickToBottom.current = distFromBottom < 80;
-  }
+  const stream = useStreamedChat();
+  const [mode] = useChatMode();
+  const thinking = stream.loading && !stream.text;
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || !stickToBottom.current) return;
-    el.scrollTop = el.scrollHeight;
-  }, [messages, loadingHistory]);
-  const sendIt = async () => {
-    if (!input.trim()) return;
+    if (!stream.done) return;
+    const finalText = stream.error
+      ? `⚠️ ${stream.error.message} (${stream.error.kind})`
+      : stream.text;
+    if (finalText) {
+      setMessages((cur) => {
+        const copy = [...cur];
+        const last = copy[copy.length - 1];
+        if (last && (last.role === "assistant-stream" || last.role === "assistant")) {
+          copy[copy.length - 1] = { role: "assistant", content: finalText };
+        } else {
+          copy.push({ role: "assistant", content: finalText });
+        }
+        return copy;
+      });
+    }
+    if (stream.conversationId && stream.conversationId !== conversationId) {
+      setConversationId(stream.conversationId);
+      refresh();
+    }
+    stream.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stream.done]);
+
+  const sendIt = () => {
+    if (!input.trim() || stream.loading) return;
     const userMsg = { role: "user", content: input };
     setMessages((m) => [...m, userMsg]);
     setInput("");
-    setLoading(true);
-    const r = await fetch("/api/ai/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        userId,
-        taskId,
-        mode: "INTERVIEW",
-        prompt: input,
-        conversationId,
-      }),
-    });
-    if (!r.body) {
-      setLoading(false);
-      return;
-    }
-    const reader = r.body.getReader();
-    const dec = new TextDecoder();
-    let acc = "";
-    let newConvId = conversationId;
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      const chunk = dec.decode(value, { stream: true });
-      const lines = chunk.split("\n\n");
-      for (const l of lines) {
-        const m = l.match(/^data: (.*)$/);
-        if (!m) continue;
-        try {
-          const obj = JSON.parse(m[1]!);
-          if (obj.type === "delta" && typeof obj.text === "string") {
-            acc += obj.text;
-            setMessages((cur) => {
-              const copy = [...cur];
-              const last = copy[copy.length - 1];
-              if (last && last.role === "assistant-stream") {
-                copy[copy.length - 1] = { role: "assistant-stream", content: acc };
-              } else {
-                copy.push({ role: "assistant-stream", content: acc });
-              }
-              return copy;
-            });
-          } else if (obj.type === "done") {
-            if (obj.conversationId) newConvId = obj.conversationId;
-          } else if (obj.type === "error") {
-            const msg = `⚠️ ${obj.message ?? "AI request failed"}${obj.kind ? ` (${obj.kind})` : ""}`;
-            acc = msg;
-            setMessages((cur) => {
-              const copy = [...cur];
-              const last = copy[copy.length - 1];
-              if (last && (last.role === "assistant-stream" || last.role === "assistant")) {
-                copy[copy.length - 1] = { role: "assistant", content: msg };
-              } else {
-                copy.push({ role: "assistant", content: msg });
-              }
-              return copy;
-            });
-          }
-        } catch {}
-      }
-    }
-    if (newConvId && newConvId !== conversationId) {
-      setConversationId(newConvId);
-      refresh();
-    }
-    setLoading(false);
+    stream.send({ userId, taskId, mode: "INTERVIEW", prompt: input, conversationId, renderMode: mode });
   };
 
   async function openConversation(id: string) {
@@ -385,30 +337,22 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
           <CardTitle>Interview · {taskTitle}</CardTitle>
           <p className="text-xs text-muted-foreground">I ask one question at a time. Be specific. I'll evaluate, then dig deeper.</p>
         </CardHeader>
-        <div
-          ref={scrollRef}
-          onScroll={onScroll}
-          className="min-h-0 flex-1 space-y-2 overflow-y-auto rounded-md border border-border bg-muted/20 p-3 scroll-thin"
-        >
-          {loadingHistory && (
+        <div className="min-h-0 flex-1 overflow-y-auto rounded-md border border-border bg-muted/20 p-3 scroll-thin">
+          {loadingHistory ? (
             <p className="text-xs text-muted-foreground">Loading interview…</p>
+          ) : (
+            <ChatTranscript
+              items={messages.map((m, i) => ({ id: i, role: m.role as "user" | "assistant", content: m.content }))}
+              streamingText={stream.text}
+              thinking={thinking}
+              className="space-y-2"
+              bubbleMaxWidthClass="max-w-[80%]"
+            />
           )}
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={cn(
-                "max-w-[80%] rounded-lg px-3 py-2 text-sm leading-6",
-                m.role === "user" || m.role === "user"
-                    ? "ml-auto bg-primary text-primary-foreground"
-                    : "bg-card border border-border",
-              )}
-            >
-              {m.content}
-            </div>
-          ))}
         </div>
         <div className="shrink-0 border-t border-border p-3">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <ChatModeToggle />
             <Input
               placeholder="Your answer…"
               value={input}
@@ -419,9 +363,9 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
                   sendIt();
                 }
               }}
-              disabled={loading}
+              disabled={stream.loading}
             />
-            <Button onClick={sendIt} disabled={loading || !input.trim()}>Send</Button>
+            <Button onClick={sendIt} disabled={stream.loading || !input.trim()}>Send</Button>
           </div>
         </div>
       </Card>

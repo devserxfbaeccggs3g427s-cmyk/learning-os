@@ -1,10 +1,13 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
-import { MarkdownRenderer } from "@/components/markdown/Renderer";
+import { ChatTranscript } from "@/components/ai/ChatTranscript";
+import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
 import { Send, Loader2, MessageCircleQuestion, Sparkles, Plus, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
+import { useStreamedChat } from "@/lib/ai/useStreamedChat";
+import { useChatMode } from "@/lib/ai/useChatMode";
 
 interface AITutorProps {
   userId: string;
@@ -31,90 +34,43 @@ const QUICK = [
 export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const stickToBottom = useRef(true);
   const { list, refresh } = useConversationList({ userId, mode: "TUTOR", taskId });
-
-  function onScroll() {
-    const el = scrollRef.current;
-    if (!el) return;
-    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-    stickToBottom.current = distFromBottom < 80;
-  }
+  const stream = useStreamedChat();
+  const [mode] = useChatMode();
+  const thinking = stream.loading && !stream.text;
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || !stickToBottom.current) return;
-    el.scrollTop = el.scrollHeight;
-  }, [messages, loadingHistory]);
-
-  async function send(prompt: string) {
-    if (!prompt.trim() || loading) return;
-    setMessages((m) => [...m, { role: "user", content: prompt }]);
-    setInput("");
-    setLoading(true);
-
-    const r = await fetch("/api/ai/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ userId, taskId, mode: "TUTOR", prompt, conversationId }),
-    });
-    if (!r.body) {
-      setLoading(false);
-      return;
-    }
-    const reader = r.body.getReader();
-    const dec = new TextDecoder();
-    let acc = "";
-    let newConvId = conversationId;
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      const chunk = dec.decode(value, { stream: true });
-      const lines = chunk.split("\n\n");
-      for (const l of lines) {
-        const m = l.match(/^data: (.*)$/);
-        if (!m) continue;
-        try {
-          const obj = JSON.parse(m[1]!);
-          if (obj.type === "delta" && typeof obj.text === "string") {
-            acc += obj.text;
-            setMessages((cur) => {
-              const copy = [...cur];
-              const last = copy[copy.length - 1];
-              if (last?.streaming) {
-                copy[copy.length - 1] = { role: "assistant", content: acc, streaming: true };
-              } else {
-                copy.push({ role: "assistant", content: acc, streaming: true });
-              }
-              return copy;
-            });
-          } else if (obj.type === "done") {
-            if (obj.conversationId) newConvId = obj.conversationId;
-          } else if (obj.type === "error") {
-            const msg = `⚠️ ${obj.message ?? "AI request failed"}${obj.kind ? ` (${obj.kind})` : ""}`;
-            acc = msg;
-            setMessages((cur) => {
-              const copy = [...cur];
-              const last = copy[copy.length - 1];
-              if (last?.role === "assistant") copy[copy.length - 1] = { role: "assistant", content: msg };
-              else copy.push({ role: "assistant", content: msg });
-              return copy;
-            });
-          }
-        } catch {
-          /* ignore parse */
+    if (!stream.done) return;
+    const finalText = stream.error
+      ? `⚠️ ${stream.error.message} (${stream.error.kind})`
+      : stream.text;
+    if (finalText) {
+      setMessages((cur) => {
+        const copy = [...cur];
+        const last = copy[copy.length - 1];
+        if (last?.role === "assistant" && last.streaming) {
+          copy[copy.length - 1] = { role: "assistant", content: finalText };
+        } else if (last?.role !== "assistant" || last.content !== finalText) {
+          copy.push({ role: "assistant", content: finalText });
         }
-      }
+        return copy;
+      });
     }
-    if (newConvId && newConvId !== conversationId) {
-      setConversationId(newConvId);
+    if (stream.conversationId && stream.conversationId !== conversationId) {
+      setConversationId(stream.conversationId);
       refresh();
     }
-    setLoading(false);
+    stream.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stream.done]);
+
+  function send(prompt: string) {
+    if (!prompt.trim() || stream.loading) return;
+    setMessages((m) => [...m, { role: "user", content: prompt }]);
+    setInput("");
+    stream.send({ userId, taskId, mode: "TUTOR", prompt, conversationId, renderMode: mode });
   }
 
   async function openConversation(id: string) {
@@ -180,42 +136,28 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
             <Sparkles className="h-4 w-4 text-primary" /> AI Tutor · {taskTitle}
           </CardTitle>
         </CardHeader>
-        <div
-          ref={scrollRef}
-          onScroll={onScroll}
-          className="min-h-0 flex-1 space-y-2 overflow-y-auto p-3 scroll-thin"
-        >
-          {messages.length === 0 && !loadingHistory && (
-            <div className="rounded-md bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
-              Ask anything. I'll keep them tied to your task and notes.
-            </div>
-          )}
-          {loadingHistory && (
+        <div className="min-h-0 flex-1 overflow-y-auto p-3 scroll-thin">
+          {loadingHistory ? (
             <div className="rounded-md bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
               Loading conversation…
             </div>
+          ) : (
+            <ChatTranscript
+              items={messages.map((m, i) => ({ id: i, role: m.role, content: m.content }))}
+              streamingText={stream.text}
+              thinking={thinking}
+              className="space-y-2"
+              emptyState={
+                <div className="rounded-md bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
+                  Ask anything. I'll keep them tied to your task and notes.
+                </div>
+              }
+            />
           )}
-          {messages.map((m, i) => (
-            <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
-              <div
-                className={cn(
-                  "max-w-[85%] rounded-lg px-3 py-2 text-sm",
-                  m.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "border border-border bg-card",
-                )}
-              >
-                {m.role === "assistant" ? (
-                  <MarkdownRenderer source={m.content} />
-                ) : (
-                  <p className="whitespace-pre-wrap">{m.content}</p>
-                )}
-              </div>
-            </div>
-          ))}
         </div>
         <div className="shrink-0 border-t border-border p-3">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <ChatModeToggle />
             <Input
               placeholder="Ask the tutor…"
               value={input}
@@ -226,10 +168,10 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
                   send(input);
                 }
               }}
-              disabled={loading}
+              disabled={stream.loading}
             />
-            <Button onClick={() => send(input)} disabled={loading || !input.trim()}>
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            <Button onClick={() => send(input)} disabled={stream.loading || !input.trim()}>
+              {stream.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </Button>
           </div>
         </div>
@@ -245,7 +187,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
             <button
               key={q.label}
               onClick={() => send(q.prompt)}
-              disabled={loading}
+              disabled={stream.loading}
               className="rounded-md border border-border bg-background p-2 text-left text-xs hover:bg-accent disabled:opacity-50"
             >
               {q.label}
