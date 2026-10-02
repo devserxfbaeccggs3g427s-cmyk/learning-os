@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-18",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-05: Hash, encryption, signature và HMAC; SEC-06: Request/response signing và replay protection**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SPR-02",
+      "type": "REVIEW",
+      "title": "D+14 — Bean lifecycle, scope và mutable singleton",
+      "objective": "Bảo vệ trade-off của SPR-02 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Hash, encryption, signature và HMAC",
+      "objective": "Fault: Dùng hash làm authentication; key reuse sai mục đích. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu RSA sign vs encrypt; ECDH key agreement+KDF.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Hash, encryption, signature và HMAC",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why confidentiality/integrity/authenticity/key types? How RSA sign vs encrypt; ECDH key agreement+KDF? What if Dùng hash làm authentication; key reuse sai mục đích? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Request/response signing và replay protection",
+      "objective": "Chốt phần research còn lại: canonical bytes / nonce; nối với Canonicalization và nonce acceptance window. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Request/response signing và replay protection",
+      "objective": "nonce / timestamp / body / headers; cơ chế cần kiểm chứng: Canonicalization và nonce acceptance window. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho nonce / timestamp / body / headers; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "LAB",
+      "title": "Implement — Request/response signing và replay protection",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Golden signed vectors + replay/skew tests; kèm predicted/observed table và ADR “Timestamp-only so với nonce registry theo contract”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Golden signed vectors + replay/skew tests; kèm predicted/observed table và ADR “Timestamp-only so với nonce registry theo contract”."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Request/response signing và replay protection",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why canonical bytes/nonce/timestamp/body/headers? How Canonicalization và nonce acceptance window? What if Valid signature replay; changed amount/encoding? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

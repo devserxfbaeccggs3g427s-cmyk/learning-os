@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-02",
+  "objective": "Tạo và kiểm chứng evidence cho **SD-01: GOV Payment**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — 2PC và local atomicity limits",
+      "objective": "Tự xử lý “Coordinator chết giữa prepare/commit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-05",
+      "type": "REVIEW",
+      "title": "D+1 — CAP, consistency models và clock assumptions",
+      "objective": "Không nhìn notes: vẽ Read/write authority; clock vs causality; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-01",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — GOV Payment",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why GOV Payment: create/QR/status/refund/payout/reconcile; ngăn lặp tiền; bank có thể timeout? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if 13 GOV failure rows; current/10x/100x; explicit unknown; no invented bank guarantee? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

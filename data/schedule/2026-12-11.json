@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-11",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-13: VietQR/Napas QR, receipt và bank inquiry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-11",
+      "type": "REVIEW",
+      "title": "D+14 — Disbursement retry và duplicate payout",
+      "objective": "Bảo vệ trade-off của PAY-11 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-02",
+      "type": "REVIEW",
+      "title": "D+1 — Object-level authorization và public/admin policy",
+      "objective": "Không nhìn notes: vẽ Method/resource authorization beyond gateway; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "REVIEW",
+      "title": "D+7 — Bean lifecycle, scope và mutable singleton",
+      "objective": "Dựng lại normal/failure timeline của SPR-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — MVC request lifecycle và validation",
+      "objective": "Tự xử lý “Malformed input; leaked internal errors; duplicate filters”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Chốt phần research còn lại: QR payload / amount; nối với Encoding/validation theo spec thực; snapshot version. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "DEEP_DIVE",
+      "title": "Internals — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "amount / expiry / alias / receipt authorization; cơ chế cần kiểm chứng: Encoding/validation theo spec thực; snapshot version. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho amount / expiry / alias / receipt authorization; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "LAB",
+      "title": "Implement — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Contract tests giả lập; receipt chỉ lấy đúng owner/state; kèm predicted/observed table và ADR “Display QR so với bằng chứng settlement”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Contract tests giả lập; receipt chỉ lấy đúng owner/state; kèm predicted/observed table và ADR “Display QR so với bằng chứng settlement”."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why QR payload/amount/expiry/alias/receipt authorization? How Encoding/validation theo spec thực; snapshot version? What if QR stale/tampered; receipt của user khác? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

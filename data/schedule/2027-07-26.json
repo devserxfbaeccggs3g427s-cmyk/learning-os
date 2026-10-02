@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-26",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-05: Bucket4j distributed rate limiting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-04",
+      "type": "REVIEW",
+      "title": "D+1 — Retry GET vs POST và idempotency contract",
+      "objective": "Không nhìn notes: vẽ Replay at gateway and side effects behind reads; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Retry GET vs POST và idempotency contract",
+      "objective": "Tự xử lý “POST retry duplicates approval/payment”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Bucket4j distributed rate limiting",
+      "objective": "Chốt phần research còn lại: IP / cluster state; nối với Atomic token consumption and Redis integration version. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "LAB",
+      "title": "Implement — Bucket4j distributed rate limiting",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Quota test 2 instances + fail-open/closed trade-off policy; kèm predicted/observed table và ADR “Per-instance so với distributed quota”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Quota test 2 instances + fail-open/closed trade-off policy; kèm predicted/observed table và ADR “Per-instance so với distributed quota”."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "LAB",
+      "title": "Implement — Bucket4j distributed rate limiting",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Quota test 2 instances + fail-open/closed trade-off policy; kèm predicted/observed table và ADR “Per-instance so với distributed quota”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Quota test 2 instances + fail-open/closed trade-off policy; kèm predicted/observed table và ADR “Per-instance so với distributed quota”."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Bucket4j distributed rate limiting",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why bucket capacity/refill/user/IP/cluster state? How Atomic token consumption and Redis integration version? What if 2 gateways share quota; Redis unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

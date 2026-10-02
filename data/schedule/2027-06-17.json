@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-17",
+  "objective": "Tạo và kiểm chứng evidence cho **RED-02: Cache-aside và DB update→invalidate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-04",
+      "type": "REVIEW",
+      "title": "D+14 — AI extraction job identity và async lifecycle",
+      "objective": "Bảo vệ trade-off của CMV-04 khi 2 instances/10x load; nối lại với project CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-08",
+      "type": "REVIEW",
+      "title": "D+1 — Pentaho PDI và batch/stream consistency",
+      "objective": "Không nhìn notes: vẽ Restartable ETL and partial commits; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — ACID, isolation và MVCC qua payment status",
+      "objective": "Tự xử lý “Read-check-write cho phép vi phạm invariant”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "LAB",
+      "title": "Implement — Cache-aside và DB update→invalidate",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Controlled race timeline; bounded stale policy; kèm predicted/observed table và ADR “TTL-only so với invalidation event proposal”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Controlled race timeline; bounded stale policy; kèm predicted/observed table và ADR “TTL-only so với invalidation event proposal”."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "LAB",
+      "title": "Implement — Cache-aside và DB update→invalidate",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Controlled race timeline; bounded stale policy; kèm predicted/observed table và ADR “TTL-only so với invalidation event proposal”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Controlled race timeline; bounded stale policy; kèm predicted/observed table và ADR “TTL-only so với invalidation event proposal”."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Cache-aside và DB update→invalidate",
+      "objective": "Fault: DB commit nhưng delete fail; stale fill sau delete. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Read-fill race và delayed invalidation.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Cache-aside và DB update→invalidate",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why source of truth/stale read/version/TTL? How Read-fill race và delayed invalidation? What if DB commit nhưng delete fail; stale fill sau delete? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

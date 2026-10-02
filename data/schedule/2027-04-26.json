@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-26",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-11: Kafka rebalance liên tục; KAF-14: Retry topic, DLQ và poison message**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-12",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Consumer idempotency và Inbox proposal",
+      "objective": "Tự xử lý “Mark processed commit trước business; duplicate delivery”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-13",
+      "type": "REVIEW",
+      "title": "D+1 — Rebalance, heartbeat và max poll",
+      "objective": "Không nhìn notes: vẽ Coordinator and assignment revocation; version-specific semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-13",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Rebalance, heartbeat và max poll",
+      "objective": "Tự xử lý “Slow AI vượt poll interval; continuous rebalance”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Kafka rebalance liên tục",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Kafka rebalance liên tục; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Protocol/version→reasons→poll/heartbeat→deployment timeline. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if max-poll exceeded, network, restart churn, config mismatch.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "LEARN",
+      "title": "Concept/contract — Retry topic, DLQ và poison message",
+      "objective": "retry backoff / retry count / quarantine; cơ chế cần kiểm chứng: Offset progression; retry ordering consequences. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho retry backoff / retry count / quarantine; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Retry topic, DLQ và poison message",
+      "objective": "Không nhìn notes: vẽ Offset progression; retry ordering consequences; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

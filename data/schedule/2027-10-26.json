@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-26",
+  "objective": "Tạo và kiểm chứng evidence cho **RED-03: Stampede, penetration và avalanche**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-03",
+      "type": "REVIEW",
+      "title": "D+1 — Bulk operations và persistence context stale",
+      "objective": "Không nhìn notes: vẽ ORM cache synchronization và JDBC batching; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-07",
+      "type": "REVIEW",
+      "title": "D+7 — Oracle sequence cho alias account",
+      "objective": "Dựng lại normal/failure timeline của DB-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Stampede, penetration và avalanche",
+      "objective": "Chốt phần research còn lại: jitter / single-flight; nối với Rebuild concurrency và admission. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "LAB",
+      "title": "Implement — Stampede, penetration và avalanche",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Load lab đo DB QPS và rebuild count; kèm predicted/observed table và ADR “Local single-flight so với distributed coordination”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Load lab đo DB QPS và rebuild count; kèm predicted/observed table và ADR “Local single-flight so với distributed coordination”."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "LAB",
+      "title": "Implement — Stampede, penetration và avalanche",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Load lab đo DB QPS và rebuild count; kèm predicted/observed table và ADR “Local single-flight so với distributed coordination”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Load lab đo DB QPS và rebuild count; kèm predicted/observed table và ADR “Local single-flight so với distributed coordination”."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Stampede, penetration và avalanche",
+      "objective": "Fault: Hot key expire; absent key flood; mass TTL expiry. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Rebuild concurrency và admission.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Stampede, penetration và avalanche",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why hot key/null caching/jitter/single-flight? How Rebuild concurrency và admission? What if Hot key expire; absent key flood; mass TTL expiry? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

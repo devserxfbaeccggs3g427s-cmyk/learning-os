@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-19",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-04: Reject/resubmit/publish/rollback policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-01",
+      "type": "REVIEW",
+      "title": "D+7 — Reconstruct Maker-Checker state machine",
+      "objective": "Dựng lại normal/failure timeline của FLOW-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-24",
+      "type": "REVIEW",
+      "title": "D+1 — Concurrent workflow approval mismatch",
+      "objective": "Không nhìn notes: vẽ Freeze affected revision→audit vs state→version/actor evidence. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-04",
+      "type": "LEARN",
+      "title": "Concept/contract — Reject/resubmit/publish/rollback policy",
+      "objective": "new revision / approval validity / publish ownership; cơ chế cần kiểm chứng: State/version mapping and compensating action. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho new revision / approval validity / publish ownership; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-04",
+      "type": "LAB",
+      "title": "Implement — Reject/resubmit/publish/rollback policy",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Revision lineage + stale publish test; kèm predicted/observed table và ADR “Rollback DB so với new compensating revision”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Revision lineage + stale publish test; kèm predicted/observed table và ADR “Rollback DB so với new compensating revision”."
+    },
+    {
+      "taskCode": "FLOW-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reject/resubmit/publish/rollback policy",
+      "objective": "Fault: Old approved version published after new edit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu State/version mapping and compensating action.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reject/resubmit/publish/rollback policy",
+      "objective": "Không nhìn notes: vẽ State/version mapping and compensating action; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-02-19",
+  "objective": "Tạo và kiểm chứng evidence cho **OTP-04: SMS timeout, delivery và cost control; INC-23: OTP provider unavailable**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OTP-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Resend rate limit và concurrent issuance",
+      "objective": "Không nhìn notes: vẽ Atomic issuance/version invalidation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — SMS timeout, delivery và cost control",
+      "objective": "Fault: Provider gửi SMS nhưng API timeout. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Unknown delivery vs send failure; retry contract.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OTP-04",
+      "type": "INTERVIEW",
+      "title": "Interview — SMS timeout, delivery và cost control",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why send request ID/provider receipt/status? How Unknown delivery vs send failure; retry contract? What if Provider gửi SMS nhưng API timeout? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-23",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — OTP provider unavailable",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why OTP provider unavailable; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Delivery ambiguity→provider health/quota→safe retry contract. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Provider down, network timeout, quota, credential expiry.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

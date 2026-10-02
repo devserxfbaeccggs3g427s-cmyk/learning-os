@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-10",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-07: Chứng minh giảm 60% nhập tay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-04",
+      "type": "REVIEW",
+      "title": "D+7 — AI extraction job identity và async lifecycle",
+      "objective": "Dựng lại normal/failure timeline của CMV-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Image duplicate detection thresholds",
+      "objective": "Tự xử lý “Cropped duplicate missed; similar assets false positive”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "REVIEW",
+      "title": "D+1 — Human review, provenance và sensitive AI inputs",
+      "objective": "Không nhìn notes: vẽ Versioned acceptance and reviewer attribution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Chứng minh giảm 60% nhập tay",
+      "objective": "sample / time window / denominator; cơ chế cần kiểm chứng: Measurement pipeline and confounders. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho sample / time window / denominator; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Chứng minh giảm 60% nhập tay",
+      "objective": "Chốt phần research còn lại: denominator / attribution; nối với Measurement pipeline and confounders. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "LAB",
+      "title": "Implement — Chứng minh giảm 60% nhập tay",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Measurement protocol; đánh dấu số thiếu evidence; kèm predicted/observed table và ADR “Saved keystrokes so với saved handling time”.",
+      "startMinute": 1290,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Measurement protocol; đánh dấu số thiếu evidence; kèm predicted/observed table và ADR “Saved keystrokes so với saved handling time”."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Chứng minh giảm 60% nhập tay",
+      "objective": "Fault: Volume/mix đổi làm số 60% gây hiểu nhầm. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Measurement pipeline and confounders.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Chứng minh giảm 60% nhập tay",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why baseline/sample/time window/denominator/attribution? How Measurement pipeline and confounders? What if Volume/mix đổi làm số 60% gây hiểu nhầm? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

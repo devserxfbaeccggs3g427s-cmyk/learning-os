@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-04",
+  "objective": "Tạo và kiểm chứng evidence cho **OBS-03: Distributed traces và ELK troubleshooting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-14",
+      "type": "REVIEW",
+      "title": "D+7 — Cache stampede",
+      "objective": "Dựng lại normal/failure timeline của INC-14; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-04",
+      "type": "REVIEW",
+      "title": "D+1 — Authentication/session service",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "LEARN",
+      "title": "Concept/contract — Distributed traces và ELK troubleshooting",
+      "objective": "spans / propagation / sampling / Elasticsearch / Kibana; cơ chế cần kiểm chứng: Async span links and ingestion delay. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho spans / propagation / sampling / Elasticsearch / Kibana; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "LAB",
+      "title": "Implement — Distributed traces và ELK troubleshooting",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Correlated timeline + sampling/retention/PII policy; kèm predicted/observed table và ADR “Trace causality so với timestamp-only ordering”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Correlated timeline + sampling/retention/PII policy; kèm predicted/observed table và ADR “Trace causality so với timestamp-only ordering”."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Distributed traces và ELK troubleshooting",
+      "objective": "Fault: Missing trace; log delay appears as no event. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Async span links and ingestion delay.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Distributed traces và ELK troubleshooting",
+      "objective": "Không nhìn notes: vẽ Async span links and ingestion delay; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

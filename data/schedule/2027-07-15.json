@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-15",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-02: Keycloak/JWKS unavailable và rotation; INC-22: Keycloak unavailable**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-05",
+      "type": "REVIEW",
+      "title": "D+14 — CAP, consistency models và clock assumptions",
+      "objective": "Bảo vệ trade-off của DIST-05 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-06",
+      "type": "REVIEW",
+      "title": "D+7 — CMV Kafka pipeline",
+      "objective": "Dựng lại normal/failure timeline của SD-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Keycloak/JWKS unavailable và rotation",
+      "objective": "Fault: Old cached key valid; new kid unavailable. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Cached key validation vs live fetch on miss.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Keycloak/JWKS unavailable và rotation",
+      "objective": "Fault: Old cached key valid; new kid unavailable. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Cached key validation vs live fetch on miss.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Keycloak/JWKS unavailable và rotation",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why local JWT validation/cache/kid/audience? How Cached key validation vs live fetch on miss? What if Old cached key valid; new kid unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-22",
+      "type": "INTERVIEW",
+      "title": "Interview — Keycloak unavailable",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Keycloak unavailable; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Login vs API impact→cache state→Keycloak health. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Auth server outage, network, new kid cache miss.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

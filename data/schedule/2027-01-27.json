@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-27",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-08: JWKS/key rotation và multi-device sessions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "RED-04",
+      "type": "REVIEW",
+      "title": "D+7 — Distributed counters và rate limits",
+      "objective": "Dựng lại normal/failure timeline của RED-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "REVIEW",
+      "title": "D+1 — Key/secret rotation và crypto failure policy",
+      "objective": "Không nhìn notes: vẽ Key lifecycle và old/new verifier behavior; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — JWKS/key rotation và multi-device sessions",
+      "objective": "Chốt phần research còn lại: session ownership; nối với Key cache refresh và signature verification failure modes. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "LAB",
+      "title": "Implement — JWKS/key rotation và multi-device sessions",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Rotation matrix + session separation tests; kèm predicted/observed table và ADR “Cached validation so với live dependency mỗi request”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Rotation matrix + session separation tests; kèm predicted/observed table và ADR “Cached validation so với live dependency mỗi request”."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "LAB",
+      "title": "Implement — JWKS/key rotation và multi-device sessions",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Rotation matrix + session separation tests; kèm predicted/observed table và ADR “Cached validation so với live dependency mỗi request”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Rotation matrix + session separation tests; kèm predicted/observed table và ADR “Cached validation so với live dependency mỗi request”."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JWKS/key rotation và multi-device sessions",
+      "objective": "Fault: New kid trong outage; old key compromised. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Key cache refresh và signature verification failure modes.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "INTERVIEW",
+      "title": "Interview — JWKS/key rotation và multi-device sessions",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why kid/cache overlap/retired keys/session ownership? How Key cache refresh và signature verification failure modes? What if New kid trong outage; old key compromised? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

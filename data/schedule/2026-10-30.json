@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-30",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-06: Transaction boundary JPA + JdbcTemplate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Tự xử lý “Flush constraint violation trước commit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "REVIEW",
+      "title": "D+7 — Duplicate bill khác request duplicate",
+      "objective": "Dựng lại normal/failure timeline của PAY-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-06",
+      "type": "LAB",
+      "title": "Implement — Transaction boundary JPA + JdbcTemplate",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Integration test cả hai cùng commit hoặc cùng rollback; kèm predicted/observed table và ADR “Một local transaction so với tách trạng thái processing”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Integration test cả hai cùng commit hoặc cùng rollback; kèm predicted/observed table và ADR “Một local transaction so với tách trạng thái processing”."
+    },
+    {
+      "taskCode": "PAY-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Transaction boundary JPA + JdbcTemplate",
+      "objective": "Fault: Idempotency commit nhưng business rollback. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Flush vs commit; exception translation; rollback-only.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-06",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Transaction boundary JPA + JdbcTemplate",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why same datasource/manager/connection? How Flush vs commit; exception translation; rollback-only? What if Idempotency commit nhưng business rollback? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

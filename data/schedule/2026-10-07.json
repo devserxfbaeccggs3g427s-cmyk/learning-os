@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-07",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-03: Request-ID contract và request fingerprint; DB-01: Relational invariant và schema tài chính**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-01",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "Không nhìn notes: vẽ API contract và source-of-truth từng field; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Request-ID contract và request fingerprint",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why scope/tenant/operation/payload canonicalization? How Stable hash; canonical amount/null/field order? What if Cùng key khác body; key mới cùng nghiệp vụ? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "LEARN",
+      "title": "Concept/contract — Relational invariant và schema tài chính",
+      "objective": "PK / FK / unique / check / decimal / currency; cơ chế cần kiểm chứng: Constraint evaluation/null semantics. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho PK / FK / unique / check / decimal / currency; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "LAB",
+      "title": "Implement — Relational invariant và schema tài chính",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; DDL giả lập + invalid insert tests; kèm predicted/observed table và ADR “Application validation so với database constraints”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: DDL giả lập + invalid insert tests; kèm predicted/observed table và ADR “Application validation so với database constraints”."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Relational invariant và schema tài chính",
+      "objective": "Fault: Orphan reference; amount overflow; missing currency. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Constraint evaluation/null semantics.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Relational invariant và schema tài chính",
+      "objective": "Không nhìn notes: vẽ Constraint evaluation/null semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-23",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-08: reCAPTCHA v3 và abuse signals scope; OPS-01: Docker image/container lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OBS-04",
+      "type": "REVIEW",
+      "title": "D+14 — SLI/SLO và actionable alerts",
+      "objective": "Bảo vệ trade-off của OBS-04 khi 2 instances/10x load; nối lại với project CMV và áp dụng đề xuất GOV/SAHA/DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "INTERVIEW",
+      "title": "Interview — reCAPTCHA v3 và abuse signals scope",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why risk scores/server verification/rate controls? How Server-side verification và threshold policy? What if Token replay; external verification unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "LEARN",
+      "title": "Concept/contract — Docker image/container lifecycle",
+      "objective": "build layers / runtime config / user / signals; cơ chế cần kiểm chứng: PID1/signal handling/filesystem/resource boundaries. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho build layers / runtime config / user / signals; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "LAB",
+      "title": "Implement — Docker image/container lifecycle",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Minimal lab image + graceful stop evidence; kèm predicted/observed table và ADR “Image immutable config so với runtime external config”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Minimal lab image + graceful stop evidence; kèm predicted/observed table và ADR “Image immutable config so với runtime external config”."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Docker image/container lifecycle",
+      "objective": "Fault: Container stop cắt transaction; secret in image. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu PID1/signal handling/filesystem/resource boundaries.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Docker image/container lifecycle",
+      "objective": "Không nhìn notes: vẽ PID1/signal handling/filesystem/resource boundaries; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

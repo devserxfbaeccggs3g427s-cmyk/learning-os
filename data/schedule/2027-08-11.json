@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-11",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-04: Optimistic vs pessimistic locking; FLOW-01: Reconstruct Maker-Checker state machine**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-08",
+      "type": "REVIEW",
+      "title": "D+7 — Eureka/Feign/load balancing under instance loss",
+      "objective": "Dựng lại normal/failure timeline của GATE-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Optimistic vs pessimistic locking",
+      "objective": "Fault: Lost update; lock giữ lâu khi gọi bank. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Row locks, wait timeout, stale version detection.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Optimistic vs pessimistic locking",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why version/SELECT FOR UPDATE/conditional update? How Row locks, wait timeout, stale version detection? What if Lost update; lock giữ lâu khi gọi bank? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct Maker-Checker state machine",
+      "objective": "Chốt phần research còn lại: DRAFT / SUBMITTED; nối với Transition guards and actor capabilities. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Reconstruct Maker-Checker state machine",
+      "objective": "SUBMITTED / APPROVED / REJECTED / PUBLISHED proposed; cơ chế cần kiểm chứng: Transition guards and actor capabilities. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho SUBMITTED / APPROVED / REJECTED / PUBLISHED proposed; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Maker-Checker state machine",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; State/role matrix; xác nhận real states; negative tests; kèm predicted/observed table và ADR “State machine so với scattered status if-statements”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: State/role matrix; xác nhận real states; negative tests; kèm predicted/observed table và ADR “State machine so với scattered status if-statements”."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reconstruct Maker-Checker state machine",
+      "objective": "Không nhìn notes: vẽ Transition guards and actor capabilities; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-25",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-03: Saga/compensation và unknown outcome**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-07",
+      "type": "REVIEW",
+      "title": "D+14 — Chứng minh giảm 60% nhập tay",
+      "objective": "Bảo vệ trade-off của CMV-07 khi 2 instances/10x load; nối lại với project CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-02",
+      "type": "REVIEW",
+      "title": "D+1 — Deadline budget, retries, backoff và jitter",
+      "objective": "Không nhìn notes: vẽ Retry multiplication across client/gateway/service/ESB; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Saga/compensation và unknown outcome",
+      "objective": "state / compensation / manual repair; cơ chế cần kiểm chứng: Durable orchestration state and compensation idempotency. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho state / compensation / manual repair; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "LAB",
+      "title": "Implement — Saga/compensation và unknown outcome",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Saga failure table với UNKNOWN; không coi refund là rollback DB; kèm predicted/observed table và ADR “Choreography so với orchestration”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Saga failure table với UNKNOWN; không coi refund là rollback DB; kèm predicted/observed table và ADR “Choreography so với orchestration”."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "LAB",
+      "title": "Implement — Saga/compensation và unknown outcome",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Saga failure table với UNKNOWN; không coi refund là rollback DB; kèm predicted/observed table và ADR “Choreography so với orchestration”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Saga failure table với UNKNOWN; không coi refund là rollback DB; kèm predicted/observed table và ADR “Choreography so với orchestration”."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Saga/compensation và unknown outcome",
+      "objective": "Fault: Compensation fail hoặc original late-success. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Durable orchestration state and compensation idempotency.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Saga/compensation và unknown outcome",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why steps/state/compensation/manual repair? How Durable orchestration state and compensation idempotency? What if Compensation fail hoặc original late-success? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

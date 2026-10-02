@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-24",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-01: Reconstruct login→logout/session/device**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-15",
+      "type": "REVIEW",
+      "title": "D+1 — JWT token cache và signing integration GOV",
+      "objective": "Không nhìn notes: vẽ Refresh single-flight; sign/verify canonical bytes; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-02",
+      "type": "REVIEW",
+      "title": "D+14 — Object-level authorization và public/admin policy",
+      "objective": "Bảo vệ trade-off của SEC-02 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT; crypto chưa gắn project.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Request/response signing và replay protection",
+      "objective": "Tự xử lý “Valid signature replay; changed amount/encoding”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Reconstruct login→logout/session/device",
+      "objective": "Account / Fund Transfer / token / session; cơ chế cần kiểm chứng: Identity authority và authorization decision points. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho Account / Fund Transfer / token / session; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct login→logout/session/device",
+      "objective": "Chốt phần research còn lại: session / trust; nối với Identity authority và authorization decision points. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "LAB",
+      "title": "Implement — Reconstruct login→logout/session/device",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Lifecycle/trust diagram; 10-state acceptance matrix; kèm predicted/observed table và ADR “Stateless validation so với online session gate”.",
+      "startMinute": 1290,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Lifecycle/trust diagram; 10-state acceptance matrix; kèm predicted/observed table và ADR “Stateless validation so với online session gate”."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct login→logout/session/device",
+      "objective": "Fault: JWT hợp lệ nhưng session revoked. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Identity authority và authorization decision points.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct login→logout/session/device",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Identity/Account/Fund Transfer/token/session/trust? How Identity authority và authorization decision points? What if JWT hợp lệ nhưng session revoked? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

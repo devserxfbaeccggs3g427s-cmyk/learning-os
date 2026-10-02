@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-05",
+  "objective": "Tạo và kiểm chứng evidence cho **OBS-03: Distributed traces và ELK troubleshooting; INC-01: API latency 100ms→3s**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "RED-05",
+      "type": "REVIEW",
+      "title": "D+7 — SET NX PX, safe unlock và fencing",
+      "objective": "Dựng lại normal/failure timeline của RED-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — CSRF/CORS/XSS và browser session decisions",
+      "objective": "Tự xử lý “CORS mở nhưng auth thiếu; XSS lấy token”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Distributed traces và ELK troubleshooting",
+      "objective": "Fault: Missing trace; log delay appears as no event. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Async span links and ingestion delay.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Distributed traces và ELK troubleshooting",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why spans/propagation/sampling/Elasticsearch/Kibana? How Async span links and ingestion delay? What if Missing trace; log delay appears as no event? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-01",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — API latency 100ms→3s",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why API latency 100ms→3s; khi drill bổ sung time window, impacted operation và synthetic baseline.? How scope route/time→trace critical path→queue/pool→dependency. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if DB lock, downstream slow, queue waiting.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

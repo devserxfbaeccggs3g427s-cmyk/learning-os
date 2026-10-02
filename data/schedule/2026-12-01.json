@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-01",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-12: Reconciliation theo nguồn có thẩm quyền**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-11",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Disbursement retry và duplicate payout",
+      "objective": "Không nhìn notes: vẽ State transition và downstream dedup contract; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "LAB",
+      "title": "Implement — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Re-run reconciliation không double adjust; discrepancy queue; kèm predicted/observed table và ADR “Automatic correction so với manual review”.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Re-run reconciliation không double adjust; discrepancy queue; kèm predicted/observed table và ADR “Automatic correction so với manual review”."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "LAB",
+      "title": "Implement — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Re-run reconciliation không double adjust; discrepancy queue; kèm predicted/observed table và ADR “Automatic correction so với manual review”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Re-run reconciliation không double adjust; discrepancy queue; kèm predicted/observed table và ADR “Automatic correction so với manual review”."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Fault: Bank success local pending; amount/currency mismatch. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Matching keys; late arrival; checkpoint/re-run.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Không nhìn notes: vẽ Matching keys; late arrival; checkpoint/re-run; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

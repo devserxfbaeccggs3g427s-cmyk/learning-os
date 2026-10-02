@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-16",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-22: Keycloak unavailable; GATE-03: Gateway timeout vs Feign/downstream timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reconstruct Gateway routing/filter chain",
+      "objective": "Tự xử lý “Public route match bypasses admin security”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "REVIEW",
+      "title": "D+1 — Keycloak/JWKS unavailable và rotation",
+      "objective": "Không nhìn notes: vẽ Cached key validation vs live fetch on miss; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "REVIEW",
+      "title": "D+7 — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Dựng lại normal/failure timeline của SEC-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-22",
+      "type": "INTERVIEW",
+      "title": "Interview — Keycloak unavailable",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Keycloak unavailable; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Login vs API impact→cache state→Keycloak health. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Auth server outage, network, new kid cache miss.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Chốt phần research còn lại: end-to-end deadline; nối với Cancellation propagation and remaining work. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why end-to-end deadline/connect/read/client budget? How Cancellation propagation and remaining work? What if Gateway timed out nhưng service vẫn commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

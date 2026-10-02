@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-13",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-03: ArrayList/LinkedList/HashMap/TreeMap internals**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — MinIO attachments và DB/file consistency",
+      "objective": "Tự xử lý “Upload success DB fail; delete metadata file remains”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "REVIEW",
+      "title": "D+1 — equals/hashCode/generics và identity collections",
+      "objective": "Không nhìn notes: vẽ Bucket lookup; mutable key; generic variance; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — View tracking correctness và performance",
+      "objective": "Tự xử lý “Refresh inflates views; hot row contention”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — equals/hashCode/generics và identity collections",
+      "objective": "Tự xử lý “Mutable key mất trong Map; unsafe raw type cast”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Chốt phần research còn lại: array growth / node allocation; nối với Resize, buckets/tree bins in pinned JDK, locality. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "node allocation / hash collision / order; cơ chế cần kiểm chứng: Resize, buckets/tree bins in pinned JDK, locality. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho node allocation / hash collision / order; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "LAB",
+      "title": "Implement — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Data-structure benchmark with stated workload; kèm predicted/observed table và ADR “ArrayList so với LinkedList; HashMap so với TreeMap”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Data-structure benchmark with stated workload; kèm predicted/observed table và ADR “ArrayList so với LinkedList; HashMap so với TreeMap”."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Không nhìn notes: vẽ Resize, buckets/tree bins in pinned JDK, locality; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

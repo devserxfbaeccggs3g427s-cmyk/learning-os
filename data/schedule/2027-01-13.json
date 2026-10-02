@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-13",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-13: Redis unavailable; OTP-01: OTP challenge model và transaction binding**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-05",
+      "type": "REVIEW",
+      "title": "D+1 — Redis session unavailable/data lost",
+      "objective": "Không nhìn notes: vẽ Expiry + authority khi Redis restart; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-01",
+      "type": "REVIEW",
+      "title": "D+14 — Structures, TTL và atomic transitions",
+      "objective": "Bảo vệ trade-off của RED-01 khi 2 instances/10x load; nối lại với project SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-13",
+      "type": "INTERVIEW",
+      "title": "Interview — Redis unavailable",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Redis unavailable; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Use case impact→network/topology→server stats→client config. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Network, failover, saturation, bad config.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — OTP challenge model và transaction binding",
+      "objective": "Chốt phần research còn lại: purpose / user; nối với Challenge state và one-time scope. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — OTP challenge model và transaction binding",
+      "objective": "Không nhìn notes: vẽ Challenge state và one-time scope; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

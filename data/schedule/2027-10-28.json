@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-28",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-14: Cache stampede; RED-05: SET NX PX, safe unlock và fencing**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Bulk operations và persistence context stale",
+      "objective": "Tự xử lý “Bulk update bỏ version guard”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-05",
+      "type": "REVIEW",
+      "title": "D+14 — Deadlock và lock ordering",
+      "objective": "Bảo vệ trade-off của DB-05 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-14",
+      "type": "INTERVIEW",
+      "title": "Interview — Cache stampede",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Cache stampede; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Miss distribution→expiry alignment→DB impact→rebuild owner. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Hot expiry, mass TTL, cache loss, absent-key abuse.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "LEARN",
+      "title": "Concept/contract — SET NX PX, safe unlock và fencing",
+      "objective": "lease / token / expiry / owner compare; cơ chế cần kiểm chứng: Lease expiry không dừng old owner; downstream fence. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho lease / token / expiry / owner compare; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — SET NX PX, safe unlock và fencing",
+      "objective": "Chốt phần research còn lại: owner compare / delete; nối với Lease expiry không dừng old owner; downstream fence. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "LAB",
+      "title": "Implement — SET NX PX, safe unlock và fencing",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Lease expiry test và stale owner rejection nếu resource hỗ trợ; kèm predicted/observed table và ADR “Lock token so với monotonic fencing token”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Lease expiry test và stale owner rejection nếu resource hỗ trợ; kèm predicted/observed table và ADR “Lock token so với monotonic fencing token”."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — SET NX PX, safe unlock và fencing",
+      "objective": "Không nhìn notes: vẽ Lease expiry không dừng old owner; downstream fence; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

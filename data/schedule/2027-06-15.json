@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-15",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-08: Pentaho PDI và batch/stream consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-03",
+      "type": "REVIEW",
+      "title": "D+14 — Kafka unavailable và backlog recovery",
+      "objective": "Bảo vệ trade-off của CMV-03 khi 2 instances/10x load; nối lại với project CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "REVIEW",
+      "title": "D+1 — ACID, isolation và MVCC qua payment status",
+      "objective": "Không nhìn notes: vẽ Snapshot/read consistency; statement vs transaction; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-08",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Pentaho PDI và batch/stream consistency",
+      "objective": "transform / load / checkpoint / watermark; cơ chế cần kiểm chứng: Restartable ETL and partial commits. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho transform / load / checkpoint / watermark; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "CMV-08",
+      "type": "LAB",
+      "title": "Implement — Pentaho PDI và batch/stream consistency",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; ETL replay lab; no missing/duplicate business rows; kèm predicted/observed table và ADR “Batch ETL so với event streaming”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: ETL replay lab; no missing/duplicate business rows; kèm predicted/observed table và ADR “Batch ETL so với event streaming”."
+    },
+    {
+      "taskCode": "CMV-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Pentaho PDI và batch/stream consistency",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why extract/transform/load/checkpoint/watermark? How Restartable ETL and partial commits? What if Job crash halfway; overlap incremental windows? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

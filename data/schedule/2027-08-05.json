@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-05",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-09: Gateway bottleneck, fallback và observability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-06",
+      "type": "REVIEW",
+      "title": "D+7 — Resilience4j circuit breaker state machine",
+      "objective": "Dựng lại normal/failure timeline của GATE-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Bulkhead và bounded resource isolation",
+      "objective": "Tự xử lý “Slow report consumes all request capacity”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "REVIEW",
+      "title": "D+1 — Eureka/Feign/load balancing under instance loss",
+      "objective": "Không nhìn notes: vẽ Discovery cache and connection reuse; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Gateway bottleneck, fallback và observability",
+      "objective": "filter cost / p95 / 5xx; cơ chế cần kiểm chứng: Blocking calls and per-route metrics. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho filter cost / p95 / 5xx; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Gateway bottleneck, fallback và observability",
+      "objective": "Chốt phần research còn lại: 5xx / correlation; nối với Blocking calls and per-route metrics. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "LAB",
+      "title": "Implement — Gateway bottleneck, fallback và observability",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Load profile + safe error/fallback contract; kèm predicted/observed table và ADR “Graceful degradation so với hidden business failure”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Load profile + safe error/fallback contract; kèm predicted/observed table và ADR “Graceful degradation so với hidden business failure”."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "INTERVIEW",
+      "title": "Interview — Gateway bottleneck, fallback và observability",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why event loop/filter cost/p95/5xx/correlation? How Blocking calls and per-route metrics? What if Gateway CPU high; fallback returns fake success? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

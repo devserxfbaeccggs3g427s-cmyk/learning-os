@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-19",
+  "objective": "Tạo và kiểm chứng evidence cho **DATA-05: MyBatis mapping và framework choice; SEC-08: reCAPTCHA v3 và abuse signals scope**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-11",
+      "type": "REVIEW",
+      "title": "D+1 — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "Không nhìn notes: vẽ Driver và engine-specific behavior; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "REVIEW",
+      "title": "D+14 — Distributed traces và ELK troubleshooting",
+      "objective": "Bảo vệ trade-off của OBS-03 khi 2 instances/10x load; nối lại với project CMV và áp dụng đề xuất GOV/SAHA/DEBIT.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "LAB",
+      "title": "Implement — MyBatis mapping và framework choice",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Small mapper lab; xác nhận project đã dùng; kèm predicted/observed table và ADR “MyBatis so với JPA/JdbcTemplate”.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Small mapper lab; xác nhận project đã dùng; kèm predicted/observed table và ADR “MyBatis so với JPA/JdbcTemplate”."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — MyBatis mapping và framework choice",
+      "objective": "Fault: Wrong join mapping; unsafe substitution. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Session lifecycle và lazy/result mapping.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — MyBatis mapping và framework choice",
+      "objective": "Fault: Wrong join mapping; unsafe substitution. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Session lifecycle và lazy/result mapping.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "INTERVIEW",
+      "title": "Interview — MyBatis mapping và framework choice",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why result map/dynamic SQL/transaction integration? How Session lifecycle và lazy/result mapping? What if Wrong join mapping; unsafe substitution? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — reCAPTCHA v3 và abuse signals scope",
+      "objective": "Chốt phần research còn lại: risk scores; nối với Server-side verification và threshold policy. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — reCAPTCHA v3 và abuse signals scope",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why risk scores/server verification/rate controls? How Server-side verification và threshold policy? What if Token replay; external verification unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

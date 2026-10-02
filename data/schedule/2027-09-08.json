@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-08",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-06: MinIO attachments và DB/file consistency; FLOW-07: View tracking correctness và performance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-08",
+      "type": "REVIEW",
+      "title": "D+14 — Execution plan và statistics",
+      "objective": "Bảo vệ trade-off của DB-08 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — MinIO attachments và DB/file consistency",
+      "objective": "Fault: Upload success DB fail; delete metadata file remains. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Object store vs local DB atomicity boundary.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "INTERVIEW",
+      "title": "Interview — MinIO attachments và DB/file consistency",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why upload/object key/metadata/access/download lifecycle? How Object store vs local DB atomicity boundary? What if Upload success DB fail; delete metadata file remains? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "LEARN",
+      "title": "Concept/contract — View tracking correctness và performance",
+      "objective": "view definition / duplicate / bot / privacy / aggregation; cơ chế cần kiểm chứng: Counter atomicity and write amplification. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho view definition / duplicate / bot / privacy / aggregation; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "LAB",
+      "title": "Implement — View tracking correctness và performance",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Define view semantics + concurrent counter experiment; kèm predicted/observed table và ADR “Exact per-view writes so với buffered aggregation”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Define view semantics + concurrent counter experiment; kèm predicted/observed table và ADR “Exact per-view writes so với buffered aggregation”."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — View tracking correctness và performance",
+      "objective": "Không nhìn notes: vẽ Counter atomicity and write amplification; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "objective": "Tạo và kiểm chứng evidence cho **DATA-01: Persistence Context, dirty checking, flush vs commit; SPR-06: Propagation và nhiều datasource**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-01",
+      "type": "REVIEW",
+      "title": "D+14 — OOP/SOLID và immutable financial value objects",
+      "objective": "Bảo vệ trade-off của JAVA-01 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "LAB",
+      "title": "Implement — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; SQL/transaction timeline cho save/flush/commit; kèm predicted/observed table và ADR “Managed update so với explicit JDBC SQL”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: SQL/transaction timeline cho save/flush/commit; kèm predicted/observed table và ADR “Managed update so với explicit JDBC SQL”."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Fault: Flush constraint violation trước commit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Unit of work; SQL emission; identity map.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Persistence Context, dirty checking, flush vs commit",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why entity state/managed/detached/save/flush? How Unit of work; SQL emission; identity map? What if Flush constraint violation trước commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "LEARN",
+      "title": "Concept/contract — Propagation và nhiều datasource",
+      "objective": "REQUIRED / REQUIRES_NEW / NESTED / savepoint / isolation; cơ chế cần kiểm chứng: Physical connection ownership; supported savepoints. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho REQUIRED / REQUIRES_NEW / NESTED / savepoint / isolation; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Propagation và nhiều datasource",
+      "objective": "Không nhìn notes: vẽ Physical connection ownership; supported savepoints; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-23",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-03: Memory tăng liên tục; SD-07: Maker-Checker**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-07",
+      "type": "REVIEW",
+      "title": "D+14 — View tracking correctness và performance",
+      "objective": "Bảo vệ trade-off của FLOW-07 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "REVIEW",
+      "title": "D+1 — Report module POI/iText scope and streaming",
+      "objective": "Không nhìn notes: vẽ Workbook/PDF memory lifecycle and resource release; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-07",
+      "type": "REVIEW",
+      "title": "D+7 — JVM class loading, memory và GC",
+      "objective": "Dựng lại normal/failure timeline của JAVA-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Memory tăng liên tục",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Memory tăng liên tục; khi drill bổ sung time window, impacted operation và synthetic baseline.? How heap vs RSS→post-GC trend→heap dominators→job correlation. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Retention leak, unbounded queue, cache, native memory.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SD-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Maker-Checker",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Maker-Checker: content/assets, SoD, revision, audit, attachment? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if Concurrent approve/edit; immutable reviewed version; file/DB consistency? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

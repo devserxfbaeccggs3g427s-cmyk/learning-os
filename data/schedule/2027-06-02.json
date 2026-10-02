@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-02",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-04: AI extraction job identity và async lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-01",
+      "type": "REVIEW",
+      "title": "D+7 — Reconstruct CMV boundaries và synchronous/async flows",
+      "objective": "Dựng lại normal/failure timeline của CMV-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-03",
+      "type": "REVIEW",
+      "title": "D+1 — Kafka unavailable và backlog recovery",
+      "objective": "Không nhìn notes: vẽ Bounded buffering/relay recovery semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-18",
+      "type": "REVIEW",
+      "title": "D+14 — Kafka transactions/EOS vs external business effects",
+      "objective": "Bảo vệ trade-off của KAF-18 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-04",
+      "type": "LAB",
+      "title": "Implement — AI extraction job identity và async lifecycle",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Job state lab; old result không overwrite new input; kèm predicted/observed table và ADR “Synchronous AI call so với durable async job”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Job state lab; old result không overwrite new input; kèm predicted/observed table và ADR “Synchronous AI call so với durable async job”."
+    },
+    {
+      "taskCode": "CMV-04",
+      "type": "LAB",
+      "title": "Implement — AI extraction job identity và async lifecycle",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Job state lab; old result không overwrite new input; kèm predicted/observed table và ADR “Synchronous AI call so với durable async job”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Job state lab; old result không overwrite new input; kèm predicted/observed table và ADR “Synchronous AI call so với durable async job”."
+    },
+    {
+      "taskCode": "CMV-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — AI extraction job identity và async lifecycle",
+      "objective": "Fault: AI chậm; duplicate/late result; new document uploaded. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Result acceptance guards and cancellation semantics.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — AI extraction job identity và async lifecycle",
+      "objective": "Không nhìn notes: vẽ Result acceptance guards and cancellation semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-15",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Không nhìn notes: vẽ Incremental cursor and idempotent upsert; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Virtual threads as optional upgrade research",
+      "objective": "Fault: More concurrency exhausts DB; Java17 cannot run feature. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Pinned-version lifecycle and compatibility constraints.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "INTERVIEW",
+      "title": "Interview — Virtual threads as optional upgrade research",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why JDK version/scheduling/blocking/resource limits? How Pinned-version lifecycle and compatibility constraints? What if More concurrency exhausts DB; Java17 cannot run feature? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Virtual threads as optional upgrade research",
+      "objective": "Không nhìn notes: vẽ Pinned-version lifecycle and compatibility constraints; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

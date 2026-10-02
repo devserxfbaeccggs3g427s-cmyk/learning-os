@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-09",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-06: Human review, provenance và sensitive AI inputs; CMV-07: Chứng minh giảm 60% nhập tay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-01",
+      "type": "REVIEW",
+      "title": "D+14 — Reconstruct CMV boundaries và synchronous/async flows",
+      "objective": "Bảo vệ trade-off của CMV-01 khi 2 instances/10x load; nối lại với project CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "LAB",
+      "title": "Implement — Human review, provenance và sensitive AI inputs",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Review policy + lineage record + correction tests; kèm predicted/observed table và ADR “Auto-accept threshold so với mandatory human review”.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Review policy + lineage record + correction tests; kèm predicted/observed table và ADR “Auto-accept threshold so với mandatory human review”."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Human review, provenance và sensitive AI inputs",
+      "objective": "Fault: AI sai amount/address; rerun overwrites manual correction. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Versioned acceptance and reviewer attribution.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Human review, provenance và sensitive AI inputs",
+      "objective": "Fault: AI sai amount/address; rerun overwrites manual correction. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Versioned acceptance and reviewer attribution.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Human review, provenance và sensitive AI inputs",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why confidence/manual override/lineage/data minimization? How Versioned acceptance and reviewer attribution? What if AI sai amount/address; rerun overwrites manual correction? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Chứng minh giảm 60% nhập tay",
+      "objective": "Chốt phần research còn lại: baseline / sample; nối với Measurement pipeline and confounders. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Chứng minh giảm 60% nhập tay",
+      "objective": "Không nhìn notes: vẽ Measurement pipeline and confounders; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

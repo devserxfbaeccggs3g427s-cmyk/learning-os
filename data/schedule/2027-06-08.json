@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-08",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-06: Human review, provenance và sensitive AI inputs**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-03",
+      "type": "REVIEW",
+      "title": "D+7 — Kafka unavailable và backlog recovery",
+      "objective": "Dựng lại normal/failure timeline của CMV-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "REVIEW",
+      "title": "D+1 — Image duplicate detection thresholds",
+      "objective": "Không nhìn notes: vẽ Threshold/precision/recall/dataset labeling; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "REVIEW",
+      "title": "D+14 — Producer/consumer monitoring và replay governance",
+      "objective": "Bảo vệ trade-off của KAF-19 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "LEARN",
+      "title": "Concept/contract — Human review, provenance và sensitive AI inputs",
+      "objective": "confidence / manual override; cơ chế cần kiểm chứng: Versioned acceptance and reviewer attribution. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho confidence / manual override; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Human review, provenance và sensitive AI inputs",
+      "objective": "lineage / data minimization; cơ chế cần kiểm chứng: Versioned acceptance and reviewer attribution. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho lineage / data minimization; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "LAB",
+      "title": "Implement — Human review, provenance và sensitive AI inputs",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Review policy + lineage record + correction tests; kèm predicted/observed table và ADR “Auto-accept threshold so với mandatory human review”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Review policy + lineage record + correction tests; kèm predicted/observed table và ADR “Auto-accept threshold so với mandatory human review”."
+    },
+    {
+      "taskCode": "CMV-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Human review, provenance và sensitive AI inputs",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why confidence/manual override/lineage/data minimization? How Versioned acceptance and reviewer attribution? What if AI sai amount/address; rerun overwrites manual correction? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

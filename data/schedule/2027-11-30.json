@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-30",
+  "objective": "Tạo và kiểm chứng evidence cho **OPS-03: Requests/limits/OOMKilled/HPA; INC-04: OOMKilled**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SEC-08",
+      "type": "REVIEW",
+      "title": "D+7 — reCAPTCHA v3 và abuse signals scope",
+      "objective": "Dựng lại normal/failure timeline của SEC-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Requests/limits/OOMKilled/HPA",
+      "objective": "Fault: Heap dưới limit nhưng native làm OOMKilled. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Container limit accounting and scale lag.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Requests/limits/OOMKilled/HPA",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why CPU throttling/memory limit/heap+native/HPA metrics? How Container limit accounting and scale lag? What if Heap dưới limit nhưng native làm OOMKilled? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-04",
+      "type": "INTERVIEW",
+      "title": "Interview — OOMKilled",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why OOMKilled; khi drill bổ sung time window, impacted operation và synthetic baseline.? How exit reason→limit/RSS→heap settings→retention evidence. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Memory limit too low, heap/native overhead, workload spike.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

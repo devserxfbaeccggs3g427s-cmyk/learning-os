@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-18",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-19: Duplicate payment**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-17",
+      "type": "REVIEW",
+      "title": "D+1 — Core Banking timeout",
+      "objective": "Không nhìn notes: vẽ Preserve identity→query outcome→bank/ESB evidence→local status. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "REVIEW",
+      "title": "D+14 — Crash trước/sau commit và response replay",
+      "objective": "Bảo vệ trade-off của PAY-07 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-19",
+      "type": "INTERVIEW",
+      "title": "Interview — Duplicate payment",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Duplicate payment; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Contain further payouts→bank evidence→identity/tx timeline. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if New keys, weak business uniqueness, unsafe downstream retry.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-19",
+      "type": "INTERVIEW",
+      "title": "Interview — Duplicate payment",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Duplicate payment; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Contain further payouts→bank evidence→identity/tx timeline. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if New keys, weak business uniqueness, unsafe downstream retry.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

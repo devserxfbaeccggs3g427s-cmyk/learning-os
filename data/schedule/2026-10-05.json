@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-05",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-01: Reconstruct GOV: ownership, authority và normal flow**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-01",
+      "type": "REVIEW",
+      "title": "Đọc task card PAY-01 và chuẩn bị evidence register",
+      "objective": "Đánh dấu CV FACT / INFERENCE / NEED CONFIRMATION; ghi nơi lưu notes, diagram và câu hỏi ownership.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Evidence register có 3 nhãn; 3 câu hỏi chưa rõ về GOV."
+    },
+    {
+      "taskCode": "PAY-01",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "create / status / receipt / inquiry / refund / disbursement; cơ chế cần kiểm chứng: API contract và source-of-truth từng field. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Notes có assumptions + diagram cho create / status / receipt / inquiry / refund / disbursement; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "Chốt phần research còn lại: disbursement / reconcile; nối với API contract và source-of-truth từng field. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "PAY-01",
+      "type": "LAB",
+      "title": "Implement — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 7 sequence diagrams; ownership và unknown register; kèm predicted/observed table và ADR “Local status so với bank authority”.",
+      "startMinute": 1290,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 7 sequence diagrams; ownership và unknown register; kèm predicted/observed table và ADR “Local status so với bank authority”."
+    },
+    {
+      "taskCode": "PAY-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "Fault: Client thấy failed nhưng bank đã success. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu API contract và source-of-truth từng field.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why create/status/receipt/inquiry/refund/disbursement/reconcile? How API contract và source-of-truth từng field? What if Client thấy failed nhưng bank đã success? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

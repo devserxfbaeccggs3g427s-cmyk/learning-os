@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-20",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-04: Concurrent claim bằng unique constraint**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-01",
+      "type": "REVIEW",
+      "title": "D+7 — OOP/SOLID và immutable financial value objects",
+      "objective": "Dựng lại normal/failure timeline của JAVA-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-01",
+      "type": "REVIEW",
+      "title": "D+14 — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "Bảo vệ trade-off của PAY-01 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "REVIEW",
+      "title": "D+1 — Transaction rollback và exception boundary",
+      "objective": "Không nhìn notes: vẽ Transaction interceptor và rollback-only; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Concurrent claim bằng unique constraint",
+      "objective": "Chốt phần research còn lại: rollback; nối với Unique index arbitration và visibility theo DB. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "LAB",
+      "title": "Implement — Concurrent claim bằng unique constraint",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Harness ghi số business rows=1 và outcomes 100 callers; kèm predicted/observed table và ADR “DB uniqueness so với Redis lease”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Harness ghi số business rows=1 và outcomes 100 callers; kèm predicted/observed table và ADR “DB uniqueness so với Redis lease”."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "LAB",
+      "title": "Implement — Concurrent claim bằng unique constraint",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Harness ghi số business rows=1 và outcomes 100 callers; kèm predicted/observed table và ADR “DB uniqueness so với Redis lease”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Harness ghi số business rows=1 và outcomes 100 callers; kèm predicted/observed table và ADR “DB uniqueness so với Redis lease”."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Concurrent claim bằng unique constraint",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why insert-first/wait/commit/rollback? How Unique index arbitration và visibility theo DB? What if 100 requests cùng key từ 2 instances? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

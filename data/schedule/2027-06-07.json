@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-07",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-05: Image duplicate detection thresholds**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — AI extraction job identity và async lifecycle",
+      "objective": "Tự xử lý “AI chậm; duplicate/late result; new document uploaded”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "LAB",
+      "title": "Implement — Image duplicate detection thresholds",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Small labeled synthetic dataset + confusion matrix; kèm predicted/observed table và ADR “Exact hash so với similarity; CV không xác nhận algorithm”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Small labeled synthetic dataset + confusion matrix; kèm predicted/observed table và ADR “Exact hash so với similarity; CV không xác nhận algorithm”."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Image duplicate detection thresholds",
+      "objective": "Fault: Cropped duplicate missed; similar assets false positive. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Threshold/precision/recall/dataset labeling.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Image duplicate detection thresholds",
+      "objective": "Fault: Cropped duplicate missed; similar assets false positive. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Threshold/precision/recall/dataset labeling.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Image duplicate detection thresholds",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why exact hash/perceptual similarity/embedding proposal? How Threshold/precision/recall/dataset labeling? What if Cropped duplicate missed; similar assets false positive? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Image duplicate detection thresholds",
+      "objective": "Không nhìn notes: vẽ Threshold/precision/recall/dataset labeling; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

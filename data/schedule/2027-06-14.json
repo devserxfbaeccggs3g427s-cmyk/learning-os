@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-14",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-03: ACID, isolation và MVCC qua payment status; CMV-08: Pentaho PDI và batch/stream consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Human review, provenance và sensitive AI inputs",
+      "objective": "Tự xử lý “AI sai amount/address; rerun overwrites manual correction”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "REVIEW",
+      "title": "D+1 — Chứng minh giảm 60% nhập tay",
+      "objective": "Không nhìn notes: vẽ Measurement pipeline and confounders; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-05",
+      "type": "REVIEW",
+      "title": "D+7 — Image duplicate detection thresholds",
+      "objective": "Dựng lại normal/failure timeline của CMV-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Chứng minh giảm 60% nhập tay",
+      "objective": "Tự xử lý “Volume/mix đổi làm số 60% gây hiểu nhầm”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — ACID, isolation và MVCC qua payment status",
+      "objective": "Fault: Read-check-write cho phép vi phạm invariant. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Snapshot/read consistency; statement vs transaction.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — ACID, isolation và MVCC qua payment status",
+      "objective": "Fault: Read-check-write cho phép vi phạm invariant. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Snapshot/read consistency; statement vs transaction.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "INTERVIEW",
+      "title": "Interview — ACID, isolation và MVCC qua payment status",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why dirty/nonrepeatable/phantom/write skew? How Snapshot/read consistency; statement vs transaction? What if Read-check-write cho phép vi phạm invariant? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "CMV-08",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Pentaho PDI và batch/stream consistency",
+      "objective": "Chốt phần research còn lại: extract / transform; nối với Restartable ETL and partial commits. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "CMV-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Pentaho PDI và batch/stream consistency",
+      "objective": "Không nhìn notes: vẽ Restartable ETL and partial commits; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-28",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-14: Retry topic, DLQ và poison message; KAF-15: Schema evolution và event compatibility**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-12",
+      "type": "REVIEW",
+      "title": "D+7 — Consumer idempotency và Inbox proposal",
+      "objective": "Dựng lại normal/failure timeline của KAF-12; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Retry topic, DLQ và poison message",
+      "objective": "Fault: Poison blocks partition; retry storm. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Offset progression; retry ordering consequences.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "INTERVIEW",
+      "title": "Interview — Retry topic, DLQ và poison message",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why retry backoff/retry count/quarantine/replay? How Offset progression; retry ordering consequences? What if Poison blocks partition; retry storm? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Schema evolution và event compatibility",
+      "objective": "Chốt phần research còn lại: schema version; nối với Deserializer handling và consumer rollout sequence. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Schema evolution và event compatibility",
+      "objective": "schema version / optional fields / contracts; cơ chế cần kiểm chứng: Deserializer handling và consumer rollout sequence. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho schema version / optional fields / contracts; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "LAB",
+      "title": "Implement — Schema evolution và event compatibility",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; v1/v2 compatibility tests; quarantine policy; kèm predicted/observed table và ADR “Backward compatible envelope so với new topic”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: v1/v2 compatibility tests; quarantine policy; kèm predicted/observed table và ADR “Backward compatible envelope so với new topic”."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "INTERVIEW",
+      "title": "Interview — Schema evolution và event compatibility",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why schema version/optional fields/contracts? How Deserializer handling và consumer rollout sequence? What if Old consumer fails on new schema? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

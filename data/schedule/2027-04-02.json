@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-02",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-06: Idempotent producer: PID và sequence number**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-07",
+      "type": "REVIEW",
+      "title": "D+14 — Fund Transfer end-to-end reliability",
+      "objective": "Bảo vệ trade-off của BANK-07 khi 2 instances/10x load; nối lại với project SAHA/GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-02",
+      "type": "REVIEW",
+      "title": "D+7 — Producer send lifecycle",
+      "objective": "Dựng lại normal/failure timeline của KAF-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Replication, leader và ISR",
+      "objective": "Tự xử lý “Follower lag rồi rời ISR”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-05",
+      "type": "REVIEW",
+      "title": "D+1 — Producer retry và ambiguous acknowledgement",
+      "objective": "Không nhìn notes: vẽ Retriable vs fatal errors; timeout layers; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Idempotent producer: PID và sequence number",
+      "objective": "Chốt phần research còn lại: producer identity; nối với Broker dedup scope và supported config/version. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Idempotent producer: PID và sequence number",
+      "objective": "epoch / per-partition sequence; cơ chế cần kiểm chứng: Broker dedup scope và supported config/version. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho epoch / per-partition sequence; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "LAB",
+      "title": "Implement — Idempotent producer: PID và sequence number",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Retry/restart comparison; không gán business EOS; kèm predicted/observed table và ADR “Transport retry dedup so với business event dedup”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Retry/restart comparison; không gán business EOS; kèm predicted/observed table và ADR “Transport retry dedup so với business event dedup”."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Idempotent producer: PID và sequence number",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why producer identity/epoch/per-partition sequence? How Broker dedup scope và supported config/version? What if Restart rồi application gửi lại same event? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

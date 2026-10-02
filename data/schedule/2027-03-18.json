@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-18",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-07: Fund Transfer end-to-end reliability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-01",
+      "type": "REVIEW",
+      "title": "D+14 — Stored procedure contract và commit ownership",
+      "objective": "Bảo vệ trade-off của BANK-01 khi 2 instances/10x load; nối lại với project SAHA/GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Account/beneficiary authorization",
+      "objective": "Tự xử lý “IDOR account; beneficiary sửa giữa OTP và submit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "REVIEW",
+      "title": "D+1 — USD/KHR và i18n EN/VI/KM",
+      "objective": "Không nhìn notes: vẽ Decimal serialization; Unicode; business vs display amount; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-18",
+      "type": "REVIEW",
+      "title": "D+7 — External API trả unknown result",
+      "objective": "Dựng lại normal/failure timeline của INC-18; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Fund Transfer end-to-end reliability",
+      "objective": "Chốt phần research còn lại: auth→beneficiary→OTP→attempt→Core→status; nối với Transaction identity và optimistic version acceptance. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "BANK-07",
+      "type": "LAB",
+      "title": "Implement — Fund Transfer end-to-end reliability",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Financial state/failure matrix; repeated submit ≤1 effect; kèm predicted/observed table và ADR “Reserve/confirm proposal so với direct transfer contract”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Financial state/failure matrix; repeated submit ≤1 effect; kèm predicted/observed table và ADR “Reserve/confirm proposal so với direct transfer contract”."
+    },
+    {
+      "taskCode": "BANK-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Fund Transfer end-to-end reliability",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why auth→beneficiary→OTP→attempt→Core→status? How Transaction identity và optimistic version acceptance? What if OTP valid nhưng beneficiary đổi; bank timeout? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

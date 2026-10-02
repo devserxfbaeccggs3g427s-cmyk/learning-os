@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-07",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-09: ThreadPoolExecutor queue/rejection/lifecycle; KAF-16: Lag, backpressure và slow AI**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-13",
+      "type": "REVIEW",
+      "title": "D+14 — Rebalance, heartbeat và max poll",
+      "objective": "Bảo vệ trade-off của KAF-13 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-09",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "Fault: Pool full; unbounded queue OOM; task discarded. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Queue-before-max admission and worker lifecycle.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-09",
+      "type": "INTERVIEW",
+      "title": "Interview — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why core/max/queue/rejection/shutdown/awaitTermination? How Queue-before-max admission and worker lifecycle? What if Pool full; unbounded queue OOM; task discarded? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "LEARN",
+      "title": "Concept/contract — Lag, backpressure và slow AI",
+      "objective": "record lag / age; cơ chế cần kiểm chứng: Queue growth; partition skew; bounded concurrency. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho record lag / age; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Lag, backpressure và slow AI",
+      "objective": "service rate / poll batch; cơ chế cần kiểm chứng: Queue growth; partition skew; bounded concurrency. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho service rate / poll batch; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "LAB",
+      "title": "Implement — Lag, backpressure và slow AI",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Lag-age and queue metrics; bounded admission policy; kèm predicted/observed table và ADR “More consumers so với optimize dependency/partitioning”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Lag-age and queue metrics; bounded admission policy; kèm predicted/observed table và ADR “More consumers so với optimize dependency/partitioning”."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Lag, backpressure và slow AI",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why record lag/age/service rate/poll batch? How Queue growth; partition skew; bounded concurrency? What if Input 10x; AI stalls; memory queue grows? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

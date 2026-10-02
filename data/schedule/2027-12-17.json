@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-17",
+  "objective": "Tạo và kiểm chứng evidence cho **AUX-03: Reconstruct Veritas appointment/doctor allocation; JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-03",
+      "type": "REVIEW",
+      "title": "D+7 — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Dựng lại normal/failure timeline của AUX-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Virtual threads as optional upgrade research",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why JDK version/scheduling/blocking/resource limits? How Pinned-version lifecycle and compatibility constraints? What if More concurrency exhausts DB; Java17 cannot run feature? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

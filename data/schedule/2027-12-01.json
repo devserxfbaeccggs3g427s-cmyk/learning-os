@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-01",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-04: OOMKilled; OPS-04: Rolling update và graceful Kafka/API shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OPS-03",
+      "type": "REVIEW",
+      "title": "D+1 — Requests/limits/OOMKilled/HPA",
+      "objective": "Không nhìn notes: vẽ Container limit accounting and scale lag; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-04",
+      "type": "INTERVIEW",
+      "title": "Interview — OOMKilled",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why OOMKilled; khi drill bổ sung time window, impacted operation và synthetic baseline.? How exit reason→limit/RSS→heap settings→retention evidence. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Memory limit too low, heap/native overhead, workload spike.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OPS-04",
+      "type": "LEARN",
+      "title": "Concept/contract — Rolling update và graceful Kafka/API shutdown",
+      "objective": "SIGTERM / drain / termination grace / offset; cơ chế cần kiểm chứng: In-flight completion and rebalance during rollout. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho SIGTERM / drain / termination grace / offset; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OPS-04",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Rolling update và graceful Kafka/API shutdown",
+      "objective": "Chốt phần research còn lại: offset / DB migrations; nối với In-flight completion and rebalance during rollout. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "OPS-04",
+      "type": "LAB",
+      "title": "Implement — Rolling update và graceful Kafka/API shutdown",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Rollout failure lab with replay and migration compatibility; kèm predicted/observed table và ADR “Expand-contract migration so với destructive rollout”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Rollout failure lab with replay and migration compatibility; kèm predicted/observed table và ADR “Expand-contract migration so với destructive rollout”."
+    },
+    {
+      "taskCode": "OPS-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Rolling update và graceful Kafka/API shutdown",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why SIGTERM/drain/termination grace/offset/DB migrations? How In-flight completion and rebalance during rollout? What if Old/new schemas conflict; consumer kill mid-commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-01",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-06: Exceptions và failure taxonomy; JAVA-10: CPU/IO pool sizing và cancellation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — ConcurrentHashMap và atomic compound operations",
+      "objective": "Tự xử lý “get then put race; slow mapping function blocks callers”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Exceptions và failure taxonomy",
+      "objective": "Fault: Return in finally hides failure; swallow bank timeout. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Stack trace/cause propagation; finally semantics.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Exceptions và failure taxonomy",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why checked/unchecked/cause/suppressed/try-with-resources? How Stack trace/cause propagation; finally semantics? What if Return in finally hides failure; swallow bank timeout? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-10",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — CPU/IO pool sizing và cancellation",
+      "objective": "Chốt phần research còn lại: CPU time / wait time; nối với Throughput bottleneck beyond thread count. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-10",
+      "type": "DEEP_DIVE",
+      "title": "Internals — CPU/IO pool sizing và cancellation",
+      "objective": "wait time / connection limit / deadline / interruption; cơ chế cần kiểm chứng: Throughput bottleneck beyond thread count. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho wait time / connection limit / deadline / interruption; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-10",
+      "type": "LAB",
+      "title": "Implement — CPU/IO pool sizing và cancellation",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Load curve bounded by downstream; cancel effectiveness; kèm predicted/observed table và ADR “Formula estimate so với measured capacity”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Load curve bounded by downstream; cancel effectiveness; kèm predicted/observed table và ADR “Formula estimate so với measured capacity”."
+    },
+    {
+      "taskCode": "JAVA-10",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — CPU/IO pool sizing và cancellation",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why CPU time/wait time/connection limit/deadline/interruption? How Throughput bottleneck beyond thread count? What if 80 threads trên pool DB10; timeout task vẫn chạy? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

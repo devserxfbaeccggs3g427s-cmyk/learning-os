@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-30",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-07: Bulkhead và bounded resource isolation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-04",
+      "type": "REVIEW",
+      "title": "D+7 — Retry GET vs POST và idempotency contract",
+      "objective": "Dựng lại normal/failure timeline của GATE-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Bucket4j distributed rate limiting",
+      "objective": "Tự xử lý “2 gateways share quota; Redis unavailable”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-06",
+      "type": "REVIEW",
+      "title": "D+1 — Resilience4j circuit breaker state machine",
+      "objective": "Không nhìn notes: vẽ Failure/slow-call recording và probe gating; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Bulkhead và bounded resource isolation",
+      "objective": "queue / fallback; cơ chế cần kiểm chứng: Resource isolation; reactive blocking risk. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho queue / fallback; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "LAB",
+      "title": "Implement — Bulkhead và bounded resource isolation",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Two routes load: healthy route retains target budget; kèm predicted/observed table và ADR “Semaphore so với thread pool isolation”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Two routes load: healthy route retains target budget; kèm predicted/observed table và ADR “Semaphore so với thread pool isolation”."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Bulkhead và bounded resource isolation",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why semaphore/thread pool/queue/fallback? How Resource isolation; reactive blocking risk? What if Slow report consumes all request capacity? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

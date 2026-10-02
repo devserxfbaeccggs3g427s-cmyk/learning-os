@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-23",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-13: Rebalance, heartbeat và max poll; INC-11: Kafka rebalance liên tục**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-09",
+      "type": "REVIEW",
+      "title": "D+14 — Key ordering và partition count changes",
+      "objective": "Bảo vệ trade-off của KAF-09 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-13",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Rebalance, heartbeat và max poll",
+      "objective": "Fault: Slow AI vượt poll interval; continuous rebalance. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Coordinator and assignment revocation; version-specific semantics.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-13",
+      "type": "INTERVIEW",
+      "title": "Interview — Rebalance, heartbeat và max poll",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why session timeout/heartbeat/max.poll.interval/group protocol? How Coordinator and assignment revocation; version-specific semantics? What if Slow AI vượt poll interval; continuous rebalance? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-11",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Kafka rebalance liên tục",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Kafka rebalance liên tục; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Protocol/version→reasons→poll/heartbeat→deployment timeline. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if max-poll exceeded, network, restart churn, config mismatch.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-08",
+  "objective": "Tạo và kiểm chứng evidence cho **AUX-02: Reconstruct MyBV payment/e-Contract/IMS**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-01",
+      "type": "REVIEW",
+      "title": "D+1 — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Không nhìn notes: vẽ Client vs server trust; servlet request lifecycle; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-04",
+      "type": "REVIEW",
+      "title": "D+7 — OOMKilled",
+      "objective": "Dựng lại normal/failure timeline của INC-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUX-02",
+      "type": "LEARN",
+      "title": "Concept/contract — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "contract identity / payment state / sync / authorization; cơ chế cần kiểm chứng: Authority per state and retry boundary. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho contract identity / payment state / sync / authorization; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUX-02",
+      "type": "LAB",
+      "title": "Implement — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Architecture/trust/tx/performance map + recovery matrix; kèm predicted/observed table và ADR “Synchronous issue so với durable pending sync proposal”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Architecture/trust/tx/performance map + recovery matrix; kèm predicted/observed table và ADR “Synchronous issue so với durable pending sync proposal”."
+    },
+    {
+      "taskCode": "AUX-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "Fault: Payment success nhưng contract chưa issue; IMS partial sync. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Authority per state and retry boundary.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUX-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "Không nhìn notes: vẽ Authority per state and retry boundary; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

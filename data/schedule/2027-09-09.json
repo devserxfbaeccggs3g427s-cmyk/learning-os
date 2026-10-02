@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-09",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-07: View tracking correctness và performance; JAVA-02: equals/hashCode/generics và identity collections**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-06",
+      "type": "REVIEW",
+      "title": "D+1 — MinIO attachments và DB/file consistency",
+      "objective": "Không nhìn notes: vẽ Object store vs local DB atomicity boundary; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "LAB",
+      "title": "Implement — View tracking correctness và performance",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Define view semantics + concurrent counter experiment; kèm predicted/observed table và ADR “Exact per-view writes so với buffered aggregation”.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Define view semantics + concurrent counter experiment; kèm predicted/observed table và ADR “Exact per-view writes so với buffered aggregation”."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — View tracking correctness và performance",
+      "objective": "Fault: Refresh inflates views; hot row contention. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Counter atomicity and write amplification.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — View tracking correctness và performance",
+      "objective": "Fault: Refresh inflates views; hot row contention. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Counter atomicity and write amplification.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "INTERVIEW",
+      "title": "Interview — View tracking correctness và performance",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why view definition/duplicate/bot/privacy/aggregation? How Counter atomicity and write amplification? What if Refresh inflates views; hot row contention? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "LEARN",
+      "title": "Concept/contract — equals/hashCode/generics và identity collections",
+      "objective": "value / entity identity / hash contract; cơ chế cần kiểm chứng: Bucket lookup; mutable key; generic variance. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho value / entity identity / hash contract; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — equals/hashCode/generics và identity collections",
+      "objective": "Không nhìn notes: vẽ Bucket lookup; mutable key; generic variance; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

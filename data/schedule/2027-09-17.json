@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-17",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-02: CPU 95%**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-02",
+      "type": "REVIEW",
+      "title": "D+7 — equals/hashCode/generics và identity collections",
+      "objective": "Dựng lại normal/failure timeline của JAVA-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Tự xử lý “Collision/skew; concurrent modification”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-07",
+      "type": "REVIEW",
+      "title": "D+1 — JVM class loading, memory và GC",
+      "objective": "Không nhìn notes: vẽ Allocation, retention, reachability, pauses; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-02",
+      "type": "INTERVIEW",
+      "title": "Interview — CPU 95%",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why CPU 95%; khi drill bổ sung time window, impacted operation và synthetic baseline.? How CPU vs throttle→profile stack→GC→request mix. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if CPU loop, serialization, retry storm, GC churn.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-02",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — CPU 95%",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why CPU 95%; khi drill bổ sung time window, impacted operation và synthetic baseline.? How CPU vs throttle→profile stack→GC→request mix. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if CPU loop, serialization, retry storm, GC churn.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

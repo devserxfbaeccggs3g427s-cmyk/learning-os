@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-21",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-06: Request/response signing và replay protection**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-14",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Service/use-case layer và transfer strategy",
+      "objective": "Tự xử lý “Chọn sai rail; adapter map unknown thành failed”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "REVIEW",
+      "title": "D+1 — Hash, encryption, signature và HMAC",
+      "objective": "Không nhìn notes: vẽ RSA sign vs encrypt; ECDH key agreement+KDF; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "REVIEW",
+      "title": "D+7 — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Dựng lại normal/failure timeline của PAY-13; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Hash, encryption, signature và HMAC",
+      "objective": "Tự xử lý “Dùng hash làm authentication; key reuse sai mục đích”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "LAB",
+      "title": "Implement — Request/response signing và replay protection",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Golden signed vectors + replay/skew tests; kèm predicted/observed table và ADR “Timestamp-only so với nonce registry theo contract”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Golden signed vectors + replay/skew tests; kèm predicted/observed table và ADR “Timestamp-only so với nonce registry theo contract”."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Request/response signing và replay protection",
+      "objective": "Fault: Valid signature replay; changed amount/encoding. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Canonicalization và nonce acceptance window.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Request/response signing và replay protection",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why canonical bytes/nonce/timestamp/body/headers? How Canonicalization và nonce acceptance window? What if Valid signature replay; changed amount/encoding? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Request/response signing và replay protection",
+      "objective": "Không nhìn notes: vẽ Canonicalization và nonce acceptance window; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

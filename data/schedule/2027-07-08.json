@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-08",
+  "objective": "Tạo và kiểm chứng evidence cho **SD-06: CMV Kafka pipeline; SEC-03: OAuth2/OIDC/Keycloak boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-02",
+      "type": "REVIEW",
+      "title": "D+14 — Deadline budget, retries, backoff và jitter",
+      "objective": "Bảo vệ trade-off của DIST-02 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-05",
+      "type": "REVIEW",
+      "title": "D+7 — CAP, consistency models và clock assumptions",
+      "objective": "Dựng lại normal/failure timeline của DIST-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-06",
+      "type": "INTERVIEW",
+      "title": "Interview — CMV Kafka pipeline",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why CMV Kafka pipeline: CMS/kho hàng + slow AI result + schema changes? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if Order/version/duplicate/backpressure; AI provenance; recovery under outage? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "LEARN",
+      "title": "Concept/contract — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "authorization server / resource server; cơ chế cần kiểm chứng: Discovery/JWKS/claims mapping/flow roles. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho authorization server / resource server; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Không nhìn notes: vẽ Discovery/JWKS/claims mapping/flow roles; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

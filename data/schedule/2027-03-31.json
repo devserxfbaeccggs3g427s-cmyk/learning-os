@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-31",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-04: acks=0/1/all và min.insync.replicas; KAF-05: Producer retry và ambiguous acknowledgement**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-06",
+      "type": "REVIEW",
+      "title": "D+14 — USD/KHR và i18n EN/VI/KM",
+      "objective": "Bảo vệ trade-off của BANK-06 khi 2 instances/10x load; nối lại với project SAHA/GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "REVIEW",
+      "title": "D+1 — Replication, leader và ISR",
+      "objective": "Không nhìn notes: vẽ Log replication và leader election assumptions; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "LAB",
+      "title": "Implement — acks=0/1/all và min.insync.replicas",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; RF3/minISR2 fault matrix; callback outcomes; kèm predicted/observed table và ADR “acks1 so với acksall theo mất dữ liệu chấp nhận”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: RF3/minISR2 fault matrix; callback outcomes; kèm predicted/observed table và ADR “acks1 so với acksall theo mất dữ liệu chấp nhận”."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — acks=0/1/all và min.insync.replicas",
+      "objective": "Fault: Broker loss; ISR dưới minISR. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu ack all current ISR vs minISR admission.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — acks=0/1/all và min.insync.replicas",
+      "objective": "Fault: Broker loss; ISR dưới minISR. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu ack all current ISR vs minISR admission.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "INTERVIEW",
+      "title": "Interview — acks=0/1/all và min.insync.replicas",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why durability/availability/ack policy? How ack all current ISR vs minISR admission? What if Broker loss; ISR dưới minISR? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-05",
+      "type": "LEARN",
+      "title": "Concept/contract — Producer retry và ambiguous acknowledgement",
+      "objective": "retries / delivery deadline; cơ chế cần kiểm chứng: Retriable vs fatal errors; timeout layers. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho retries / delivery deadline; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Producer retry và ambiguous acknowledgement",
+      "objective": "Không nhìn notes: vẽ Retriable vs fatal errors; timeout layers; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

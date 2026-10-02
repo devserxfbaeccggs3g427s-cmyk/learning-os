@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-29",
+  "objective": "Tạo và kiểm chứng evidence cho **OPS-03: Requests/limits/OOMKilled/HPA**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OPS-02",
+      "type": "REVIEW",
+      "title": "D+1 — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "Không nhìn notes: vẽ Readiness vs liveness and rollout endpoint updates; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "LEARN",
+      "title": "Concept/contract — Requests/limits/OOMKilled/HPA",
+      "objective": "CPU throttling / memory limit / heap+native / HPA metrics; cơ chế cần kiểm chứng: Container limit accounting and scale lag. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho CPU throttling / memory limit / heap+native / HPA metrics; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "LAB",
+      "title": "Implement — Requests/limits/OOMKilled/HPA",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Memory budget + load/restart evidence; kèm predicted/observed table và ADR “Bigger heap so với root cause retention/native usage”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Memory budget + load/restart evidence; kèm predicted/observed table và ADR “Bigger heap so với root cause retention/native usage”."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "LAB",
+      "title": "Implement — Requests/limits/OOMKilled/HPA",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Memory budget + load/restart evidence; kèm predicted/observed table và ADR “Bigger heap so với root cause retention/native usage”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Memory budget + load/restart evidence; kèm predicted/observed table và ADR “Bigger heap so với root cause retention/native usage”."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Requests/limits/OOMKilled/HPA",
+      "objective": "Fault: Heap dưới limit nhưng native làm OOMKilled. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Container limit accounting and scale lag.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OPS-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Requests/limits/OOMKilled/HPA",
+      "objective": "Không nhìn notes: vẽ Container limit accounting and scale lag; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-09",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-03: OAuth2/OIDC/Keycloak boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Capacity, backpressure và graceful degradation",
+      "objective": "Tự xử lý “10x traffic; queue grows; one instance dies”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-06",
+      "type": "REVIEW",
+      "title": "D+1 — CMV Kafka pipeline",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Chốt phần research còn lại: ID vs access token; nối với Discovery/JWKS/claims mapping/flow roles. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "LAB",
+      "title": "Implement — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Sequence và token type acceptance tests; kèm predicted/observed table và ADR “OIDC identity so với OAuth delegation”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Sequence và token type acceptance tests; kèm predicted/observed table và ADR “OIDC identity so với OAuth delegation”."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "LAB",
+      "title": "Implement — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Sequence và token type acceptance tests; kèm predicted/observed table và ADR “OIDC identity so với OAuth delegation”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Sequence và token type acceptance tests; kèm predicted/observed table và ADR “OIDC identity so với OAuth delegation”."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Fault: Dùng ID token gọi API; wrong client audience. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Discovery/JWKS/claims mapping/flow roles.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why authorization server/resource server/ID vs access token? How Discovery/JWKS/claims mapping/flow roles? What if Dùng ID token gọi API; wrong client audience? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

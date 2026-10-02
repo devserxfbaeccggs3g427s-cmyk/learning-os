@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-14",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-02: Keycloak/JWKS unavailable và rotation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-01",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct Gateway routing/filter chain",
+      "objective": "Không nhìn notes: vẽ Filter ordering; reactive vs servlet runtime confirmation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Keycloak/JWKS unavailable và rotation",
+      "objective": "local JWT validation / cache / kid / audience; cơ chế cần kiểm chứng: Cached key validation vs live fetch on miss. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Notes có assumptions + diagram cho local JWT validation / cache / kid / audience; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "LAB",
+      "title": "Implement — Keycloak/JWKS unavailable và rotation",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Outage/rotation matrix phân biệt login và API validation; kèm predicted/observed table và ADR “Offline validation so với introspection”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Outage/rotation matrix phân biệt login và API validation; kèm predicted/observed table và ADR “Offline validation so với introspection”."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Keycloak/JWKS unavailable và rotation",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why local JWT validation/cache/kid/audience? How Cached key validation vs live fetch on miss? What if Old cached key valid; new kid unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

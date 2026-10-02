@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-10",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-02: equals/hashCode/generics và identity collections**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-09",
+      "type": "REVIEW",
+      "title": "D+14 — Pagination ổn định của asset/transaction list",
+      "objective": "Bảo vệ trade-off của DB-09 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-07",
+      "type": "REVIEW",
+      "title": "D+1 — View tracking correctness và performance",
+      "objective": "Không nhìn notes: vẽ Counter atomicity and write amplification; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — equals/hashCode/generics và identity collections",
+      "objective": "Chốt phần research còn lại: hash contract / type erasure; nối với Bucket lookup; mutable key; generic variance. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "LAB",
+      "title": "Implement — equals/hashCode/generics và identity collections",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; HashSet/Map contract tests with entity/value objects; kèm predicted/observed table và ADR “Business equality so với database entity identity”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: HashSet/Map contract tests with entity/value objects; kèm predicted/observed table và ADR “Business equality so với database entity identity”."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "LAB",
+      "title": "Implement — equals/hashCode/generics và identity collections",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; HashSet/Map contract tests with entity/value objects; kèm predicted/observed table và ADR “Business equality so với database entity identity”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: HashSet/Map contract tests with entity/value objects; kèm predicted/observed table và ADR “Business equality so với database entity identity”."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — equals/hashCode/generics và identity collections",
+      "objective": "Fault: Mutable key mất trong Map; unsafe raw type cast. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Bucket lookup; mutable key; generic variance.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-02",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — equals/hashCode/generics và identity collections",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why value/entity identity/hash contract/type erasure? How Bucket lookup; mutable key; generic variance? What if Mutable key mất trong Map; unsafe raw type cast? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-16",
+  "objective": "Tạo và kiểm chứng evidence cho **SD-08: API Gateway**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OBS-04",
+      "type": "REVIEW",
+      "title": "D+7 — SLI/SLO và actionable alerts",
+      "objective": "Dựng lại normal/failure timeline của OBS-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-05",
+      "type": "REVIEW",
+      "title": "D+1 — Payment reconciliation",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-04",
+      "type": "REVIEW",
+      "title": "D+14 — CSRF/CORS/XSS và browser session decisions",
+      "objective": "Bảo vệ trade-off của SEC-04 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT; crypto chưa gắn project.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-08",
+      "type": "INTERVIEW",
+      "title": "Interview — API Gateway",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why API Gateway: public/admin routing, JWT, rate limits, discovery, resilience? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if JWKS outage vs login outage; no unsafe retry; capacity, budgets, 429/5xx correctness? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

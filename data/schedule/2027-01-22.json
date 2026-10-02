@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-22",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-07: Lockout và credential abuse**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Device binding và trusted-device lifecycle",
+      "objective": "Tự xử lý “Spoof device ID; cloned app; lost device”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "REVIEW",
+      "title": "D+7 — OTP challenge model và transaction binding",
+      "objective": "Dựng lại normal/failure timeline của OTP-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "REVIEW",
+      "title": "D+14 — Persistence, replication và session recovery",
+      "objective": "Bảo vệ trade-off của RED-06 khi 2 instances/10x load; nối lại với project SAHA/DEBIT/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "LAB",
+      "title": "Implement — Lockout và credential abuse",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Distributed attempt test + denial-of-service analysis; kèm predicted/observed table và ADR “Hard lockout so với graduated throttling”.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Distributed attempt test + denial-of-service analysis; kèm predicted/observed table và ADR “Hard lockout so với graduated throttling”."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Lockout và credential abuse",
+      "objective": "Fault: Attacker khóa tài khoản nạn nhân; parallel attempts. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic counters, expiry, unlock policy.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Lockout và credential abuse",
+      "objective": "Fault: Attacker khóa tài khoản nạn nhân; parallel attempts. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Atomic counters, expiry, unlock policy.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Lockout và credential abuse",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why per-account/IP/device thresholds/enumeration? How Atomic counters, expiry, unlock policy? What if Attacker khóa tài khoản nạn nhân; parallel attempts? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Lockout và credential abuse",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why per-account/IP/device thresholds/enumeration? How Atomic counters, expiry, unlock policy? What if Attacker khóa tài khoản nạn nhân; parallel attempts? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

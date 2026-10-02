@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-05",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-03: Refresh token rotation và replay proposal; AUTH-04: Logout/password change/revocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-02",
+      "type": "REVIEW",
+      "title": "D+7 — JWT validation với Nimbus và Spring Security",
+      "objective": "Dựng lại normal/failure timeline của AUTH-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Refresh token rotation và replay proposal",
+      "objective": "Fault: Stolen refresh; 2 refresh đồng thời. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Atomic rotate và concurrent refresh arbitration.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Refresh token rotation và replay proposal",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why token family/hashed storage/reuse detection? How Atomic rotate và concurrent refresh arbitration? What if Stolen refresh; 2 refresh đồng thời? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-04",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Logout/password change/revocation",
+      "objective": "session version / revocation latency / device scope; cơ chế cần kiểm chứng: Online lookup vs expiry-only enforcement. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Notes có assumptions + diagram cho session version / revocation latency / device scope; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Logout/password change/revocation",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why session version/revocation latency/device scope? How Online lookup vs expiry-only enforcement? What if Đổi mật khẩu nhưng access token còn dùng được? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

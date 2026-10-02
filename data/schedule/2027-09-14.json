@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-14",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-03: ArrayList/LinkedList/HashMap/TreeMap internals; JAVA-07: JVM class loading, memory và GC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-05",
+      "type": "REVIEW",
+      "title": "D+14 — Asset search/admin CRUD/filter/pagination",
+      "objective": "Bảo vệ trade-off của FLOW-05 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "LAB",
+      "title": "Implement — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Data-structure benchmark with stated workload; kèm predicted/observed table và ADR “ArrayList so với LinkedList; HashMap so với TreeMap”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Data-structure benchmark with stated workload; kèm predicted/observed table và ADR “ArrayList so với LinkedList; HashMap so với TreeMap”."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Fault: Collision/skew; concurrent modification. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Resize, buckets/tree bins in pinned JDK, locality.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-03",
+      "type": "INTERVIEW",
+      "title": "Interview — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why array growth/node allocation/hash collision/order? How Resize, buckets/tree bins in pinned JDK, locality? What if Collision/skew; concurrent modification? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-07",
+      "type": "LEARN",
+      "title": "Concept/contract — JVM class loading, memory và GC",
+      "objective": "heap / stack / metaspace / classloader; cơ chế cần kiểm chứng: Allocation, retention, reachability, pauses. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho heap / stack / metaspace / classloader; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — JVM class loading, memory và GC",
+      "objective": "Không nhìn notes: vẽ Allocation, retention, reachability, pauses; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

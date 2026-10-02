@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-25",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-08: Execution plan và statistics; INC-05: DB CPU high**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-04",
+      "type": "REVIEW",
+      "title": "D+14 — Optimistic vs pessimistic locking",
+      "objective": "Bảo vệ trade-off của DB-04 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-24",
+      "type": "REVIEW",
+      "title": "D+7 — Concurrent workflow approval mismatch",
+      "objective": "Dựng lại normal/failure timeline của INC-24; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Execution plan và statistics",
+      "objective": "Fault: Plan regression khi data distribution đổi. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Optimizer cardinality và bind/skew.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Execution plan và statistics",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why estimated/actual rows/join/scan/sort? How Optimizer cardinality và bind/skew? What if Plan regression khi data distribution đổi? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-05",
+      "type": "INTERVIEW",
+      "title": "Interview — DB CPU high",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why DB CPU high; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Top SQL by workload→actual plan→row stats→call frequency. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Full scans, bad join, parse storm, too many calls.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

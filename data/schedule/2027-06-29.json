@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-29",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-04: 2PC và local atomicity limits; DIST-05: CAP, consistency models và clock assumptions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-03",
+      "type": "REVIEW",
+      "title": "D+1 — Saga/compensation và unknown outcome",
+      "objective": "Không nhìn notes: vẽ Durable orchestration state and compensation idempotency; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-04",
+      "type": "LAB",
+      "title": "Implement — 2PC và local atomicity limits",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Scope diagram, suitability ADR; không giả định bank hỗ trợ XA; kèm predicted/observed table và ADR “2PC so với Saga/Outbox”.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Scope diagram, suitability ADR; không giả định bank hỗ trợ XA; kèm predicted/observed table và ADR “2PC so với Saga/Outbox”."
+    },
+    {
+      "taskCode": "DIST-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — 2PC và local atomicity limits",
+      "objective": "Fault: Coordinator chết giữa prepare/commit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Resource enlistment and blocking.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — 2PC và local atomicity limits",
+      "objective": "Fault: Coordinator chết giữa prepare/commit. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Resource enlistment and blocking.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-04",
+      "type": "INTERVIEW",
+      "title": "Interview — 2PC và local atomicity limits",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why prepare/commit/coordinator/in-doubt? How Resource enlistment and blocking? What if Coordinator chết giữa prepare/commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DIST-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — CAP, consistency models và clock assumptions",
+      "objective": "Chốt phần research còn lại: linearizability / eventual consistency; nối với Read/write authority; clock vs causality. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DIST-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — CAP, consistency models và clock assumptions",
+      "objective": "Không nhìn notes: vẽ Read/write authority; clock vs causality; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-14",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-01: IoC/DI và bean resolution trong transfer strategy; SPR-04: AOP, JDK proxy, CGLIB và self-invocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-01",
+      "type": "REVIEW",
+      "title": "D+1 — OOP/SOLID và immutable financial value objects",
+      "objective": "Không nhìn notes: vẽ Object ownership and aliasing; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "REVIEW",
+      "title": "D+7 — Request-ID contract và request fingerprint",
+      "objective": "Dựng lại normal/failure timeline của PAY-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-01",
+      "type": "LAB",
+      "title": "Implement — IoC/DI và bean resolution trong transfer strategy",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Bean wiring tests; qualifier selection evidence; kèm predicted/observed table và ADR “Explicit factory so với DI container”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Bean wiring tests; qualifier selection evidence; kèm predicted/observed table và ADR “Explicit factory so với DI container”."
+    },
+    {
+      "taskCode": "SPR-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — IoC/DI và bean resolution trong transfer strategy",
+      "objective": "Fault: Hai strategy beans ambiguous; cycle startup. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Candidate resolution và circular dependencies.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — IoC/DI và bean resolution trong transfer strategy",
+      "objective": "Fault: Hai strategy beans ambiguous; cycle startup. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Candidate resolution và circular dependencies.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-01",
+      "type": "INTERVIEW",
+      "title": "Interview — IoC/DI và bean resolution trong transfer strategy",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why BeanFactory/ApplicationContext/constructor DI/Primary/Qualifier? How Candidate resolution và circular dependencies? What if Hai strategy beans ambiguous; cycle startup? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SPR-04",
+      "type": "LEARN",
+      "title": "Concept/contract — AOP, JDK proxy, CGLIB và self-invocation",
+      "objective": "proxy / advice / order; cơ chế cần kiểm chứng: Call through proxy vs this-call; interception limits. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho proxy / advice / order; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — AOP, JDK proxy, CGLIB và self-invocation",
+      "objective": "Không nhìn notes: vẽ Call through proxy vs this-call; interception limits; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-13",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-08: Actuator/config/health và graceful application shutdown; DB-05: Deadlock và lock ordering**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-05",
+      "type": "REVIEW",
+      "title": "D+14 — Stream/Optional/lambda và side effects",
+      "objective": "Bảo vệ trade-off của JAVA-05 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Actuator/config/health và graceful application shutdown",
+      "objective": "Fault: Health false-positive; shutdown cắt request. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Lifecycle hooks; inflight request draining.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Actuator/config/health và graceful application shutdown",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why health groups/config secrets/readiness? How Lifecycle hooks; inflight request draining? What if Health false-positive; shutdown cắt request? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-05",
+      "type": "LEARN",
+      "title": "Concept/contract — Deadlock và lock ordering",
+      "objective": "wait-for graph / victim; cơ chế cần kiểm chứng: Acquisition order và rollback scope. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho wait-for graph / victim; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Deadlock và lock ordering",
+      "objective": "Chốt phần research còn lại: retry whole transaction; nối với Acquisition order và rollback scope. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DB-05",
+      "type": "LAB",
+      "title": "Implement — Deadlock và lock ordering",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Reproduce deadlock; ordering fix; bounded retry test; kèm predicted/observed table và ADR “Deterministic ordering so với retry-only”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Reproduce deadlock; ordering fix; bounded retry test; kèm predicted/observed table và ADR “Deterministic ordering so với retry-only”."
+    },
+    {
+      "taskCode": "DB-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Deadlock và lock ordering",
+      "objective": "Không nhìn notes: vẽ Acquisition order và rollback scope; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

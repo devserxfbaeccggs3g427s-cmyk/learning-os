@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-20",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-03: Gateway timeout vs Feign/downstream timeout; INC-16: Downstream timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-06",
+      "type": "REVIEW",
+      "title": "D+14 — Capacity, backpressure và graceful degradation",
+      "objective": "Bảo vệ trade-off của DIST-06 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "REVIEW",
+      "title": "D+7 — Reconstruct Gateway routing/filter chain",
+      "objective": "Dựng lại normal/failure timeline của GATE-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Fault: Gateway timed out nhưng service vẫn commit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Cancellation propagation and remaining work.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Fault: Gateway timed out nhưng service vẫn commit. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Cancellation propagation and remaining work.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Gateway timeout vs Feign/downstream timeout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why end-to-end deadline/connect/read/client budget? How Cancellation propagation and remaining work? What if Gateway timed out nhưng service vẫn commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-16",
+      "type": "INTERVIEW",
+      "title": "Interview — Downstream timeout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Downstream timeout; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Timeout stage→remote evidence→retry owner→pool. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if DNS/connectivity, server slow, connection starvation.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-30",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-05: Asset search/admin CRUD/filter/pagination**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-08",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Execution plan và statistics",
+      "objective": "Tự xử lý “Plan regression khi data distribution đổi”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-09",
+      "type": "REVIEW",
+      "title": "D+1 — Pagination ổn định của asset/transaction list",
+      "objective": "Không nhìn notes: vẽ Index range seek và ordering under inserts; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-06",
+      "type": "REVIEW",
+      "title": "D+7 — B+Tree và index cho bill/status query",
+      "objective": "Dựng lại normal/failure timeline của DB-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-09",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Pagination ổn định của asset/transaction list",
+      "objective": "Tự xử lý “Duplicate/missing row khi phân trang đồng thời”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Asset search/admin CRUD/filter/pagination",
+      "objective": "Chốt phần research còn lại: public visibility; nối với Query composition/index use/ownership. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Asset search/admin CRUD/filter/pagination",
+      "objective": "input validation / filter whitelists; cơ chế cần kiểm chứng: Query composition/index use/ownership. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho input validation / filter whitelists; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "LAB",
+      "title": "Implement — Asset search/admin CRUD/filter/pagination",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Search auth matrix + plans + stable pagination; kèm predicted/observed table và ADR “Flexible dynamic filter so với bounded indexed filters”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Search auth matrix + plans + stable pagination; kèm predicted/observed table và ADR “Flexible dynamic filter so với bounded indexed filters”."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Asset search/admin CRUD/filter/pagination",
+      "objective": "Không nhìn notes: vẽ Query composition/index use/ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

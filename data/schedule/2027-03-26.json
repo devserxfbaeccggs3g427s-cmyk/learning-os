@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-26",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-02: Producer send lifecycle; KAF-03: Replication, leader và ISR**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-07",
+      "type": "REVIEW",
+      "title": "D+7 — Fund Transfer end-to-end reliability",
+      "objective": "Dựng lại normal/failure timeline của BANK-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-01",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct topic/event ownership",
+      "objective": "Không nhìn notes: vẽ Append-only log; retention vs processing state; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-02",
+      "type": "LAB",
+      "title": "Implement — Producer send lifecycle",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Trace send→callback; inject serializer/network failures; kèm predicted/observed table và ADR “Await callback so với fire-and-forget”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Trace send→callback; inject serializer/network failures; kèm predicted/observed table và ADR “Await callback so với fire-and-forget”."
+    },
+    {
+      "taskCode": "KAF-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Producer send lifecycle",
+      "objective": "Fault: send trả future nhưng publish chưa ACK. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Buffer memory; blocking boundaries; asynchronous errors.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Producer send lifecycle",
+      "objective": "Fault: send trả future nhưng publish chưa ACK. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Buffer memory; blocking boundaries; asynchronous errors.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Producer send lifecycle",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why serialize/partition/accumulator/network/callback? How Buffer memory; blocking boundaries; asynchronous errors? What if send trả future nhưng publish chưa ACK? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "LEARN",
+      "title": "Concept/contract — Replication, leader và ISR",
+      "objective": "leader / follower / replication factor; cơ chế cần kiểm chứng: Log replication và leader election assumptions. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho leader / follower / replication factor; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Replication, leader và ISR",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why leader/follower/replication factor/ISR? How Log replication và leader election assumptions? What if Follower lag rồi rời ISR? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-23",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-05: Duplicate bill khác request duplicate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-02",
+      "type": "REVIEW",
+      "title": "D+14 — Hai session insert cùng unique key",
+      "objective": "Bảo vệ trade-off của DB-02 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "LAB",
+      "title": "Implement — Duplicate bill khác request duplicate",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; 2-key same-bill test; invariant business effect ≤1; kèm predicted/observed table và ADR “Request key so với business key”.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 2-key same-bill test; invariant business effect ≤1; kèm predicted/observed table và ADR “Request key so với business key”."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Duplicate bill khác request duplicate",
+      "objective": "Fault: 2 request ID khác nhau thanh toán cùng bill. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Business unique index và conditional mutation.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Duplicate bill khác request duplicate",
+      "objective": "Fault: 2 request ID khác nhau thanh toán cùng bill. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Business unique index và conditional mutation.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Duplicate bill khác request duplicate",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why bill identity/merchant/status/version? How Business unique index và conditional mutation? What if 2 request ID khác nhau thanh toán cùng bill? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Duplicate bill khác request duplicate",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why bill identity/merchant/status/version? How Business unique index và conditional mutation? What if 2 request ID khác nhau thanh toán cùng bill? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

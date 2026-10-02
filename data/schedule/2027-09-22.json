@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-22",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-08: Report module POI/iText scope and streaming; INC-03: Memory tăng liên tục**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-06",
+      "type": "REVIEW",
+      "title": "D+14 — MinIO attachments và DB/file consistency",
+      "objective": "Bảo vệ trade-off của FLOW-06 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Report module POI/iText scope and streaming",
+      "objective": "Fault: Large report OOM; export leaks unauthorized data. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Workbook/PDF memory lifecycle and resource release.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Report module POI/iText scope and streaming",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why export/query paging/streaming/fonts/authorization? How Workbook/PDF memory lifecycle and resource release? What if Large report OOM; export leaks unauthorized data? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Memory tăng liên tục",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Memory tăng liên tục; khi drill bổ sung time window, impacted operation và synthetic baseline.? How heap vs RSS→post-GC trend→heap dominators→job correlation. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Retention leak, unbounded queue, cache, native memory.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

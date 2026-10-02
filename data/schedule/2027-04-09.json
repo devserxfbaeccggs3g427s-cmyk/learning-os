@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-09",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-09: Key ordering và partition count changes**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-02",
+      "type": "REVIEW",
+      "title": "D+14 — Producer send lifecycle",
+      "objective": "Bảo vệ trade-off của KAF-02 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — max.in.flight và ordering khi retry",
+      "objective": "Tự xử lý “Batch2 accepted trước retried batch1”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "REVIEW",
+      "title": "D+1 — Batching, linger, compression và partition choice",
+      "objective": "Không nhìn notes: vẽ Accumulator batches và hot partition; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-09",
+      "type": "LAB",
+      "title": "Implement — Key ordering và partition count changes",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Per-aggregate sequence test + partition expansion plan; kèm predicted/observed table và ADR “Single aggregate ordering so với global ordering”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Per-aggregate sequence test + partition expansion plan; kèm predicted/observed table và ADR “Single aggregate ordering so với global ordering”."
+    },
+    {
+      "taskCode": "KAF-09",
+      "type": "LAB",
+      "title": "Implement — Key ordering và partition count changes",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Per-aggregate sequence test + partition expansion plan; kèm predicted/observed table và ADR “Single aggregate ordering so với global ordering”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Per-aggregate sequence test + partition expansion plan; kèm predicted/observed table và ADR “Single aggregate ordering so với global ordering”."
+    },
+    {
+      "taskCode": "KAF-09",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Key ordering và partition count changes",
+      "objective": "Fault: Increase partitions đổi key mapping; multi producer ordering. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Hash partition routing; ordering per partition only.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-09",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Key ordering và partition count changes",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why aggregate key/order ID/partition mapping? How Hash partition routing; ordering per partition only? What if Increase partitions đổi key mapping; multi producer ordering? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

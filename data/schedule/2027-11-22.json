@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-22",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-08: reCAPTCHA v3 và abuse signals scope**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-05",
+      "type": "REVIEW",
+      "title": "D+1 — MyBatis mapping và framework choice",
+      "objective": "Không nhìn notes: vẽ Session lifecycle và lazy/result mapping; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-05",
+      "type": "REVIEW",
+      "title": "D+7 — Payment reconciliation",
+      "objective": "Dựng lại normal/failure timeline của SD-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "DEEP_DIVE",
+      "title": "Internals — reCAPTCHA v3 và abuse signals scope",
+      "objective": "risk scores / server verification / rate controls; cơ chế cần kiểm chứng: Server-side verification và threshold policy. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho risk scores / server verification / rate controls; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "LAB",
+      "title": "Implement — reCAPTCHA v3 và abuse signals scope",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Abuse model và project ownership register; kèm predicted/observed table và ADR “Risk signal so với authorization control”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Abuse model và project ownership register; kèm predicted/observed table và ADR “Risk signal so với authorization control”."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — reCAPTCHA v3 và abuse signals scope",
+      "objective": "Fault: Token replay; external verification unavailable. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Server-side verification và threshold policy.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "INTERVIEW",
+      "title": "Interview — reCAPTCHA v3 và abuse signals scope",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why risk scores/server verification/rate controls? How Server-side verification và threshold policy? What if Token replay; external verification unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

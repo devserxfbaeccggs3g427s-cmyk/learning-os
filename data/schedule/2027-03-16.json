@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-16",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-06: USD/KHR và i18n EN/VI/KM**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-04",
+      "type": "REVIEW",
+      "title": "D+1 — Account/beneficiary authorization",
+      "objective": "Không nhìn notes: vẽ Authorization before side effect; trusted principal; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — USD/KHR và i18n EN/VI/KM",
+      "objective": "currency scale / rounding / locale / timezone; cơ chế cần kiểm chứng: Decimal serialization; Unicode; business vs display amount. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho currency scale / rounding / locale / timezone; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "LAB",
+      "title": "Implement — USD/KHR và i18n EN/VI/KM",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Money/locale test vectors; FX scope cần xác nhận; kèm predicted/observed table và ADR “Canonical decimal so với localized display string”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Money/locale test vectors; FX scope cần xác nhận; kèm predicted/observed table và ADR “Canonical decimal so với localized display string”."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "LAB",
+      "title": "Implement — USD/KHR và i18n EN/VI/KM",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Money/locale test vectors; FX scope cần xác nhận; kèm predicted/observed table và ADR “Canonical decimal so với localized display string”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Money/locale test vectors; FX scope cần xác nhận; kèm predicted/observed table và ADR “Canonical decimal so với localized display string”."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — USD/KHR và i18n EN/VI/KM",
+      "objective": "Fault: Locale comma/dot; wrong rounding; encoding lỗi Khmer. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Decimal serialization; Unicode; business vs display amount.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "INTERVIEW",
+      "title": "Interview — USD/KHR và i18n EN/VI/KM",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why BigDecimal/currency scale/rounding/locale/timezone? How Decimal serialization; Unicode; business vs display amount? What if Locale comma/dot; wrong rounding; encoding lỗi Khmer? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

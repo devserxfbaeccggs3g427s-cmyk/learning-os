@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-31",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-03: Refresh token rotation và replay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "RED-01",
+      "type": "REVIEW",
+      "title": "D+1 — Structures, TTL và atomic transitions",
+      "objective": "Không nhìn notes: vẽ Command atomicity vs multi-command race; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Refresh token rotation và replay proposal",
+      "objective": "token family / hashed storage / reuse detection; cơ chế cần kiểm chứng: Atomic rotate và concurrent refresh arbitration. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho token family / hashed storage / reuse detection; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "LAB",
+      "title": "Implement — Refresh token rotation và replay proposal",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Replay lab; family revocation policy xác nhận; kèm predicted/observed table và ADR “Rotation so với sender-constrained token conceptual”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay lab; family revocation policy xác nhận; kèm predicted/observed table và ADR “Rotation so với sender-constrained token conceptual”."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "LAB",
+      "title": "Implement — Refresh token rotation và replay proposal",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Replay lab; family revocation policy xác nhận; kèm predicted/observed table và ADR “Rotation so với sender-constrained token conceptual”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay lab; family revocation policy xác nhận; kèm predicted/observed table và ADR “Rotation so với sender-constrained token conceptual”."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Refresh token rotation và replay proposal",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why token family/hashed storage/reuse detection? How Atomic rotate và concurrent refresh arbitration? What if Stolen refresh; 2 refresh đồng thời? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-17",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-06: USD/KHR và i18n EN/VI/KM; BANK-07: Fund Transfer end-to-end reliability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-03",
+      "type": "REVIEW",
+      "title": "D+7 — Reusable executor và banking response mapping",
+      "objective": "Dựng lại normal/failure timeline của BANK-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-04",
+      "type": "REVIEW",
+      "title": "D+14 — JdbcTemplate resource/exception/parameter handling",
+      "objective": "Bảo vệ trade-off của DATA-04 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — USD/KHR và i18n EN/VI/KM",
+      "objective": "Fault: Locale comma/dot; wrong rounding; encoding lỗi Khmer. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Decimal serialization; Unicode; business vs display amount.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "INTERVIEW",
+      "title": "Interview — USD/KHR và i18n EN/VI/KM",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why BigDecimal/currency scale/rounding/locale/timezone? How Decimal serialization; Unicode; business vs display amount? What if Locale comma/dot; wrong rounding; encoding lỗi Khmer? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "BANK-07",
+      "type": "LEARN",
+      "title": "Concept/contract — Fund Transfer end-to-end reliability",
+      "objective": "auth→beneficiary→OTP→attempt→Core→status; cơ chế cần kiểm chứng: Transaction identity và optimistic version acceptance. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho auth→beneficiary→OTP→attempt→Core→status; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "BANK-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Fund Transfer end-to-end reliability",
+      "objective": "Không nhìn notes: vẽ Transaction identity và optimistic version acceptance; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

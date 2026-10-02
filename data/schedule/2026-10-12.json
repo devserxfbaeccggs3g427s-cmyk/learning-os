@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-01: OOP/SOLID và immutable financial value objects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-02",
+      "type": "REVIEW",
+      "title": "D+1 — Hai session insert cùng unique key",
+      "objective": "Không nhìn notes: vẽ Unique index conflict/wait theo Oracle và Postgres; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Request-ID contract và request fingerprint",
+      "objective": "Tự xử lý “Cùng key khác body; key mới cùng nghiệp vụ”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Relational invariant và schema tài chính",
+      "objective": "Tự xử lý “Orphan reference; amount overflow; missing currency”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Hai session insert cùng unique key",
+      "objective": "Tự xử lý “B chờ A; A rollback hoặc commit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — OOP/SOLID và immutable financial value objects",
+      "objective": "Chốt phần research còn lại: BigDecimal / defensive copy; nối với Object ownership and aliasing. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-01",
+      "type": "LAB",
+      "title": "Implement — OOP/SOLID và immutable financial value objects",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Money/request snapshot tests; strategy boundary diagram; kèm predicted/observed table và ADR “Inheritance so với composition; immutable vs mutable DTO”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Money/request snapshot tests; strategy boundary diagram; kèm predicted/observed table và ADR “Inheritance so với composition; immutable vs mutable DTO”."
+    },
+    {
+      "taskCode": "JAVA-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — OOP/SOLID và immutable financial value objects",
+      "objective": "Fault: Mutable amount/list changes after validation. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Object ownership and aliasing.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — OOP/SOLID và immutable financial value objects",
+      "objective": "Không nhìn notes: vẽ Object ownership and aliasing; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

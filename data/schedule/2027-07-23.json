@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-23",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-04: Retry GET vs POST và idempotency contract; GATE-05: Bucket4j distributed rate limiting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Tự xử lý “Gateway timed out nhưng service vẫn commit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-22",
+      "type": "REVIEW",
+      "title": "D+7 — Keycloak unavailable",
+      "objective": "Dựng lại normal/failure timeline của INC-22; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "REVIEW",
+      "title": "D+14 — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Bảo vệ trade-off của SEC-03 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT; crypto chưa gắn project.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Retry GET vs POST và idempotency contract",
+      "objective": "Fault: POST retry duplicates approval/payment. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Replay at gateway and side effects behind reads.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Retry GET vs POST và idempotency contract",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why HTTP semantics/body replay/retry policy? How Replay at gateway and side effects behind reads? What if POST retry duplicates approval/payment? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "LEARN",
+      "title": "Concept/contract — Bucket4j distributed rate limiting",
+      "objective": "bucket capacity / refill / user / IP; cơ chế cần kiểm chứng: Atomic token consumption and Redis integration version. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho bucket capacity / refill / user / IP; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Bucket4j distributed rate limiting",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why bucket capacity/refill/user/IP/cluster state? How Atomic token consumption and Redis integration version? What if 2 gateways share quota; Redis unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

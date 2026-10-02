@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-04",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-01: Stored procedure contract và commit ownership**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-04",
+      "type": "REVIEW",
+      "title": "D+1 — JdbcTemplate resource/exception/parameter handling",
+      "objective": "Không nhìn notes: vẽ Connection acquisition/release và exception translation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "REVIEW",
+      "title": "D+7 — Masked logging và OTP abuse audit",
+      "objective": "Dựng lại normal/failure timeline của OTP-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-01",
+      "type": "LAB",
+      "title": "Implement — Stored procedure contract và commit ownership",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Procedure contract matrix; mock + real dialect notes; kèm predicted/observed table và ADR “DB transaction owned by caller so với procedure”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Procedure contract matrix; mock + real dialect notes; kèm predicted/observed table và ADR “DB transaction owned by caller so với procedure”."
+    },
+    {
+      "taskCode": "BANK-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Stored procedure contract và commit ownership",
+      "objective": "Fault: Local rollback không undo SP đã commit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu CallableStatement; procedure COMMIT/ROLLBACK semantics.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Stored procedure contract và commit ownership",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why IN/OUT/types/error codes/transaction boundary? How CallableStatement; procedure COMMIT/ROLLBACK semantics? What if Local rollback không undo SP đã commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-05",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-08: JMM/happens-before/volatile/locks/CAS; JAVA-09: ThreadPoolExecutor queue/rejection/lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-12",
+      "type": "REVIEW",
+      "title": "D+14 — Consumer idempotency và Inbox proposal",
+      "objective": "Bảo vệ trade-off của KAF-12 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "REVIEW",
+      "title": "D+7 — Retry topic, DLQ và poison message",
+      "objective": "Dựng lại normal/failure timeline của KAF-14; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-08",
+      "type": "LAB",
+      "title": "Implement — JMM/happens-before/volatile/locks/CAS",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Concurrent invariant tests + reasoning graph, not sleep proof; kèm predicted/observed table và ADR “volatile so với synchronized/Lock/Atomic classes”.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Concurrent invariant tests + reasoning graph, not sleep proof; kèm predicted/observed table và ADR “volatile so với synchronized/Lock/Atomic classes”."
+    },
+    {
+      "taskCode": "JAVA-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JMM/happens-before/volatile/locks/CAS",
+      "objective": "Fault: volatile counter lost update; unsafe publication. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Monitor/volatile happens-before; CAS retry/ABA conceptual.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JMM/happens-before/volatile/locks/CAS",
+      "objective": "Fault: volatile counter lost update; unsafe publication. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Monitor/volatile happens-before; CAS retry/ABA conceptual.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-08",
+      "type": "INTERVIEW",
+      "title": "Interview — JMM/happens-before/volatile/locks/CAS",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why visibility/atomicity/order/safe publication? How Monitor/volatile happens-before; CAS retry/ABA conceptual? What if volatile counter lost update; unsafe publication? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-09",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "Chốt phần research còn lại: core / max; nối với Queue-before-max admission and worker lifecycle. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-09",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "Không nhìn notes: vẽ Queue-before-max admission and worker lifecycle; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-16",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-03: Audit trail và separation of duties**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Optimistic vs pessimistic locking",
+      "objective": "Tự xử lý “Lost update; lock giữ lâu khi gọi bank”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-02",
+      "type": "REVIEW",
+      "title": "D+1 — Concurrent approval và content versioning",
+      "objective": "Không nhìn notes: vẽ Conditional update binds reviewed version; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reconstruct Maker-Checker state machine",
+      "objective": "Tự xử lý “Invalid transition; maker approves own change”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Concurrent approval và content versioning",
+      "objective": "Tự xử lý “Two checkers approve; maker edits after submit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "REVIEW",
+      "title": "D+14 — Bulkhead và bounded resource isolation",
+      "objective": "Bảo vệ trade-off của GATE-07 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-15",
+      "type": "REVIEW",
+      "title": "D+7 — Gateway 5xx tăng",
+      "objective": "Dựng lại normal/failure timeline của INC-15; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-03",
+      "type": "LEARN",
+      "title": "Concept/contract — Audit trail và separation of duties",
+      "objective": "actor / time / before-after / reason / append history; cơ chế cần kiểm chứng: Audit write atomicity with business transition. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho actor / time / before-after / reason / append history; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Audit trail và separation of duties",
+      "objective": "Không nhìn notes: vẽ Audit write atomicity with business transition; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

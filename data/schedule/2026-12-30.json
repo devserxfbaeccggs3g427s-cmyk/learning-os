@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-30",
+  "objective": "Tạo và kiểm chứng evidence cho **RED-01: Structures, TTL và atomic transitions; AUTH-03: Refresh token rotation và replay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-02",
+      "type": "REVIEW",
+      "title": "D+1 — JWT validation với Nimbus và Spring Security",
+      "objective": "Không nhìn notes: vẽ JWS verify pipeline và claim validation riêng; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-14",
+      "type": "REVIEW",
+      "title": "D+14 — Service/use-case layer và transfer strategy",
+      "objective": "Bảo vệ trade-off của PAY-14 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "REVIEW",
+      "title": "D+7 — JWT token cache và signing integration GOV",
+      "objective": "Dựng lại normal/failure timeline của PAY-15; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-01",
+      "type": "LAB",
+      "title": "Implement — Structures, TTL và atomic transitions",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Session/OTP minimal schemas + atomic race tests; kèm predicted/observed table và ADR “Multi-command so với script/CAS”.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Session/OTP minimal schemas + atomic race tests; kèm predicted/observed table và ADR “Multi-command so với script/CAS”."
+    },
+    {
+      "taskCode": "RED-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Structures, TTL và atomic transitions",
+      "objective": "Fault: GET then SET race; expired key recreated. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Command atomicity vs multi-command race.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Structures, TTL và atomic transitions",
+      "objective": "Fault: GET then SET race; expired key recreated. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Command atomicity vs multi-command race.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Structures, TTL và atomic transitions",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why string/hash/set/sorted set/expiry/Lua or transaction? How Command atomicity vs multi-command race? What if GET then SET race; expired key recreated? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Refresh token rotation và replay proposal",
+      "objective": "Chốt phần research còn lại: token family; nối với Atomic rotate và concurrent refresh arbitration. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Refresh token rotation và replay proposal",
+      "objective": "Không nhìn notes: vẽ Atomic rotate và concurrent refresh arbitration; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-29",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-05: Stream/Optional/lambda và side effects; JAVA-06: Exceptions và failure taxonomy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-08",
+      "type": "REVIEW",
+      "title": "D+7 — Report module POI/iText scope and streaming",
+      "objective": "Dựng lại normal/failure timeline của FLOW-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-04",
+      "type": "REVIEW",
+      "title": "D+1 — ConcurrentHashMap và atomic compound operations",
+      "objective": "Không nhìn notes: vẽ Per-key atomic operations vs check-then-act; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "LAB",
+      "title": "Implement — Stream/Optional/lambda và side effects",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Pure mapping vs side-effect test; resource closure; kèm predicted/observed table và ADR “Sequential loop so với stream/parallel stream”.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Pure mapping vs side-effect test; resource closure; kèm predicted/observed table và ADR “Sequential loop so với stream/parallel stream”."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Stream/Optional/lambda và side effects",
+      "objective": "Fault: Parallel stream common pool contention; Optional null misuse. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Pipeline evaluation and shared mutable reduction.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Stream/Optional/lambda và side effects",
+      "objective": "Fault: Parallel stream common pool contention; Optional null misuse. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Pipeline evaluation and shared mutable reduction.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Stream/Optional/lambda và side effects",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why map/flatMap/lazy evaluation/collect/functional interfaces? How Pipeline evaluation and shared mutable reduction? What if Parallel stream common pool contention; Optional null misuse? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Exceptions và failure taxonomy",
+      "objective": "Chốt phần research còn lại: checked / unchecked; nối với Stack trace/cause propagation; finally semantics. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Exceptions và failure taxonomy",
+      "objective": "Không nhìn notes: vẽ Stack trace/cause propagation; finally semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

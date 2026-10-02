@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-28",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-03: Saga/compensation và unknown outcome; DIST-04: 2PC và local atomicity limits**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Service boundaries và sync vs async choice",
+      "objective": "Tự xử lý “Chatty synchronous chain; shared DB coupling”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Deadline budget, retries, backoff và jitter",
+      "objective": "Tự xử lý “3 retries mỗi tầng tạo storm; POST repeated”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-09",
+      "type": "REVIEW",
+      "title": "D+7 — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "Dựng lại normal/failure timeline của CMV-09; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "REVIEW",
+      "title": "D+14 — ACID, isolation và MVCC qua payment status",
+      "objective": "Bảo vệ trade-off của DB-03 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Saga/compensation và unknown outcome",
+      "objective": "Fault: Compensation fail hoặc original late-success. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Durable orchestration state and compensation idempotency.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Saga/compensation và unknown outcome",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why steps/state/compensation/manual repair? How Durable orchestration state and compensation idempotency? What if Compensation fail hoặc original late-success? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DIST-04",
+      "type": "LEARN",
+      "title": "Concept/contract — 2PC và local atomicity limits",
+      "objective": "prepare / commit / coordinator / in-doubt; cơ chế cần kiểm chứng: Resource enlistment and blocking. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho prepare / commit / coordinator / in-doubt; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DIST-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — 2PC và local atomicity limits",
+      "objective": "Không nhìn notes: vẽ Resource enlistment and blocking; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

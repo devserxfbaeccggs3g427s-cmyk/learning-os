@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-04",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-02: Bean lifecycle, scope và mutable singleton; SPR-07: MVC request lifecycle và validation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-20",
+      "type": "REVIEW",
+      "title": "D+1 — Incorrect payment status",
+      "objective": "Không nhìn notes: vẽ Authority→matching refs→transition order→version guards. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "REVIEW",
+      "title": "D+7 — Disbursement retry và duplicate payout",
+      "objective": "Dựng lại normal/failure timeline của PAY-11; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "LAB",
+      "title": "Implement — Bean lifecycle, scope và mutable singleton",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Concurrent request isolation + lifecycle trace; kèm predicted/observed table và ADR “Stateless singleton so với request scope”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Concurrent request isolation + lifecycle trace; kèm predicted/observed table và ADR “Stateless singleton so với request scope”."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Bean lifecycle, scope và mutable singleton",
+      "objective": "Fault: Singleton lưu request state; shutdown bỏ resource. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Creation/injection/init/destruction; scoped proxy.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Bean lifecycle, scope và mutable singleton",
+      "objective": "Fault: Singleton lưu request state; shutdown bỏ resource. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Creation/injection/init/destruction; scoped proxy.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Bean lifecycle, scope và mutable singleton",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why PostConstruct/PreDestroy/singleton/request/prototype? How Creation/injection/init/destruction; scoped proxy? What if Singleton lưu request state; shutdown bỏ resource? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "LEARN",
+      "title": "Concept/contract — MVC request lifecycle và validation",
+      "objective": "DispatcherServlet / filter / interceptor / ControllerAdvice; cơ chế cần kiểm chứng: Argument binding và exception resolution. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho DispatcherServlet / filter / interceptor / ControllerAdvice; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — MVC request lifecycle và validation",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why DispatcherServlet/filter/interceptor/ControllerAdvice/Bean Validation? How Argument binding và exception resolution? What if Malformed input; leaked internal errors; duplicate filters? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-24",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-02: Deadline budget, retries, backoff và jitter; DIST-03: Saga/compensation và unknown outcome**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-09",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "Tự xử lý “Gateway logs success nhưng consumer failed”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-01",
+      "type": "REVIEW",
+      "title": "D+1 — Service boundaries và sync vs async choice",
+      "objective": "Không nhìn notes: vẽ Failure propagation và data ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "REVIEW",
+      "title": "D+7 — Cache-aside và DB update→invalidate",
+      "objective": "Dựng lại normal/failure timeline của RED-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-02",
+      "type": "LAB",
+      "title": "Implement — Deadline budget, retries, backoff và jitter",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Budget table + retry-amplification experiment; kèm predicted/observed table và ADR “Single retry owner so với nested retries”.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Budget table + retry-amplification experiment; kèm predicted/observed table và ADR “Single retry owner so với nested retries”."
+    },
+    {
+      "taskCode": "DIST-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Deadline budget, retries, backoff và jitter",
+      "objective": "Fault: 3 retries mỗi tầng tạo storm; POST repeated. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Retry multiplication across client/gateway/service/ESB.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Deadline budget, retries, backoff và jitter",
+      "objective": "Fault: 3 retries mỗi tầng tạo storm; POST repeated. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Retry multiplication across client/gateway/service/ESB.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Deadline budget, retries, backoff và jitter",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why per-hop budget/retry owner/idempotency? How Retry multiplication across client/gateway/service/ESB? What if 3 retries mỗi tầng tạo storm; POST repeated? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Saga/compensation và unknown outcome",
+      "objective": "Chốt phần research còn lại: steps / state; nối với Durable orchestration state and compensation idempotency. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Saga/compensation và unknown outcome",
+      "objective": "Không nhìn notes: vẽ Durable orchestration state and compensation idempotency; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

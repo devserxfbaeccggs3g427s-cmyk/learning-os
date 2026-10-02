@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-29",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-21: JWT validation failure; OTP-02: OTP expiry/attempt/atomic consume**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-07",
+      "type": "REVIEW",
+      "title": "D+7 — Lockout và credential abuse",
+      "objective": "Dựng lại normal/failure timeline của AUTH-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "REVIEW",
+      "title": "D+1 — JWKS/key rotation và multi-device sessions",
+      "objective": "Không nhìn notes: vẽ Key cache refresh và signature verification failure modes; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "REVIEW",
+      "title": "D+14 — OTP challenge model và transaction binding",
+      "objective": "Bảo vệ trade-off của OTP-01 khi 2 instances/10x load; nối lại với project SAHA.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Key/secret rotation và crypto failure policy",
+      "objective": "Tự xử lý “Leaked key; unavailable signing service”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-21",
+      "type": "INTERVIEW",
+      "title": "Interview — JWT validation failure",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why JWT validation failure; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Reason split→time/kid/iss/aud→JWKS→recent config. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Wrong audience, expired key, skew, key rotation, config change.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OTP-02",
+      "type": "LEARN",
+      "title": "Concept/contract — OTP expiry/attempt/atomic consume",
+      "objective": "TTL / hashed verifier / attempt counter; cơ chế cần kiểm chứng: Atomic compare+consume; check-and-set race. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho TTL / hashed verifier / attempt counter; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OTP-02",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — OTP expiry/attempt/atomic consume",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why TTL/hashed verifier/attempt counter/state? How Atomic compare+consume; check-and-set race? What if 2 verify cùng mã; retry vượt attempt limit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

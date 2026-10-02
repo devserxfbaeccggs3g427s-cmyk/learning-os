@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-18",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-11: Oracle/Postgres/MySQL/SQLServer scope check; DATA-05: MyBatis mapping và framework choice**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SD-03",
+      "type": "REVIEW",
+      "title": "D+7 — OTP service cho login/device/transfer; quota/expiry/provider delays",
+      "objective": "Dựng lại normal/failure timeline của SD-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-08",
+      "type": "REVIEW",
+      "title": "D+1 — API Gateway",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "Fault: Copy SQL/locking assumption giữa engines. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Driver và engine-specific behavior.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why dialect/isolation/sequence/upsert/pagination? How Driver và engine-specific behavior? What if Copy SQL/locking assumption giữa engines? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "LEARN",
+      "title": "Concept/contract — MyBatis mapping và framework choice",
+      "objective": "result map / dynamic SQL / transaction integration; cơ chế cần kiểm chứng: Session lifecycle và lazy/result mapping. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho result map / dynamic SQL / transaction integration; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "LAB",
+      "title": "Implement — MyBatis mapping và framework choice",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Small mapper lab; xác nhận project đã dùng; kèm predicted/observed table và ADR “MyBatis so với JPA/JdbcTemplate”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Small mapper lab; xác nhận project đã dùng; kèm predicted/observed table và ADR “MyBatis so với JPA/JdbcTemplate”."
+    },
+    {
+      "taskCode": "DATA-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — MyBatis mapping và framework choice",
+      "objective": "Không nhìn notes: vẽ Session lifecycle và lazy/result mapping; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

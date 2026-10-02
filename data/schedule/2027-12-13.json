@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-13",
+  "objective": "Tạo và kiểm chứng evidence cho **AUX-04: Reconstruct Hywork seat/AMIS employee sync**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-03",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Không nhìn notes: vẽ Atomic reservation invariant and ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-05",
+      "type": "REVIEW",
+      "title": "D+7 — Git/GitLabCI/Jenkins và release evidence",
+      "objective": "Dựng lại normal/failure timeline của OPS-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Chốt phần research còn lại: watermark / delete; nối với Incremental cursor and idempotent upsert. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Architecture/trust/tx map + crash/resume sync test; kèm predicted/observed table và ADR “Full snapshot so với incremental sync”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Architecture/trust/tx map + crash/resume sync test; kèm predicted/observed table và ADR “Full snapshot so với incremental sync”."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Architecture/trust/tx map + crash/resume sync test; kèm predicted/observed table và ADR “Full snapshot so với incremental sync”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Architecture/trust/tx map + crash/resume sync test; kèm predicted/observed table và ADR “Full snapshot so với incremental sync”."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Fault: Seat double-booked; terminated employee remains active. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Incremental cursor and idempotent upsert.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why seat/time/employee identity/watermark/delete? How Incremental cursor and idempotent upsert? What if Seat double-booked; terminated employee remains active? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-05",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-08: Processing state, TTL và replay muộn**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Transaction boundary JPA + JdbcTemplate",
+      "objective": "Tự xử lý “Idempotency commit nhưng business rollback”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "REVIEW",
+      "title": "D+1 — Crash trước/sau commit và response replay",
+      "objective": "Không nhìn notes: vẽ Commit acknowledgement và client observation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-08",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Processing state, TTL và replay muộn",
+      "objective": "leases / ownership / expiry; cơ chế cần kiểm chứng: Long-running status và takeover fencing đề xuất. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho leases / ownership / expiry; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-08",
+      "type": "LAB",
+      "title": "Implement — Processing state, TTL và replay muộn",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Expiry/recovery contract; late retry không lặp bill; kèm predicted/observed table và ADR “Idempotency TTL so với durable business uniqueness”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Expiry/recovery contract; late retry không lặp bill; kèm predicted/observed table và ADR “Idempotency TTL so với durable business uniqueness”."
+    },
+    {
+      "taskCode": "PAY-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Processing state, TTL và replay muộn",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why retention/leases/ownership/expiry? How Long-running status và takeover fencing đề xuất? What if Stale processing; key hết TTL; owner cũ quay lại? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

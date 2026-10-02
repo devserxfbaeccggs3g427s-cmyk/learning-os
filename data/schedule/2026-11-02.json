@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-06: Transaction boundary JPA + JdbcTemplate; PAY-07: Crash trước/sau commit và response replay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SPR-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Propagation và nhiều datasource",
+      "objective": "Tự xử lý “REQUIRES_NEW làm hết pool; manager sai DB”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "REVIEW",
+      "title": "D+14 — Transaction rollback và exception boundary",
+      "objective": "Bảo vệ trade-off của SPR-05 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Transaction boundary JPA + JdbcTemplate",
+      "objective": "Fault: Idempotency commit nhưng business rollback. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Flush vs commit; exception translation; rollback-only.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Transaction boundary JPA + JdbcTemplate",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why same datasource/manager/connection? How Flush vs commit; exception translation; rollback-only? What if Idempotency commit nhưng business rollback? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Crash trước/sau commit và response replay",
+      "objective": "durable response / reconstruct / ambiguous commit; cơ chế cần kiểm chứng: Commit acknowledgement và client observation. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Notes có assumptions + diagram cho durable response / reconstruct / ambiguous commit; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Crash trước/sau commit và response replay",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why durable response/reconstruct/ambiguous commit? How Commit acknowledgement và client observation? What if Kill trước commit; kill sau commit trước response? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

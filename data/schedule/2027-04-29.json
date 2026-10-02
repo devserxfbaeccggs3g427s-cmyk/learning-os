@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-29",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-15: Schema evolution và event compatibility**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-11",
+      "type": "REVIEW",
+      "title": "D+14 — Offset commit trước/sau DB commit",
+      "objective": "Bảo vệ trade-off của KAF-11 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "REVIEW",
+      "title": "D+1 — Retry topic, DLQ và poison message",
+      "objective": "Không nhìn notes: vẽ Offset progression; retry ordering consequences; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "LAB",
+      "title": "Implement — Schema evolution và event compatibility",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; v1/v2 compatibility tests; quarantine policy; kèm predicted/observed table và ADR “Backward compatible envelope so với new topic”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: v1/v2 compatibility tests; quarantine policy; kèm predicted/observed table và ADR “Backward compatible envelope so với new topic”."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Schema evolution và event compatibility",
+      "objective": "Fault: Old consumer fails on new schema. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Deserializer handling và consumer rollout sequence.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-15",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Schema evolution và event compatibility",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why schema version/optional fields/contracts? How Deserializer handling và consumer rollout sequence? What if Old consumer fails on new schema? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

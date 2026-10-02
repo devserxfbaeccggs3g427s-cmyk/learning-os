@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-08",
+  "objective": "Tạo và kiểm chứng evidence cho **RED-06: Persistence, replication và session recovery; AUTH-05: Redis session unavailable/data lost**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-01",
+      "type": "REVIEW",
+      "title": "D+14 — Reconstruct login→logout/session/device",
+      "objective": "Bảo vệ trade-off của AUTH-01 khi 2 instances/10x load; nối lại với project SAHA.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Refresh token rotation và replay proposal",
+      "objective": "Tự xử lý “Stolen refresh; 2 refresh đồng thời”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-04",
+      "type": "REVIEW",
+      "title": "D+1 — Logout/password change/revocation",
+      "objective": "Không nhìn notes: vẽ Online lookup vs expiry-only enforcement; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "LAB",
+      "title": "Implement — Persistence, replication và session recovery",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Outage/restart scenario matrix; topology cần xác nhận; kèm predicted/observed table và ADR “Availability so với revocation/state consistency”.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Outage/restart scenario matrix; topology cần xác nhận; kèm predicted/observed table và ADR “Availability so với revocation/state consistency”."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Persistence, replication và session recovery",
+      "objective": "Fault: Failover mất recent write; session disappears. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Acknowledged write durability assumptions.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Persistence, replication và session recovery",
+      "objective": "Fault: Failover mất recent write; session disappears. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Acknowledged write durability assumptions.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Persistence, replication và session recovery",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why RDB/AOF/replica/Sentinel/Cluster conceptual? How Acknowledged write durability assumptions? What if Failover mất recent write; session disappears? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Redis session unavailable/data lost",
+      "objective": "Chốt phần research còn lại: TTL; nối với Expiry + authority khi Redis restart. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUTH-05",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Redis session unavailable/data lost",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why TTL/persistence/fail policy/re-authentication? How Expiry + authority khi Redis restart? What if Redis mất toàn bộ session; stale replica? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-07",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-08: Batching, linger, compression và partition choice**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-04",
+      "type": "REVIEW",
+      "title": "D+7 — acks=0/1/all và min.insync.replicas",
+      "objective": "Dựng lại normal/failure timeline của KAF-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-07",
+      "type": "REVIEW",
+      "title": "D+1 — max.in.flight và ordering khi retry",
+      "objective": "Không nhìn notes: vẽ Batch ordering và retry behavior theo version; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "LEARN",
+      "title": "Concept/contract — Batching, linger, compression và partition choice",
+      "objective": "batch size / linger / compression / sticky / key; cơ chế cần kiểm chứng: Accumulator batches và hot partition. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho batch size / linger / compression / sticky / key; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "LAB",
+      "title": "Implement — Batching, linger, compression và partition choice",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Throughput/p95/bytes experiment; default không suy từ memory; kèm predicted/observed table và ADR “Latency budget so với compression/batch efficiency”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Throughput/p95/bytes experiment; default không suy từ memory; kèm predicted/observed table và ADR “Latency budget so với compression/batch efficiency”."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Batching, linger, compression và partition choice",
+      "objective": "Fault: High latency at low load; uneven partition load. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Accumulator batches và hot partition.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Batching, linger, compression và partition choice",
+      "objective": "Không nhìn notes: vẽ Accumulator batches và hot partition; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

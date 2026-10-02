@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-21",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-07: Lockout và credential abuse**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-04",
+      "type": "REVIEW",
+      "title": "D+14 — Logout/password change/revocation",
+      "objective": "Bảo vệ trade-off của AUTH-04 khi 2 instances/10x load; nối lại với project SAHA.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-04",
+      "type": "REVIEW",
+      "title": "D+1 — Distributed counters và rate limits",
+      "objective": "Không nhìn notes: vẽ Atomic bucket state và time assumptions; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "LEARN",
+      "title": "Concept/contract — Lockout và credential abuse",
+      "objective": "per-account / IP / device thresholds; cơ chế cần kiểm chứng: Atomic counters, expiry, unlock policy. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho per-account / IP / device thresholds; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Lockout và credential abuse",
+      "objective": "Chốt phần research còn lại: enumeration; nối với Atomic counters, expiry, unlock policy. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "LAB",
+      "title": "Implement — Lockout và credential abuse",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Distributed attempt test + denial-of-service analysis; kèm predicted/observed table và ADR “Hard lockout so với graduated throttling”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Distributed attempt test + denial-of-service analysis; kèm predicted/observed table và ADR “Hard lockout so với graduated throttling”."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Lockout và credential abuse",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why per-account/IP/device thresholds/enumeration? How Atomic counters, expiry, unlock policy? What if Attacker khóa tài khoản nạn nhân; parallel attempts? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-08",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-08: Thread pool exhausted; SPR-03: Configuration và Boot auto-configuration**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-06",
+      "type": "REVIEW",
+      "title": "D+7 — Exceptions và failure taxonomy",
+      "objective": "Dựng lại normal/failure timeline của JAVA-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "REVIEW",
+      "title": "D+1 — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "Không nhìn notes: vẽ Completion/executor selection and exception propagation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Thread pool exhausted",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Thread pool exhausted; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Thread dump→executor queue→dependency→timeout/cancel. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Blocked IO, unbounded queue, wrong executor, deadlock.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Configuration và Boot auto-configuration",
+      "objective": "Chốt phần research còn lại: Configuration / Bean; nối với Configuration proxy; property binding; auto-config report. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Configuration và Boot auto-configuration",
+      "objective": "Bean / Component / conditions / properties; cơ chế cần kiểm chứng: Configuration proxy; property binding; auto-config report. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho Bean / Component / conditions / properties; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "LAB",
+      "title": "Implement — Configuration và Boot auto-configuration",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; ConfigurationProperties validation + condition report; kèm predicted/observed table và ADR “Explicit bean so với auto-config”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: ConfigurationProperties validation + condition report; kèm predicted/observed table và ADR “Explicit bean so với auto-config”."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Configuration và Boot auto-configuration",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Configuration/Bean/Component/conditions/properties? How Configuration proxy; property binding; auto-config report? What if Config typo; bean override ngoài ý muốn? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

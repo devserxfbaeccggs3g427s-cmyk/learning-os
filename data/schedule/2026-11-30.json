@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-30",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-12: Reconciliation theo nguồn có thẩm quyền**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-10",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Refund safety và concurrent partial refund",
+      "objective": "Tự xử lý “2 refund concurrent vượt số đã thanh toán”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "REVIEW",
+      "title": "D+1 — Disbursement retry và duplicate payout",
+      "objective": "Không nhìn notes: vẽ State transition và downstream dedup contract; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-09",
+      "type": "REVIEW",
+      "title": "D+14 — Bank thành công nhưng local không biết",
+      "objective": "Bảo vệ trade-off của PAY-09 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Disbursement retry và duplicate payout",
+      "objective": "Tự xử lý “Timeout rồi retry chi hộ hai lần”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Chốt phần research còn lại: cutoff; nối với Matching keys; late arrival; checkpoint/re-run. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "timezone / settlement / status matching; cơ chế cần kiểm chứng: Matching keys; late arrival; checkpoint/re-run. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho timezone / settlement / status matching; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "LAB",
+      "title": "Implement — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Re-run reconciliation không double adjust; discrepancy queue; kèm predicted/observed table và ADR “Automatic correction so với manual review”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Re-run reconciliation không double adjust; discrepancy queue; kèm predicted/observed table và ADR “Automatic correction so với manual review”."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why cutoff/timezone/settlement/status matching? How Matching keys; late arrival; checkpoint/re-run? What if Bank success local pending; amount/currency mismatch? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

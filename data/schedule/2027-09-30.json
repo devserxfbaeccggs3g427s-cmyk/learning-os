@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-30",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-06: Exceptions và failure taxonomy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-03",
+      "type": "REVIEW",
+      "title": "D+7 — Memory tăng liên tục",
+      "objective": "Dựng lại normal/failure timeline của INC-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "REVIEW",
+      "title": "D+1 — Stream/Optional/lambda và side effects",
+      "objective": "Không nhìn notes: vẽ Pipeline evaluation and shared mutable reduction; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-07",
+      "type": "REVIEW",
+      "title": "D+14 — JVM class loading, memory và GC",
+      "objective": "Bảo vệ trade-off của JAVA-07 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Exceptions và failure taxonomy",
+      "objective": "unchecked / cause / suppressed / try-with-resources; cơ chế cần kiểm chứng: Stack trace/cause propagation; finally semantics. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho unchecked / cause / suppressed / try-with-resources; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "LAB",
+      "title": "Implement — Exceptions và failure taxonomy",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Exception mapping matrix preserve unknown outcome/cause; kèm predicted/observed table và ADR “Domain exception so với broad RuntimeException”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Exception mapping matrix preserve unknown outcome/cause; kèm predicted/observed table và ADR “Domain exception so với broad RuntimeException”."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Exceptions và failure taxonomy",
+      "objective": "Fault: Return in finally hides failure; swallow bank timeout. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Stack trace/cause propagation; finally semantics.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Exceptions và failure taxonomy",
+      "objective": "Không nhìn notes: vẽ Stack trace/cause propagation; finally semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-15",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-11: Offset commit trước/sau DB commit; KAF-12: Consumer idempotency và Inbox proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-05",
+      "type": "REVIEW",
+      "title": "D+14 — Producer retry và ambiguous acknowledgement",
+      "objective": "Bảo vệ trade-off của KAF-05 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "REVIEW",
+      "title": "D+7 — Batching, linger, compression và partition choice",
+      "objective": "Dựng lại normal/failure timeline của KAF-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "LAB",
+      "title": "Implement — Offset commit trước/sau DB commit",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Replay lab: delivery repeated, business invariant preserved; kèm predicted/observed table và ADR “Commit early so với commit after processing”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay lab: delivery repeated, business invariant preserved; kèm predicted/observed table và ADR “Commit early so với commit after processing”."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Offset commit trước/sau DB commit",
+      "objective": "Fault: DB commit rồi kill trước offset commit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Committed offset vs processed record vs fetched record.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Offset commit trước/sau DB commit",
+      "objective": "Fault: DB commit rồi kill trước offset commit. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Committed offset vs processed record vs fetched record.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Offset commit trước/sau DB commit",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why at-most/at-least-once/offset position? How Committed offset vs processed record vs fetched record? What if DB commit rồi kill trước offset commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Consumer idempotency và Inbox proposal",
+      "objective": "Chốt phần research còn lại: event ID; nối với Atomic processed marker + business local transaction. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Consumer idempotency và Inbox proposal",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why event ID/consumer identity/business unique key? How Atomic processed marker + business local transaction? What if Mark processed commit trước business; duplicate delivery? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

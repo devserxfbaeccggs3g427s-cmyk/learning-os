@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-11",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-05: REST/TCP timeouts và correlation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-02",
+      "type": "REVIEW",
+      "title": "D+1 — Thiết kế state model và invariant thanh toán",
+      "objective": "Không nhìn notes: vẽ Conditional transition và terminal-state guards; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "REVIEW",
+      "title": "D+7 — Crash trước/sau commit và response replay",
+      "objective": "Dựng lại normal/failure timeline của PAY-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "REVIEW",
+      "title": "D+14 — Propagation và nhiều datasource",
+      "objective": "Bảo vệ trade-off của SPR-06 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-05",
+      "type": "LAB",
+      "title": "Implement — REST/TCP timeouts và correlation",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; TCP mock fragmentation + lost reply test; RestTemplate budget map; kèm predicted/observed table và ADR “Request timeout so với remote execution status”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: TCP mock fragmentation + lost reply test; RestTemplate budget map; kèm predicted/observed table và ADR “Request timeout so với remote execution status”."
+    },
+    {
+      "taskCode": "BANK-05",
+      "type": "LAB",
+      "title": "Implement — REST/TCP timeouts và correlation",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; TCP mock fragmentation + lost reply test; RestTemplate budget map; kèm predicted/observed table và ADR “Request timeout so với remote execution status”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: TCP mock fragmentation + lost reply test; RestTemplate budget map; kèm predicted/observed table và ADR “Request timeout so với remote execution status”."
+    },
+    {
+      "taskCode": "BANK-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — REST/TCP timeouts và correlation",
+      "objective": "Fault: Half response; late response gắn nhầm request. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Partial reads; connection reuse; timeout without cancellation.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — REST/TCP timeouts và correlation",
+      "objective": "Không nhìn notes: vẽ Partial reads; connection reuse; timeout without cancellation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

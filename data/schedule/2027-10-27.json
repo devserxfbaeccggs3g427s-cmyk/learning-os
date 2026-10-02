@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-27",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-14: Cache stampede**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-02",
+      "type": "REVIEW",
+      "title": "D+7 — Fetch strategy và N+1 trên order/assets",
+      "objective": "Dựng lại normal/failure timeline của DATA-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "REVIEW",
+      "title": "D+1 — Stampede, penetration và avalanche",
+      "objective": "Không nhìn notes: vẽ Rebuild concurrency và admission; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "REVIEW",
+      "title": "D+14 — Actuator/config/health và graceful application shutdown",
+      "objective": "Bảo vệ trade-off của SPR-08 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-14",
+      "type": "INTERVIEW",
+      "title": "Interview — Cache stampede",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Cache stampede; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Miss distribution→expiry alignment→DB impact→rebuild owner. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Hot expiry, mass TTL, cache loss, absent-key abuse.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

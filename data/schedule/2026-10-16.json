@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-16",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-05: Transaction rollback và exception boundary**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-02",
+      "type": "REVIEW",
+      "title": "D+7 — Hai session insert cùng unique key",
+      "objective": "Dựng lại normal/failure timeline của DB-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — OOP/SOLID và immutable financial value objects",
+      "objective": "Tự xử lý “Mutable amount/list changes after validation”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-04",
+      "type": "REVIEW",
+      "title": "D+1 — AOP, JDK proxy, CGLIB và self-invocation",
+      "objective": "Không nhìn notes: vẽ Call through proxy vs this-call; interception limits; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "LEARN",
+      "title": "Concept/contract — Transaction rollback và exception boundary",
+      "objective": "Runtime / checked / rollbackFor; cơ chế cần kiểm chứng: Transaction interceptor và rollback-only. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho Runtime / checked / rollbackFor; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Transaction rollback và exception boundary",
+      "objective": "Chốt phần research còn lại: rollbackFor / caught exception; nối với Transaction interceptor và rollback-only. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "LAB",
+      "title": "Implement — Transaction rollback và exception boundary",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 4 exception/rollback tests + transaction trace; kèm predicted/observed table và ADR “Declarative so với TransactionTemplate”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 4 exception/rollback tests + transaction trace; kèm predicted/observed table và ADR “Declarative so với TransactionTemplate”."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Transaction rollback và exception boundary",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Runtime/checked/rollbackFor/caught exception? How Transaction interceptor và rollback-only? What if Catch lỗi rồi commit; unexpected rollback? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

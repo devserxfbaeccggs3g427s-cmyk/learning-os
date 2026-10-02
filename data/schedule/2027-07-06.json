@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-06",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-06: Capacity, backpressure và graceful degradation; SD-06: CMV Kafka pipeline**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-04",
+      "type": "REVIEW",
+      "title": "D+7 — 2PC và local atomicity limits",
+      "objective": "Dựng lại normal/failure timeline của DIST-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-01",
+      "type": "REVIEW",
+      "title": "D+1 — GOV Payment",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-06",
+      "type": "LAB",
+      "title": "Implement — Capacity, backpressure và graceful degradation",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Measured capacity envelope + reject/degrade policy; kèm predicted/observed table và ADR “Horizontal scaling so với admission control”.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Measured capacity envelope + reject/degrade policy; kèm predicted/observed table và ADR “Horizontal scaling so với admission control”."
+    },
+    {
+      "taskCode": "DIST-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Capacity, backpressure và graceful degradation",
+      "objective": "Fault: 10x traffic; queue grows; one instance dies. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Little's Law assumptions and dependency capacity.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Capacity, backpressure và graceful degradation",
+      "objective": "Fault: 10x traffic; queue grows; one instance dies. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Little's Law assumptions and dependency capacity.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Capacity, backpressure và graceful degradation",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why arrival/service rate/queue/utilization/bottleneck? How Little's Law assumptions and dependency capacity? What if 10x traffic; queue grows; one instance dies? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SD-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — CMV Kafka pipeline",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

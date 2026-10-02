@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-10",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-03: Reusable executor và banking response mapping; INC-18: External API trả unknown result**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-04",
+      "type": "REVIEW",
+      "title": "D+7 — JdbcTemplate resource/exception/parameter handling",
+      "objective": "Dựng lại normal/failure timeline của DATA-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "LAB",
+      "title": "Implement — Reusable executor và banking response mapping",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Contract tests success/business reject/technical/unknown; kèm predicted/observed table và ADR “Generic executor so với explicit operation adapters”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Contract tests success/business reject/technical/unknown; kèm predicted/observed table và ADR “Generic executor so với explicit operation adapters”."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reusable executor và banking response mapping",
+      "objective": "Fault: Unknown bank code bị map success/failed sai. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Type conversion; deterministic error mapping.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reusable executor và banking response mapping",
+      "objective": "Fault: Unknown bank code bị map success/failed sai. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Type conversion; deterministic error mapping.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Reusable executor và banking response mapping",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why typed params/result/error taxonomy? How Type conversion; deterministic error mapping? What if Unknown bank code bị map success/failed sai? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-18",
+      "type": "INTERVIEW",
+      "title": "Interview — External API trả unknown result",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why External API trả unknown result; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Contract/version→raw code→provider status→mapping. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if New code, partial response, provider pending.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

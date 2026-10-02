@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-12",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-01: Reconstruct Gateway routing/filter chain**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SEC-03",
+      "type": "REVIEW",
+      "title": "D+1 — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Không nhìn notes: vẽ Discovery/JWKS/claims mapping/flow roles; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "REVIEW",
+      "title": "D+14 — Saga/compensation và unknown outcome",
+      "objective": "Bảo vệ trade-off của DIST-03 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-01",
+      "type": "REVIEW",
+      "title": "D+7 — GOV Payment",
+      "objective": "Dựng lại normal/failure timeline của SD-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — OAuth2/OIDC/Keycloak boundaries",
+      "objective": "Tự xử lý “Dùng ID token gọi API; wrong client audience”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct Gateway routing/filter chain",
+      "objective": "Chốt phần research còn lại: route / predicate; nối với Filter ordering; reactive vs servlet runtime confirmation. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Reconstruct Gateway routing/filter chain",
+      "objective": "predicate / filter / public / admin / correlation; cơ chế cần kiểm chứng: Filter ordering; reactive vs servlet runtime confirmation. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho predicate / filter / public / admin / correlation; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Gateway routing/filter chain",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Route policy matrix + bypass negative tests; kèm predicted/observed table và ADR “Gateway auth so với downstream auth”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Route policy matrix + bypass negative tests; kèm predicted/observed table và ADR “Gateway auth so với downstream auth”."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct Gateway routing/filter chain",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why route/predicate/filter/public/admin/correlation? How Filter ordering; reactive vs servlet runtime confirmation? What if Public route match bypasses admin security? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

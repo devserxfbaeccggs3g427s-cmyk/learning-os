@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-07",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-06: MinIO attachments và DB/file consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-05",
+      "type": "REVIEW",
+      "title": "D+7 — Asset search/admin CRUD/filter/pagination",
+      "objective": "Dựng lại normal/failure timeline của FLOW-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "LAB",
+      "title": "Implement — MinIO attachments và DB/file consistency",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Orphan lifecycle lab; unauthorized download negative test; kèm predicted/observed table và ADR “Pre-upload so với staged upload/finalize proposal”.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Orphan lifecycle lab; unauthorized download negative test; kèm predicted/observed table và ADR “Pre-upload so với staged upload/finalize proposal”."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "LAB",
+      "title": "Implement — MinIO attachments và DB/file consistency",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Orphan lifecycle lab; unauthorized download negative test; kèm predicted/observed table và ADR “Pre-upload so với staged upload/finalize proposal”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Orphan lifecycle lab; unauthorized download negative test; kèm predicted/observed table và ADR “Pre-upload so với staged upload/finalize proposal”."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — MinIO attachments và DB/file consistency",
+      "objective": "Fault: Upload success DB fail; delete metadata file remains. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Object store vs local DB atomicity boundary.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — MinIO attachments và DB/file consistency",
+      "objective": "Không nhìn notes: vẽ Object store vs local DB atomicity boundary; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

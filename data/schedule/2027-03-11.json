@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-11",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-18: External API trả unknown result**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-01",
+      "type": "REVIEW",
+      "title": "D+7 — Stored procedure contract và commit ownership",
+      "objective": "Dựng lại normal/failure timeline của BANK-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — REF CURSOR và resource lifecycle",
+      "objective": "Tự xử lý “Exception giữa mapping làm leak cursor”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "REVIEW",
+      "title": "D+1 — Reusable executor và banking response mapping",
+      "objective": "Không nhìn notes: vẽ Type conversion; deterministic error mapping; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "REVIEW",
+      "title": "D+14 — Masked logging và OTP abuse audit",
+      "objective": "Bảo vệ trade-off của OTP-05 khi 2 instances/10x load; nối lại với project SAHA.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-18",
+      "type": "INTERVIEW",
+      "title": "Interview — External API trả unknown result",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why External API trả unknown result; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Contract/version→raw code→provider status→mapping. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if New code, partial response, provider pending.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-18",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — External API trả unknown result",
+      "objective": "Không nhìn notes: vẽ Contract/version→raw code→provider status→mapping. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

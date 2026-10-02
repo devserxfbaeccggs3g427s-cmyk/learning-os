@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-20",
+  "objective": "Tạo và kiểm chứng evidence cho **DATA-02: Fetch strategy và N+1 trên order/assets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-07",
+      "type": "REVIEW",
+      "title": "D+1 — Oracle sequence cho alias account",
+      "objective": "Không nhìn notes: vẽ Allocation ngoài kỳ vọng rollback và concurrency; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "REVIEW",
+      "title": "D+7 — Actuator/config/health và graceful application shutdown",
+      "objective": "Dựng lại normal/failure timeline của SPR-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-02",
+      "type": "LAB",
+      "title": "Implement — Fetch strategy và N+1 trên order/assets",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Query-count test và 3 fetch alternatives; kèm predicted/observed table và ADR “Fetch join so với batch/projection”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Query-count test và 3 fetch alternatives; kèm predicted/observed table và ADR “Fetch join so với batch/projection”."
+    },
+    {
+      "taskCode": "DATA-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Fetch strategy và N+1 trên order/assets",
+      "objective": "Fault: N+1; detached lazy access; join pagination wrong. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Proxy initialization và query counts.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Fetch strategy và N+1 trên order/assets",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why lazy/eager/join fetch/entity graph/batch? How Proxy initialization và query counts? What if N+1; detached lazy access; join pagination wrong? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DATA-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Fetch strategy và N+1 trên order/assets",
+      "objective": "Không nhìn notes: vẽ Proxy initialization và query counts; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

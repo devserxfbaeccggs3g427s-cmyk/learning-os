@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-25",
+  "objective": "Tạo và kiểm chứng evidence cho **OPS-01: Docker image/container lifecycle; OPS-02: K8s Pod/Deployment/Service/config/secrets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SD-08",
+      "type": "REVIEW",
+      "title": "D+7 — API Gateway",
+      "objective": "Dựng lại normal/failure timeline của SD-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-08",
+      "type": "REVIEW",
+      "title": "D+1 — reCAPTCHA v3 và abuse signals scope",
+      "objective": "Không nhìn notes: vẽ Server-side verification và threshold policy; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "REVIEW",
+      "title": "D+7 — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "Dựng lại normal/failure timeline của DB-11; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Docker image/container lifecycle",
+      "objective": "Fault: Container stop cắt transaction; secret in image. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu PID1/signal handling/filesystem/resource boundaries.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Docker image/container lifecycle",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why build layers/runtime config/user/signals? How PID1/signal handling/filesystem/resource boundaries? What if Container stop cắt transaction; secret in image? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OPS-02",
+      "type": "LEARN",
+      "title": "Concept/contract — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "desired state / selectors / probes / ConfigMap / Secret; cơ chế cần kiểm chứng: Readiness vs liveness and rollout endpoint updates. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho desired state / selectors / probes / ConfigMap / Secret; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OPS-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "Không nhìn notes: vẽ Readiness vs liveness and rollout endpoint updates; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

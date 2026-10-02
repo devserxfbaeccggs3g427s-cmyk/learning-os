@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-29",
+  "objective": "Tạo và kiểm chứng evidence cho **RED-05: SET NX PX, safe unlock và fencing; SEC-04: CSRF/CORS/XSS và browser session decisions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-06",
+      "type": "REVIEW",
+      "title": "D+7 — Slow query",
+      "objective": "Dựng lại normal/failure timeline của INC-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-14",
+      "type": "REVIEW",
+      "title": "D+1 — Cache stampede",
+      "objective": "Không nhìn notes: vẽ Miss distribution→expiry alignment→DB impact→rebuild owner. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Stampede, penetration và avalanche",
+      "objective": "Tự xử lý “Hot key expire; absent key flood; mass TTL expiry”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — SET NX PX, safe unlock và fencing",
+      "objective": "Fault: Owner A pause; B acquire; A writes late. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Lease expiry không dừng old owner; downstream fence.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — SET NX PX, safe unlock và fencing",
+      "objective": "Fault: Owner A pause; B acquire; A writes late. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Lease expiry không dừng old owner; downstream fence.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-05",
+      "type": "INTERVIEW",
+      "title": "Interview — SET NX PX, safe unlock và fencing",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why lease/token/expiry/owner compare/delete? How Lease expiry không dừng old owner; downstream fence? What if Owner A pause; B acquire; A writes late? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-04",
+      "type": "LEARN",
+      "title": "Concept/contract — CSRF/CORS/XSS và browser session decisions",
+      "objective": "cookies / bearer tokens / SameSite; cơ chế cần kiểm chứng: Browser credential sending và preflight. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho cookies / bearer tokens / SameSite; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-04",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — CSRF/CORS/XSS và browser session decisions",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why cookies/bearer tokens/SameSite/origins? How Browser credential sending và preflight? What if CORS mở nhưng auth thiếu; XSS lấy token? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

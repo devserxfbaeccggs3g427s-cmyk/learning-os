@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-22",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-01: Service boundaries và sync vs async choice**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-09",
+      "type": "REVIEW",
+      "title": "D+1 — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "Không nhìn notes: vẽ Request/event correlation across components; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-01",
+      "type": "LEARN",
+      "title": "Concept/contract — Service boundaries và sync vs async choice",
+      "objective": "cohesion / ownership / API contracts / eventual consistency; cơ chế cần kiểm chứng: Failure propagation và data ownership. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho cohesion / ownership / API contracts / eventual consistency; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DIST-01",
+      "type": "LAB",
+      "title": "Implement — Service boundaries và sync vs async choice",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Boundary ADR với 2 alternatives cho CMV/GOV; kèm predicted/observed table và ADR “Microservices so với modular monolith”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Boundary ADR với 2 alternatives cho CMV/GOV; kèm predicted/observed table và ADR “Microservices so với modular monolith”."
+    },
+    {
+      "taskCode": "DIST-01",
+      "type": "LAB",
+      "title": "Implement — Service boundaries và sync vs async choice",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Boundary ADR với 2 alternatives cho CMV/GOV; kèm predicted/observed table và ADR “Microservices so với modular monolith”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Boundary ADR với 2 alternatives cho CMV/GOV; kèm predicted/observed table và ADR “Microservices so với modular monolith”."
+    },
+    {
+      "taskCode": "DIST-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Service boundaries và sync vs async choice",
+      "objective": "Fault: Chatty synchronous chain; shared DB coupling. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Failure propagation và data ownership.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Service boundaries và sync vs async choice",
+      "objective": "Không nhìn notes: vẽ Failure propagation và data ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

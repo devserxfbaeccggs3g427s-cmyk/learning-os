@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-11",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-03: Configuration và Boot auto-configuration; SPR-08: Actuator/config/health và graceful application shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-08",
+      "type": "REVIEW",
+      "title": "D+1 — Thread pool exhausted",
+      "objective": "Không nhìn notes: vẽ Thread dump→executor queue→dependency→timeout/cancel. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "Tự xử lý “One future timeout; sibling tasks continue; commonPool starves”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-10",
+      "type": "REVIEW",
+      "title": "D+7 — CPU/IO pool sizing và cancellation",
+      "objective": "Dựng lại normal/failure timeline của JAVA-10; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "LAB",
+      "title": "Implement — Configuration và Boot auto-configuration",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; ConfigurationProperties validation + condition report; kèm predicted/observed table và ADR “Explicit bean so với auto-config”.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: ConfigurationProperties validation + condition report; kèm predicted/observed table và ADR “Explicit bean so với auto-config”."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Configuration và Boot auto-configuration",
+      "objective": "Fault: Config typo; bean override ngoài ý muốn. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Configuration proxy; property binding; auto-config report.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Configuration và Boot auto-configuration",
+      "objective": "Fault: Config typo; bean override ngoài ý muốn. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Configuration proxy; property binding; auto-config report.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Configuration và Boot auto-configuration",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Configuration/Bean/Component/conditions/properties? How Configuration proxy; property binding; auto-config report? What if Config typo; bean override ngoài ý muốn? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Actuator/config/health và graceful application shutdown",
+      "objective": "Chốt phần research còn lại: health groups; nối với Lifecycle hooks; inflight request draining. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Actuator/config/health và graceful application shutdown",
+      "objective": "Không nhìn notes: vẽ Lifecycle hooks; inflight request draining; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

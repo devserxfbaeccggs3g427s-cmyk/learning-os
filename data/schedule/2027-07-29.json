@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-29",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-06: Resilience4j circuit breaker state machine; GATE-07: Bulkhead và bounded resource isolation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-02",
+      "type": "REVIEW",
+      "title": "D+14 — Keycloak/JWKS unavailable và rotation",
+      "objective": "Bảo vệ trade-off của GATE-02 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-06",
+      "type": "LAB",
+      "title": "Implement — Resilience4j circuit breaker state machine",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Transitions trace + bounded probe assertions; kèm predicted/observed table và ADR “Circuit breaker so với timeout/rate limiter”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Transitions trace + bounded probe assertions; kèm predicted/observed table và ADR “Circuit breaker so với timeout/rate limiter”."
+    },
+    {
+      "taskCode": "GATE-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Resilience4j circuit breaker state machine",
+      "objective": "Fault: Half-open probes flood recovering service. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Failure/slow-call recording và probe gating.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Resilience4j circuit breaker state machine",
+      "objective": "Fault: Half-open probes flood recovering service. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Failure/slow-call recording và probe gating.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Resilience4j circuit breaker state machine",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why closed/open/half-open/windows/thresholds? How Failure/slow-call recording và probe gating? What if Half-open probes flood recovering service? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "LEARN",
+      "title": "Concept/contract — Bulkhead và bounded resource isolation",
+      "objective": "semaphore / thread pool; cơ chế cần kiểm chứng: Resource isolation; reactive blocking risk. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho semaphore / thread pool; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Bulkhead và bounded resource isolation",
+      "objective": "Không nhìn notes: vẽ Resource isolation; reactive blocking risk; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

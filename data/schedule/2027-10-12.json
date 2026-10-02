@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-12",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-08: Actuator/config/health và graceful application shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-04",
+      "type": "REVIEW",
+      "title": "D+14 — ConcurrentHashMap và atomic compound operations",
+      "objective": "Bảo vệ trade-off của JAVA-04 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "REVIEW",
+      "title": "D+1 — Configuration và Boot auto-configuration",
+      "objective": "Không nhìn notes: vẽ Configuration proxy; property binding; auto-config report; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Actuator/config/health và graceful application shutdown",
+      "objective": "config secrets / readiness; cơ chế cần kiểm chứng: Lifecycle hooks; inflight request draining. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho config secrets / readiness; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "LAB",
+      "title": "Implement — Actuator/config/health và graceful application shutdown",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Shutdown timeline + readiness test; kèm predicted/observed table và ADR “Readiness so với liveness dependency checks”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Shutdown timeline + readiness test; kèm predicted/observed table và ADR “Readiness so với liveness dependency checks”."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "LAB",
+      "title": "Implement — Actuator/config/health và graceful application shutdown",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Shutdown timeline + readiness test; kèm predicted/observed table và ADR “Readiness so với liveness dependency checks”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Shutdown timeline + readiness test; kèm predicted/observed table và ADR “Readiness so với liveness dependency checks”."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Actuator/config/health và graceful application shutdown",
+      "objective": "Fault: Health false-positive; shutdown cắt request. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Lifecycle hooks; inflight request draining.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Actuator/config/health và graceful application shutdown",
+      "objective": "Không nhìn notes: vẽ Lifecycle hooks; inflight request draining; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

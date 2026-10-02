@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-03",
+  "objective": "Tạo và kiểm chứng evidence cho **SD-04: Authentication/session service**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-02",
+      "type": "REVIEW",
+      "title": "D+14 — Fetch strategy và N+1 trên order/assets",
+      "objective": "Bảo vệ trade-off của DATA-02 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-04",
+      "type": "REVIEW",
+      "title": "D+1 — CSRF/CORS/XSS và browser session decisions",
+      "objective": "Không nhìn notes: vẽ Browser credential sending và preflight; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Authentication/session service",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Authentication/session service: multi-device, refresh/logout/password change? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if Revocation contract, rotation, stolen credentials, Redis outage, privacy? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SD-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Authentication/session service",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Authentication/session service: multi-device, refresh/logout/password change? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if Revocation contract, rotation, stolen credentials, Redis outage, privacy? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

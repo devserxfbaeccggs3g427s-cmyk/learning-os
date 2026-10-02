@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-07",
+  "objective": "Tạo và kiểm chứng evidence cho **AUX-01: React/Thymeleaf/JSP/Servlet browser-backend contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OPS-03",
+      "type": "REVIEW",
+      "title": "D+7 — Requests/limits/OOMKilled/HPA",
+      "objective": "Dựng lại normal/failure timeline của OPS-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-05",
+      "type": "REVIEW",
+      "title": "D+1 — Git/GitLabCI/Jenkins và release evidence",
+      "objective": "Không nhìn notes: vẽ Reproducible build/config separation/version identity; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUX-01",
+      "type": "LAB",
+      "title": "Implement — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Frontend ownership map + API security negative tests; kèm predicted/observed table và ADR “Client validation so với authoritative server validation”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Frontend ownership map + API security negative tests; kèm predicted/observed table và ADR “Client validation so với authoritative server validation”."
+    },
+    {
+      "taskCode": "AUX-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Fault: Client validation bypass; duplicate form submission. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Client vs server trust; servlet request lifecycle.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUX-01",
+      "type": "INTERVIEW",
+      "title": "Interview — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why rendering/forms/token/cookies/validation/double submit? How Client vs server trust; servlet request lifecycle? What if Client validation bypass; duplicate form submission? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUX-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Không nhìn notes: vẽ Client vs server trust; servlet request lifecycle; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

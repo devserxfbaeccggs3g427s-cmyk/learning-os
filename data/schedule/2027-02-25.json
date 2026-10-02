@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-02-25",
+  "objective": "Tạo và kiểm chứng evidence cho **OTP-05: Masked logging và OTP abuse audit; DB-10: Hikari và budget connections**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OBS-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Structured logs, correlation và privacy",
+      "objective": "Không nhìn notes: vẽ Context propagation HTTP/async/thread boundaries; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Masked logging và OTP abuse audit",
+      "objective": "Fault: OTP/token lộ qua exception/trace baggage. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Logging pipeline và sensitive field handling.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Masked logging và OTP abuse audit",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why redaction/PII/correlation/security events? How Logging pipeline và sensitive field handling? What if OTP/token lộ qua exception/trace baggage? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Hikari và budget connections",
+      "objective": "Chốt phần research còn lại: active / idle; nối với Pool queue; total replicas × pool capacity. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Hikari và budget connections",
+      "objective": "idle / pending / acquire timeout / leak; cơ chế cần kiểm chứng: Pool queue; total replicas × pool capacity. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho idle / pending / acquire timeout / leak; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "LAB",
+      "title": "Implement — Hikari và budget connections",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Pool saturation graph; concurrency cap bảo vệ DB; kèm predicted/observed table và ADR “Tăng pool so với giảm transaction duration”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Pool saturation graph; concurrency cap bảo vệ DB; kèm predicted/observed table và ADR “Tăng pool so với giảm transaction duration”."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Hikari và budget connections",
+      "objective": "Không nhìn notes: vẽ Pool queue; total replicas × pool capacity; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-19",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-03: Gateway timeout vs Feign/downstream timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-22",
+      "type": "REVIEW",
+      "title": "D+1 — Keycloak unavailable",
+      "objective": "Không nhìn notes: vẽ Login vs API impact→cache state→Keycloak health. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Keycloak/JWKS unavailable và rotation",
+      "objective": "Tự xử lý “Old cached key valid; new kid unavailable”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Gateway timeout vs Feign/downstream timeout",
+      "objective": "connect / read / client budget; cơ chế cần kiểm chứng: Cancellation propagation and remaining work. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho connect / read / client budget; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "LAB",
+      "title": "Implement — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Timeline và response mapping test; unknown result preserved; kèm predicted/observed table và ADR “Short gateway timeout so với coherent per-hop budget”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Timeline và response mapping test; unknown result preserved; kèm predicted/observed table và ADR “Short gateway timeout so với coherent per-hop budget”."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Gateway timeout vs Feign/downstream timeout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why end-to-end deadline/connect/read/client budget? How Cancellation propagation and remaining work? What if Gateway timed out nhưng service vẫn commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

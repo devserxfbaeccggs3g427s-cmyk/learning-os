@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-25",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-07: Key/secret rotation và crypto failure policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-07",
+      "type": "REVIEW",
+      "title": "D+1 — Lockout và credential abuse",
+      "objective": "Không nhìn notes: vẽ Atomic counters, expiry, unlock policy; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Distributed counters và rate limits",
+      "objective": "Tự xử lý “2 gateways vượt quota; clock skew”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Lockout và credential abuse",
+      "objective": "Tự xử lý “Attacker khóa tài khoản nạn nhân; parallel attempts”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "LEARN",
+      "title": "Concept/contract — Key/secret rotation và crypto failure policy",
+      "objective": "kid / key overlap / secrets custody; cơ chế cần kiểm chứng: Key lifecycle và old/new verifier behavior. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho kid / key overlap / secrets custody; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Key/secret rotation và crypto failure policy",
+      "objective": "Chốt phần research còn lại: secrets custody / audit; nối với Key lifecycle và old/new verifier behavior. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "LAB",
+      "title": "Implement — Key/secret rotation và crypto failure policy",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Rotation/runbook; never log secret assertion; kèm predicted/observed table và ADR “Key overlap availability so với compromised key removal”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Rotation/runbook; never log secret assertion; kèm predicted/observed table và ADR “Key overlap availability so với compromised key removal”."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Key/secret rotation và crypto failure policy",
+      "objective": "Không nhìn notes: vẽ Key lifecycle và old/new verifier behavior; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

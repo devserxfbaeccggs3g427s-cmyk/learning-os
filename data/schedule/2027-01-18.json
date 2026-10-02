@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-18",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-06: Device binding và trusted-device lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OTP-01",
+      "type": "REVIEW",
+      "title": "D+1 — OTP challenge model và transaction binding",
+      "objective": "Không nhìn notes: vẽ Challenge state và one-time scope; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — OTP challenge model và transaction binding",
+      "objective": "Tự xử lý “OTP login dùng xác nhận transfer khác”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Device binding và trusted-device lifecycle",
+      "objective": "device ID / trust expiry; cơ chế cần kiểm chứng: Possession evidence vs user-controlled identifier. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho device ID / trust expiry; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "LAB",
+      "title": "Implement — Device binding và trusted-device lifecycle",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Threat model + new/trusted/revoked device tests; kèm predicted/observed table và ADR “Device identifier so với cryptographic binding proposal”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Threat model + new/trusted/revoked device tests; kèm predicted/observed table và ADR “Device identifier so với cryptographic binding proposal”."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "LAB",
+      "title": "Implement — Device binding và trusted-device lifecycle",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Threat model + new/trusted/revoked device tests; kèm predicted/observed table và ADR “Device identifier so với cryptographic binding proposal”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Threat model + new/trusted/revoked device tests; kèm predicted/observed table và ADR “Device identifier so với cryptographic binding proposal”."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Device binding và trusted-device lifecycle",
+      "objective": "Fault: Spoof device ID; cloned app; lost device. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Possession evidence vs user-controlled identifier.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Device binding và trusted-device lifecycle",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why device enrollment/proof/device ID/trust expiry? How Possession evidence vs user-controlled identifier? What if Spoof device ID; cloned app; lost device? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

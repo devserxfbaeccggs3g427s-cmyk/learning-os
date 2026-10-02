@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-07: Crash trước/sau commit và response replay; PAY-08: Processing state, TTL và replay muộn**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-04",
+      "type": "REVIEW",
+      "title": "D+14 — Concurrent claim bằng unique constraint",
+      "objective": "Bảo vệ trade-off của PAY-04 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "REVIEW",
+      "title": "D+7 — Propagation và nhiều datasource",
+      "objective": "Dựng lại normal/failure timeline của SPR-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Crash trước/sau commit và response replay",
+      "objective": "Fault: Kill trước commit; kill sau commit trước response. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Commit acknowledgement và client observation.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Crash trước/sau commit và response replay",
+      "objective": "Fault: Kill trước commit; kill sau commit trước response. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Commit acknowledgement và client observation.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Crash trước/sau commit và response replay",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why durable response/reconstruct/ambiguous commit? How Commit acknowledgement và client observation? What if Kill trước commit; kill sau commit trước response? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-08",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Processing state, TTL và replay muộn",
+      "objective": "Chốt phần research còn lại: retention; nối với Long-running status và takeover fencing đề xuất. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "PAY-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Processing state, TTL và replay muộn",
+      "objective": "Không nhìn notes: vẽ Long-running status và takeover fencing đề xuất; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

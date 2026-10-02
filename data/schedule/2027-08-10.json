@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-10",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-04: Optimistic vs pessimistic locking**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-05",
+      "type": "REVIEW",
+      "title": "D+14 — Bucket4j distributed rate limiting",
+      "objective": "Bảo vệ trade-off của GATE-05 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-15",
+      "type": "REVIEW",
+      "title": "D+1 — Gateway 5xx tăng",
+      "objective": "Không nhìn notes: vẽ Origin classify→route→dependency/breaker→deployment. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-04",
+      "type": "LEARN",
+      "title": "Concept/contract — Optimistic vs pessimistic locking",
+      "objective": "version / SELECT FOR UPDATE / conditional update; cơ chế cần kiểm chứng: Row locks, wait timeout, stale version detection. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho version / SELECT FOR UPDATE / conditional update; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-04",
+      "type": "LAB",
+      "title": "Implement — Optimistic vs pessimistic locking",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 2 implementation cùng invariant + conflict metrics; kèm predicted/observed table và ADR “Optimistic version so với row lock”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 2 implementation cùng invariant + conflict metrics; kèm predicted/observed table và ADR “Optimistic version so với row lock”."
+    },
+    {
+      "taskCode": "DB-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Optimistic vs pessimistic locking",
+      "objective": "Fault: Lost update; lock giữ lâu khi gọi bank. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Row locks, wait timeout, stale version detection.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Optimistic vs pessimistic locking",
+      "objective": "Không nhìn notes: vẽ Row locks, wait timeout, stale version detection; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

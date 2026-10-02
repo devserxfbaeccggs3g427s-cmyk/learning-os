@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-19",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-05: Transaction rollback và exception boundary; PAY-04: Concurrent claim bằng unique constraint**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SPR-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — IoC/DI và bean resolution trong transfer strategy",
+      "objective": "Tự xử lý “Hai strategy beans ambiguous; cycle startup”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — AOP, JDK proxy, CGLIB và self-invocation",
+      "objective": "Tự xử lý “Transactional method không được intercept”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Transaction rollback và exception boundary",
+      "objective": "Fault: Catch lỗi rồi commit; unexpected rollback. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Transaction interceptor và rollback-only.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Transaction rollback và exception boundary",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Runtime/checked/rollbackFor/caught exception? How Transaction interceptor và rollback-only? What if Catch lỗi rồi commit; unexpected rollback? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "LEARN",
+      "title": "Concept/contract — Concurrent claim bằng unique constraint",
+      "objective": "insert-first / wait / commit; cơ chế cần kiểm chứng: Unique index arbitration và visibility theo DB. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho insert-first / wait / commit; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Concurrent claim bằng unique constraint",
+      "objective": "Không nhìn notes: vẽ Unique index arbitration và visibility theo DB; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

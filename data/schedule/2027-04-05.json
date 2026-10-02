@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-05",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-06: Idempotent producer: PID và sequence number; KAF-07: max.in.flight và ordering khi retry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — acks=0/1/all và min.insync.replicas",
+      "objective": "Tự xử lý “Broker loss; ISR dưới minISR”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Producer retry và ambiguous acknowledgement",
+      "objective": "Tự xử lý “Publish success nhưng ACK mất”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "LAB",
+      "title": "Implement — Idempotent producer: PID và sequence number",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Retry/restart comparison; không gán business EOS; kèm predicted/observed table và ADR “Transport retry dedup so với business event dedup”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Retry/restart comparison; không gán business EOS; kèm predicted/observed table và ADR “Transport retry dedup so với business event dedup”."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Idempotent producer: PID và sequence number",
+      "objective": "Fault: Restart rồi application gửi lại same event. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Broker dedup scope và supported config/version.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Idempotent producer: PID và sequence number",
+      "objective": "Fault: Restart rồi application gửi lại same event. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Broker dedup scope và supported config/version.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Idempotent producer: PID và sequence number",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why producer identity/epoch/per-partition sequence? How Broker dedup scope và supported config/version? What if Restart rồi application gửi lại same event? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-07",
+      "type": "LEARN",
+      "title": "Concept/contract — max.in.flight và ordering khi retry",
+      "objective": "max inflight / per connection; cơ chế cần kiểm chứng: Batch ordering và retry behavior theo version. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho max inflight / per connection; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — max.in.flight và ordering khi retry",
+      "objective": "Không nhìn notes: vẽ Batch ordering và retry behavior theo version; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

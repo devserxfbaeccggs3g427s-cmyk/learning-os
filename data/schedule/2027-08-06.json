@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-06",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-09: Gateway bottleneck, fallback và observability; INC-15: Gateway 5xx tăng**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-04",
+      "type": "REVIEW",
+      "title": "D+14 — Retry GET vs POST và idempotency contract",
+      "objective": "Bảo vệ trade-off của GATE-04 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "LAB",
+      "title": "Implement — Gateway bottleneck, fallback và observability",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Load profile + safe error/fallback contract; kèm predicted/observed table và ADR “Graceful degradation so với hidden business failure”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Load profile + safe error/fallback contract; kèm predicted/observed table và ADR “Graceful degradation so với hidden business failure”."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Gateway bottleneck, fallback và observability",
+      "objective": "Fault: Gateway CPU high; fallback returns fake success. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Blocking calls and per-route metrics.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Gateway bottleneck, fallback và observability",
+      "objective": "Fault: Gateway CPU high; fallback returns fake success. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Blocking calls and per-route metrics.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "INTERVIEW",
+      "title": "Interview — Gateway bottleneck, fallback và observability",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why event loop/filter cost/p95/5xx/correlation? How Blocking calls and per-route metrics? What if Gateway CPU high; fallback returns fake success? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-15",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Gateway 5xx tăng",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Gateway 5xx tăng; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Origin classify→route→dependency/breaker→deployment. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if No route, stale discovery, timeout, filter exception.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

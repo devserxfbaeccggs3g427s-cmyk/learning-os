@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-24",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-08: Execution plan và statistics**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-06",
+      "type": "REVIEW",
+      "title": "D+1 — B+Tree và index cho bill/status query",
+      "objective": "Không nhìn notes: vẽ Leading columns, range scan, lookup cost; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-03",
+      "type": "REVIEW",
+      "title": "D+7 — Audit trail và separation of duties",
+      "objective": "Dựng lại normal/failure timeline của FLOW-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-08",
+      "type": "LEARN",
+      "title": "Concept/contract — Execution plan và statistics",
+      "objective": "estimated / actual rows / join / scan / sort; cơ chế cần kiểm chứng: Optimizer cardinality và bind/skew. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho estimated / actual rows / join / scan / sort; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-08",
+      "type": "LAB",
+      "title": "Implement — Execution plan và statistics",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Before/after plans trên data skew; latency samples; kèm predicted/observed table và ADR “Index thêm so với query rewrite/stat refresh”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Before/after plans trên data skew; latency samples; kèm predicted/observed table và ADR “Index thêm so với query rewrite/stat refresh”."
+    },
+    {
+      "taskCode": "DB-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Execution plan và statistics",
+      "objective": "Fault: Plan regression khi data distribution đổi. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Optimizer cardinality và bind/skew.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Execution plan và statistics",
+      "objective": "Không nhìn notes: vẽ Optimizer cardinality và bind/skew; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

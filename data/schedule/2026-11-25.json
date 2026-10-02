@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-25",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-10: Refund safety và concurrent partial refund; PAY-11: Disbursement retry và duplicate payout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-09",
+      "type": "REVIEW",
+      "title": "D+7 — Bank thành công nhưng local không biết",
+      "objective": "Dựng lại normal/failure timeline của PAY-09; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-17",
+      "type": "REVIEW",
+      "title": "D+7 — Core Banking timeout",
+      "objective": "Dựng lại normal/failure timeline của INC-17; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-02",
+      "type": "REVIEW",
+      "title": "D+14 — Thiết kế state model và invariant thanh toán",
+      "objective": "Bảo vệ trade-off của PAY-02 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-19",
+      "type": "REVIEW",
+      "title": "D+7 — Duplicate payment",
+      "objective": "Dựng lại normal/failure timeline của INC-19; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Refund safety và concurrent partial refund",
+      "objective": "Fault: 2 refund concurrent vượt số đã thanh toán. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Atomic remaining-amount check và status guards.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Refund safety và concurrent partial refund",
+      "objective": "Fault: 2 refund concurrent vượt số đã thanh toán. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Atomic remaining-amount check và status guards.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "INTERVIEW",
+      "title": "Interview — Refund safety và concurrent partial refund",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why original transaction/refund identity/refundable amount? How Atomic remaining-amount check và status guards? What if 2 refund concurrent vượt số đã thanh toán? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "LEARN",
+      "title": "Concept/contract — Disbursement retry và duplicate payout",
+      "objective": "payout business key / beneficiary; cơ chế cần kiểm chứng: State transition và downstream dedup contract. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho payout business key / beneficiary; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Disbursement retry và duplicate payout",
+      "objective": "Không nhìn notes: vẽ State transition và downstream dedup contract; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-02",
+  "objective": "Tạo và kiểm chứng evidence cho **DATA-04: JdbcTemplate resource/exception/parameter handling**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-07",
+      "type": "REVIEW",
+      "title": "D+1 — Connection pool exhausted",
+      "objective": "Không nhìn notes: vẽ Pool pending→holders→DB wait→code holds connection. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-01",
+      "type": "REVIEW",
+      "title": "D+7 — Structured logs, correlation và privacy",
+      "objective": "Dựng lại normal/failure timeline của OBS-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-04",
+      "type": "LEARN",
+      "title": "Concept/contract — JdbcTemplate resource/exception/parameter handling",
+      "objective": "prepared statement / RowMapper / timeout / SQL injection; cơ chế cần kiểm chứng: Connection acquisition/release và exception translation. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho prepared statement / RowMapper / timeout / SQL injection; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DATA-04",
+      "type": "LAB",
+      "title": "Implement — JdbcTemplate resource/exception/parameter handling",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Parameterized query + failure cleanup test; kèm predicted/observed table và ADR “JdbcTemplate so với raw JDBC/JPA”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Parameterized query + failure cleanup test; kèm predicted/observed table và ADR “JdbcTemplate so với raw JDBC/JPA”."
+    },
+    {
+      "taskCode": "DATA-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JdbcTemplate resource/exception/parameter handling",
+      "objective": "Fault: Mapper fail; statement timeout; connection leak. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Connection acquisition/release và exception translation.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — JdbcTemplate resource/exception/parameter handling",
+      "objective": "Không nhìn notes: vẽ Connection acquisition/release và exception translation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-28",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-04: ConcurrentHashMap và atomic compound operations; JAVA-05: Stream/Optional/lambda và side effects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-03",
+      "type": "REVIEW",
+      "title": "D+14 — ArrayList/LinkedList/HashMap/TreeMap internals",
+      "objective": "Bảo vệ trade-off của JAVA-03 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-07",
+      "type": "REVIEW",
+      "title": "D+1 — Maker-Checker",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — ConcurrentHashMap và atomic compound operations",
+      "objective": "Fault: get then put race; slow mapping function blocks callers. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Per-key atomic operations vs check-then-act.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-04",
+      "type": "INTERVIEW",
+      "title": "Interview — ConcurrentHashMap và atomic compound operations",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why safe publication/computeIfAbsent/putIfAbsent? How Per-key atomic operations vs check-then-act? What if get then put race; slow mapping function blocks callers? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "LEARN",
+      "title": "Concept/contract — Stream/Optional/lambda và side effects",
+      "objective": "map / flatMap / lazy evaluation / collect / functional interfaces; cơ chế cần kiểm chứng: Pipeline evaluation and shared mutable reduction. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho map / flatMap / lazy evaluation / collect / functional interfaces; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "LAB",
+      "title": "Implement — Stream/Optional/lambda và side effects",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Pure mapping vs side-effect test; resource closure; kèm predicted/observed table và ADR “Sequential loop so với stream/parallel stream”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Pure mapping vs side-effect test; resource closure; kèm predicted/observed table và ADR “Sequential loop so với stream/parallel stream”."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Stream/Optional/lambda và side effects",
+      "objective": "Không nhìn notes: vẽ Pipeline evaluation and shared mutable reduction; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

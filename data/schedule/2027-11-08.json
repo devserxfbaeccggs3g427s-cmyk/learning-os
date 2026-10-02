@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-08",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-01: API latency 100ms→3s; OBS-04: SLI/SLO và actionable alerts**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OBS-03",
+      "type": "REVIEW",
+      "title": "D+1 — Distributed traces và ELK troubleshooting",
+      "objective": "Không nhìn notes: vẽ Async span links and ingestion delay; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-03",
+      "type": "REVIEW",
+      "title": "D+14 — Bulk operations và persistence context stale",
+      "objective": "Bảo vệ trade-off của DATA-03 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Distributed traces và ELK troubleshooting",
+      "objective": "Tự xử lý “Missing trace; log delay appears as no event”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-01",
+      "type": "INTERVIEW",
+      "title": "Interview — API latency 100ms→3s",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why API latency 100ms→3s; khi drill bổ sung time window, impacted operation và synthetic baseline.? How scope route/time→trace critical path→queue/pool→dependency. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if DB lock, downstream slow, queue waiting.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OBS-04",
+      "type": "LEARN",
+      "title": "Concept/contract — SLI/SLO và actionable alerts",
+      "objective": "availability / latency / correctness; cơ chế cần kiểm chứng: Window and denominator definition. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho availability / latency / correctness; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OBS-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — SLI/SLO và actionable alerts",
+      "objective": "Không nhìn notes: vẽ Window and denominator definition; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

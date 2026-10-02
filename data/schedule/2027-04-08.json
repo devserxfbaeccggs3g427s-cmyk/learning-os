@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-08",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-08: Batching, linger, compression và partition choice; KAF-09: Key ordering và partition count changes**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-01",
+      "type": "REVIEW",
+      "title": "D+14 — Reconstruct topic/event ownership",
+      "objective": "Bảo vệ trade-off của KAF-01 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-05",
+      "type": "REVIEW",
+      "title": "D+7 — Producer retry và ambiguous acknowledgement",
+      "objective": "Dựng lại normal/failure timeline của KAF-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Idempotent producer: PID và sequence number",
+      "objective": "Tự xử lý “Restart rồi application gửi lại same event”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Batching, linger, compression và partition choice",
+      "objective": "Fault: High latency at low load; uneven partition load. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Accumulator batches và hot partition.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Batching, linger, compression và partition choice",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why batch size/linger/compression/sticky/key? How Accumulator batches và hot partition? What if High latency at low load; uneven partition load? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-09",
+      "type": "LEARN",
+      "title": "Concept/contract — Key ordering và partition count changes",
+      "objective": "aggregate key / order ID / partition mapping; cơ chế cần kiểm chứng: Hash partition routing; ordering per partition only. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho aggregate key / order ID / partition mapping; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-09",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Key ordering và partition count changes",
+      "objective": "Không nhìn notes: vẽ Hash partition routing; ordering per partition only; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

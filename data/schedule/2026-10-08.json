@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-08",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-01: Relational invariant và schema tài chính; DB-02: Hai session insert cùng unique key**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-03",
+      "type": "REVIEW",
+      "title": "D+1 — Request-ID contract và request fingerprint",
+      "objective": "Không nhìn notes: vẽ Stable hash; canonical amount/null/field order; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Relational invariant và schema tài chính",
+      "objective": "Fault: Orphan reference; amount overflow; missing currency. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Constraint evaluation/null semantics.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Relational invariant và schema tài chính",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why PK/FK/unique/check/decimal/currency? How Constraint evaluation/null semantics? What if Orphan reference; amount overflow; missing currency? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-02",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Hai session insert cùng unique key",
+      "objective": "Chốt phần research còn lại: locking / visibility; nối với Unique index conflict/wait theo Oracle và Postgres. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DB-02",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Hai session insert cùng unique key",
+      "objective": "visibility / commit / rollback; cơ chế cần kiểm chứng: Unique index conflict/wait theo Oracle và Postgres. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho visibility / commit / rollback; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-02",
+      "type": "LAB",
+      "title": "Implement — Hai session insert cùng unique key",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Hai timeline + lock-wait evidence cho từng DB có sẵn; kèm predicted/observed table và ADR “Pre-check SELECT so với INSERT arbitration”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Hai timeline + lock-wait evidence cho từng DB có sẵn; kèm predicted/observed table và ADR “Pre-check SELECT so với INSERT arbitration”."
+    },
+    {
+      "taskCode": "DB-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Hai session insert cùng unique key",
+      "objective": "Không nhìn notes: vẽ Unique index conflict/wait theo Oracle và Postgres; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

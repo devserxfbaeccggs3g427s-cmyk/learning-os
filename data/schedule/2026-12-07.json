@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-07",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-07: MVC request lifecycle và validation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-12",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Tự xử lý “Bank success local pending; amount/currency mismatch”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "REVIEW",
+      "title": "D+1 — Bean lifecycle, scope và mutable singleton",
+      "objective": "Không nhìn notes: vẽ Creation/injection/init/destruction; scoped proxy; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Bean lifecycle, scope và mutable singleton",
+      "objective": "Tự xử lý “Singleton lưu request state; shutdown bỏ resource”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — MVC request lifecycle và validation",
+      "objective": "Chốt phần research còn lại: ControllerAdvice / Bean Validation; nối với Argument binding và exception resolution. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "LAB",
+      "title": "Implement — MVC request lifecycle và validation",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Request trace và stable error contract tests; kèm predicted/observed table và ADR “Filter so với interceptor so với controller advice”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Request trace và stable error contract tests; kèm predicted/observed table và ADR “Filter so với interceptor so với controller advice”."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "LAB",
+      "title": "Implement — MVC request lifecycle và validation",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Request trace và stable error contract tests; kèm predicted/observed table và ADR “Filter so với interceptor so với controller advice”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Request trace và stable error contract tests; kèm predicted/observed table và ADR “Filter so với interceptor so với controller advice”."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — MVC request lifecycle và validation",
+      "objective": "Fault: Malformed input; leaked internal errors; duplicate filters. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Argument binding và exception resolution.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — MVC request lifecycle và validation",
+      "objective": "Không nhìn notes: vẽ Argument binding và exception resolution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

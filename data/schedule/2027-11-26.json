@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-26",
+  "objective": "Tạo và kiểm chứng evidence cho **OPS-02: K8s Pod/Deployment/Service/config/secrets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-05",
+      "type": "REVIEW",
+      "title": "D+7 — MyBatis mapping và framework choice",
+      "objective": "Dựng lại normal/failure timeline của DATA-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-01",
+      "type": "REVIEW",
+      "title": "D+1 — Docker image/container lifecycle",
+      "objective": "Không nhìn notes: vẽ PID1/signal handling/filesystem/resource boundaries; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-02",
+      "type": "LAB",
+      "title": "Implement — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Manifest walkthrough + bad-probe/recovery lab; kèm predicted/observed table và ADR “Readiness withdraw so với restart service”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Manifest walkthrough + bad-probe/recovery lab; kèm predicted/observed table và ADR “Readiness withdraw so với restart service”."
+    },
+    {
+      "taskCode": "OPS-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "Fault: Liveness phụ thuộc DB gây restart storm. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Readiness vs liveness and rollout endpoint updates.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OPS-02",
+      "type": "INTERVIEW",
+      "title": "Interview — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why desired state/selectors/probes/ConfigMap/Secret? How Readiness vs liveness and rollout endpoint updates? What if Liveness phụ thuộc DB gây restart storm? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OPS-02",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — K8s Pod/Deployment/Service/config/secrets",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why desired state/selectors/probes/ConfigMap/Secret? How Readiness vs liveness and rollout endpoint updates? What if Liveness phụ thuộc DB gây restart storm? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

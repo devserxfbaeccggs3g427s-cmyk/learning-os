@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-19",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-10: Refund safety và concurrent partial refund**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-05",
+      "type": "REVIEW",
+      "title": "D+7 — REST/TCP timeouts và correlation",
+      "objective": "Dựng lại normal/failure timeline của BANK-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-19",
+      "type": "REVIEW",
+      "title": "D+1 — Duplicate payment",
+      "objective": "Không nhìn notes: vẽ Contain further payouts→bank evidence→identity/tx timeline. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-09",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Bank thành công nhưng local không biết",
+      "objective": "Tự xử lý “Downstream success + lost reply/local update fail”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "LEARN",
+      "title": "Concept/contract — Refund safety và concurrent partial refund",
+      "objective": "original transaction / refund identity; cơ chế cần kiểm chứng: Atomic remaining-amount check và status guards. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho original transaction / refund identity; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Refund safety và concurrent partial refund",
+      "objective": "refund identity / refundable amount; cơ chế cần kiểm chứng: Atomic remaining-amount check và status guards. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho refund identity / refundable amount; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "LAB",
+      "title": "Implement — Refund safety và concurrent partial refund",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Lab refund tổng không vượt settled amount giả lập; kèm predicted/observed table và ADR “Append refund attempts so với overwrite original”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Lab refund tổng không vượt settled amount giả lập; kèm predicted/observed table và ADR “Append refund attempts so với overwrite original”."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "INTERVIEW",
+      "title": "Interview — Refund safety và concurrent partial refund",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why original transaction/refund identity/refundable amount? How Atomic remaining-amount check và status guards? What if 2 refund concurrent vượt số đã thanh toán? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

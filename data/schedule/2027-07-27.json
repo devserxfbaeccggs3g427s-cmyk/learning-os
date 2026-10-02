@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-27",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-05: Bucket4j distributed rate limiting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-01",
+      "type": "REVIEW",
+      "title": "D+14 — Reconstruct Gateway routing/filter chain",
+      "objective": "Bảo vệ trade-off của GATE-01 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-03",
+      "type": "REVIEW",
+      "title": "D+7 — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Dựng lại normal/failure timeline của GATE-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Bucket4j distributed rate limiting",
+      "objective": "Fault: 2 gateways share quota; Redis unavailable. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic token consumption and Redis integration version.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Bucket4j distributed rate limiting",
+      "objective": "Fault: 2 gateways share quota; Redis unavailable. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Atomic token consumption and Redis integration version.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Bucket4j distributed rate limiting",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why bucket capacity/refill/user/IP/cluster state? How Atomic token consumption and Redis integration version? What if 2 gateways share quota; Redis unavailable? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Bucket4j distributed rate limiting",
+      "objective": "Không nhìn notes: vẽ Atomic token consumption and Redis integration version; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

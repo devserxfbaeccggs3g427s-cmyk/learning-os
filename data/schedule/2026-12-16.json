@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-16",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-14: Service/use-case layer và transfer strategy; SEC-05: Hash, encryption, signature và HMAC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-12",
+      "type": "REVIEW",
+      "title": "D+14 — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Bảo vệ trade-off của PAY-12 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-01",
+      "type": "REVIEW",
+      "title": "D+7 — JWT/JWS/JWE và SecurityFilterChain",
+      "objective": "Dựng lại normal/failure timeline của SEC-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-14",
+      "type": "LAB",
+      "title": "Implement — Service/use-case layer và transfer strategy",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; 2 mock strategies dùng cùng contract tests; kèm predicted/observed table và ADR “Strategy pattern so với if-else/adapter duplication”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 2 mock strategies dùng cùng contract tests; kèm predicted/observed table và ADR “Strategy pattern so với if-else/adapter duplication”."
+    },
+    {
+      "taskCode": "PAY-14",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Service/use-case layer và transfer strategy",
+      "objective": "Fault: Chọn sai rail; adapter map unknown thành failed. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Strategy dispatch và side-effect isolation.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-14",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Service/use-case layer và transfer strategy",
+      "objective": "Fault: Chọn sai rail; adapter map unknown thành failed. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Strategy dispatch và side-effect isolation.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-14",
+      "type": "INTERVIEW",
+      "title": "Interview — Service/use-case layer và transfer strategy",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why boundary/domain error/adapter/policy? How Strategy dispatch và side-effect isolation? What if Chọn sai rail; adapter map unknown thành failed? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Hash, encryption, signature và HMAC",
+      "objective": "Chốt phần research còn lại: confidentiality / integrity; nối với RSA sign vs encrypt; ECDH key agreement+KDF. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Hash, encryption, signature và HMAC",
+      "objective": "Không nhìn notes: vẽ RSA sign vs encrypt; ECDH key agreement+KDF; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

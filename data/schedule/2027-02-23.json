@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-02-23",
+  "objective": "Tạo và kiểm chứng evidence cho **OBS-01: Structured logs, correlation và privacy; OTP-05: Masked logging và OTP abuse audit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-23",
+      "type": "REVIEW",
+      "title": "D+1 — OTP provider unavailable",
+      "objective": "Không nhìn notes: vẽ Delivery ambiguity→provider health/quota→safe retry contract. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-01",
+      "type": "LAB",
+      "title": "Implement — Structured logs, correlation và privacy",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; One request→DB→event evidence bundle with redaction; kèm predicted/observed table và ADR “Business ID so với trace ID; audit so với logs”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: One request→DB→event evidence bundle with redaction; kèm predicted/observed table và ADR “Business ID so với trace ID; audit so với logs”."
+    },
+    {
+      "taskCode": "OBS-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Structured logs, correlation và privacy",
+      "objective": "Fault: Lost correlation; OTP/token/PII logged. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Context propagation HTTP/async/thread boundaries.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OBS-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Structured logs, correlation và privacy",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why request ID/transaction ID/event ID/trace ID? How Context propagation HTTP/async/thread boundaries? What if Lost correlation; OTP/token/PII logged? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "LEARN",
+      "title": "Concept/contract — Masked logging và OTP abuse audit",
+      "objective": "redaction / PII / correlation; cơ chế cần kiểm chứng: Logging pipeline và sensitive field handling. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho redaction / PII / correlation; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Masked logging và OTP abuse audit",
+      "objective": "Không nhìn notes: vẽ Logging pipeline và sensitive field handling; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

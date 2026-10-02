@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-13",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-01: Reconstruct Gateway routing/filter chain**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-04",
+      "type": "REVIEW",
+      "title": "D+14 — 2PC và local atomicity limits",
+      "objective": "Bảo vệ trade-off của DIST-04 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-06",
+      "type": "REVIEW",
+      "title": "D+7 — Capacity, backpressure và graceful degradation",
+      "objective": "Dựng lại normal/failure timeline của DIST-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Gateway routing/filter chain",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Route policy matrix + bypass negative tests; kèm predicted/observed table và ADR “Gateway auth so với downstream auth”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Route policy matrix + bypass negative tests; kèm predicted/observed table và ADR “Gateway auth so với downstream auth”."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct Gateway routing/filter chain",
+      "objective": "Fault: Public route match bypasses admin security. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Filter ordering; reactive vs servlet runtime confirmation.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct Gateway routing/filter chain",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why route/predicate/filter/public/admin/correlation? How Filter ordering; reactive vs servlet runtime confirmation? What if Public route match bypasses admin security? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

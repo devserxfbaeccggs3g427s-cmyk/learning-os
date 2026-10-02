@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-23",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-15: JWT token cache và signing integration GOV; AUTH-01: Reconstruct login→logout/session/device**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-14",
+      "type": "REVIEW",
+      "title": "D+7 — Service/use-case layer và transfer strategy",
+      "objective": "Dựng lại normal/failure timeline của PAY-14; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-01",
+      "type": "REVIEW",
+      "title": "D+14 — JWT/JWS/JWE và SecurityFilterChain",
+      "objective": "Bảo vệ trade-off của SEC-01 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT; crypto chưa gắn project.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "LAB",
+      "title": "Implement — JWT token cache và signing integration GOV",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; 10 concurrent refresh + signed payload mutation tests; kèm predicted/observed table và ADR “Local cache so với shared cache sau xác nhận topology”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 10 concurrent refresh + signed payload mutation tests; kèm predicted/observed table và ADR “Local cache so với shared cache sau xác nhận topology”."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JWT token cache và signing integration GOV",
+      "objective": "Fault: Token hết hạn đồng loạt; signature service timeout. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Refresh single-flight; sign/verify canonical bytes.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JWT token cache và signing integration GOV",
+      "objective": "Fault: Token hết hạn đồng loạt; signature service timeout. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Refresh single-flight; sign/verify canonical bytes.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "INTERVIEW",
+      "title": "Interview — JWT token cache và signing integration GOV",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why service credentials/token expiry/signature service? How Refresh single-flight; sign/verify canonical bytes? What if Token hết hạn đồng loạt; signature service timeout? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct login→logout/session/device",
+      "objective": "Chốt phần research còn lại: Identity / Account; nối với Identity authority và authorization decision points. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reconstruct login→logout/session/device",
+      "objective": "Không nhìn notes: vẽ Identity authority và authorization decision points; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-02-24",
+  "objective": "Tạo và kiểm chứng evidence cho **OTP-05: Masked logging và OTP abuse audit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OBS-01",
+      "type": "REVIEW",
+      "title": "D+1 — Structured logs, correlation và privacy",
+      "objective": "Không nhìn notes: vẽ Context propagation HTTP/async/thread boundaries; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-03",
+      "type": "REVIEW",
+      "title": "D+7 — Resend rate limit và concurrent issuance",
+      "objective": "Dựng lại normal/failure timeline của OTP-03; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Masked logging và OTP abuse audit",
+      "objective": "Chốt phần research còn lại: security events; nối với Logging pipeline và sensitive field handling. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "LAB",
+      "title": "Implement — Masked logging và OTP abuse audit",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Canary secret scan log; abuse dashboard spec; kèm predicted/observed table và ADR “Diagnostic logs so với security audit”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Canary secret scan log; abuse dashboard spec; kèm predicted/observed table và ADR “Diagnostic logs so với security audit”."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "LAB",
+      "title": "Implement — Masked logging và OTP abuse audit",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Canary secret scan log; abuse dashboard spec; kèm predicted/observed table và ADR “Diagnostic logs so với security audit”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Canary secret scan log; abuse dashboard spec; kèm predicted/observed table và ADR “Diagnostic logs so với security audit”."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Masked logging và OTP abuse audit",
+      "objective": "Fault: OTP/token lộ qua exception/trace baggage. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Logging pipeline và sensitive field handling.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Masked logging và OTP abuse audit",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why redaction/PII/correlation/security events? How Logging pipeline và sensitive field handling? What if OTP/token lộ qua exception/trace baggage? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

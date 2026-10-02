@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-28",
+  "objective": "Tạo và kiểm chứng evidence cho **SPR-06: Propagation và nhiều datasource**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-01",
+      "type": "REVIEW",
+      "title": "D+1 — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Không nhìn notes: vẽ Unit of work; SQL emission; identity map; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-04",
+      "type": "REVIEW",
+      "title": "D+7 — Concurrent claim bằng unique constraint",
+      "objective": "Dựng lại normal/failure timeline của PAY-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-01",
+      "type": "REVIEW",
+      "title": "D+14 — IoC/DI và bean resolution trong transfer strategy",
+      "objective": "Bảo vệ trade-off của SPR-01 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "LAB",
+      "title": "Implement — Propagation và nhiều datasource",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Propagation matrix; JPA/JDBC connection IDs; kèm predicted/observed table và ADR “Same local transaction so với independent transaction”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Propagation matrix; JPA/JDBC connection IDs; kèm predicted/observed table và ADR “Same local transaction so với independent transaction”."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "LAB",
+      "title": "Implement — Propagation và nhiều datasource",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Propagation matrix; JPA/JDBC connection IDs; kèm predicted/observed table và ADR “Same local transaction so với independent transaction”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Propagation matrix; JPA/JDBC connection IDs; kèm predicted/observed table và ADR “Same local transaction so với independent transaction”."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Propagation và nhiều datasource",
+      "objective": "Fault: REQUIRES_NEW làm hết pool; manager sai DB. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Physical connection ownership; supported savepoints.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SPR-06",
+      "type": "INTERVIEW",
+      "title": "Interview — Propagation và nhiều datasource",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why REQUIRED/REQUIRES_NEW/NESTED/savepoint/isolation? How Physical connection ownership; supported savepoints? What if REQUIRES_NEW làm hết pool; manager sai DB? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

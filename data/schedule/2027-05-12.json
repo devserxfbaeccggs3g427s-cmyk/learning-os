@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-12",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-17: DB–Kafka Outbox relay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-10",
+      "type": "REVIEW",
+      "title": "D+1 — Kafka consumer lag tăng",
+      "objective": "Không nhìn notes: vẽ Per partition→handler time→errors→dependency→capacity. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-08",
+      "type": "REVIEW",
+      "title": "D+7 — JMM/happens-before/volatile/locks/CAS",
+      "objective": "Dựng lại normal/failure timeline của JAVA-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "REVIEW",
+      "title": "D+14 — Retry topic, DLQ và poison message",
+      "objective": "Bảo vệ trade-off của KAF-14 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-17",
+      "type": "LEARN",
+      "title": "Concept/contract — DB–Kafka Outbox relay proposal",
+      "objective": "same DB tx / outbox event ID; cơ chế cần kiểm chứng: Row claim; SKIP LOCKED/vendor support; publish-mark gap. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho same DB tx / outbox event ID; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-17",
+      "type": "DEEP_DIVE",
+      "title": "Internals — DB–Kafka Outbox relay proposal",
+      "objective": "relay / checkpoint; cơ chế cần kiểm chứng: Row claim; SKIP LOCKED/vendor support; publish-mark gap. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho relay / checkpoint; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-17",
+      "type": "LAB",
+      "title": "Implement — DB–Kafka Outbox relay proposal",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Relay crash test + consumer dedup; không mất committed event; kèm predicted/observed table và ADR “Polling outbox so với CDC concept; direct publish”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Relay crash test + consumer dedup; không mất committed event; kèm predicted/observed table và ADR “Polling outbox so với CDC concept; direct publish”."
+    },
+    {
+      "taskCode": "KAF-17",
+      "type": "INTERVIEW",
+      "title": "Interview — DB–Kafka Outbox relay proposal",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why same DB tx/outbox event ID/relay/checkpoint? How Row claim; SKIP LOCKED/vendor support; publish-mark gap? What if Publish succeeds nhưng mark published fail? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

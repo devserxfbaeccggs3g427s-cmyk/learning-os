@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-27",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-14: Retry topic, DLQ và poison message**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-11",
+      "type": "REVIEW",
+      "title": "D+1 — Kafka rebalance liên tục",
+      "objective": "Không nhìn notes: vẽ Protocol/version→reasons→poll/heartbeat→deployment timeline. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-10",
+      "type": "REVIEW",
+      "title": "D+14 — Consumer group assignment và parallelism",
+      "objective": "Bảo vệ trade-off của KAF-10 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Retry topic, DLQ và poison message",
+      "objective": "Chốt phần research còn lại: replay; nối với Offset progression; retry ordering consequences. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "LAB",
+      "title": "Implement — Retry topic, DLQ và poison message",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Poison event + replay runbook; giữ event identity; kèm predicted/observed table và ADR “Blocking retry so với retry topics”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Poison event + replay runbook; giữ event identity; kèm predicted/observed table và ADR “Blocking retry so với retry topics”."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "LAB",
+      "title": "Implement — Retry topic, DLQ và poison message",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Poison event + replay runbook; giữ event identity; kèm predicted/observed table và ADR “Blocking retry so với retry topics”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Poison event + replay runbook; giữ event identity; kèm predicted/observed table và ADR “Blocking retry so với retry topics”."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Retry topic, DLQ và poison message",
+      "objective": "Fault: Poison blocks partition; retry storm. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Offset progression; retry ordering consequences.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-14",
+      "type": "INTERVIEW",
+      "title": "Interview — Retry topic, DLQ và poison message",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why retry backoff/retry count/quarantine/replay? How Offset progression; retry ordering consequences? What if Poison blocks partition; retry storm? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

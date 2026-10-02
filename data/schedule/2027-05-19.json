@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-19",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-18: Kafka transactions/EOS vs external business effects; OBS-02: Micrometer/Prometheus/Actuator metrics**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-08",
+      "type": "REVIEW",
+      "title": "D+14 — JMM/happens-before/volatile/locks/CAS",
+      "objective": "Bảo vệ trade-off của JAVA-08 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-18",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Kafka transactions/EOS vs external business effects",
+      "objective": "Fault: Kafka transaction abort nhưng bank đã debit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Kafka atomic write+offset scope.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-18",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Kafka transactions/EOS vs external business effects",
+      "objective": "Fault: Kafka transaction abort nhưng bank đã debit. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Kafka atomic write+offset scope.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-18",
+      "type": "INTERVIEW",
+      "title": "Interview — Kafka transactions/EOS vs external business effects",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why transactional producer/read_committed/offset transaction? How Kafka atomic write+offset scope? What if Kafka transaction abort nhưng bank đã debit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Chốt phần research còn lại: RED / USE; nối với Metric labels and aggregation across instances. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Không nhìn notes: vẽ Metric labels and aggregation across instances; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

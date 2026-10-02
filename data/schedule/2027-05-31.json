@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-31",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-03: Kafka unavailable và backlog recovery**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reconstruct CMV boundaries và synchronous/async flows",
+      "objective": "Tự xử lý “2 systems overwrite same asset state”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-02",
+      "type": "REVIEW",
+      "title": "D+1 — CMS/kho hàng consistency và ordering",
+      "objective": "Không nhìn notes: vẽ Conditional version acceptance và dedup; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — CMS/kho hàng consistency và ordering",
+      "objective": "Tự xử lý “Update v2 đến trước v1; consumer restarts”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-03",
+      "type": "LAB",
+      "title": "Implement — Kafka unavailable và backlog recovery",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Outage contract + catchup throughput experiment; kèm predicted/observed table và ADR “Reject write so với durable pending acceptance proposal”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Outage contract + catchup throughput experiment; kèm predicted/observed table và ADR “Reject write so với durable pending acceptance proposal”."
+    },
+    {
+      "taskCode": "CMV-03",
+      "type": "LAB",
+      "title": "Implement — Kafka unavailable và backlog recovery",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Outage contract + catchup throughput experiment; kèm predicted/observed table và ADR “Reject write so với durable pending acceptance proposal”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Outage contract + catchup throughput experiment; kèm predicted/observed table và ADR “Reject write so với durable pending acceptance proposal”."
+    },
+    {
+      "taskCode": "CMV-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Kafka unavailable và backlog recovery",
+      "objective": "Fault: Broker outage, DB vẫn nhận nghiệp vụ. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Bounded buffering/relay recovery semantics.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Kafka unavailable và backlog recovery",
+      "objective": "Không nhìn notes: vẽ Bounded buffering/relay recovery semantics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

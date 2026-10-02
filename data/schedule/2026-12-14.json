@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-14",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-13: VietQR/Napas QR, receipt và bank inquiry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SEC-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — JWT/JWS/JWE và SecurityFilterChain",
+      "objective": "Tự xử lý “JWT decode thành auth; filter order bypass”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Object-level authorization và public/admin policy",
+      "objective": "Tự xử lý “User đổi account/order/file ID”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "LAB",
+      "title": "Implement — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Contract tests giả lập; receipt chỉ lấy đúng owner/state; kèm predicted/observed table và ADR “Display QR so với bằng chứng settlement”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Contract tests giả lập; receipt chỉ lấy đúng owner/state; kèm predicted/observed table và ADR “Display QR so với bằng chứng settlement”."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Fault: QR stale/tampered; receipt của user khác. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Encoding/validation theo spec thực; snapshot version.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "INTERVIEW",
+      "title": "Interview — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why QR payload/amount/expiry/alias/receipt authorization? How Encoding/validation theo spec thực; snapshot version? What if QR stale/tampered; receipt của user khác? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

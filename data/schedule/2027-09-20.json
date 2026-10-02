@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-20",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-08: Report module POI/iText scope and streaming**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-02",
+      "type": "REVIEW",
+      "title": "D+1 — CPU 95%",
+      "objective": "Không nhìn notes: vẽ CPU vs throttle→profile stack→GC→request mix. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-07",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — JVM class loading, memory và GC",
+      "objective": "Tự xử lý “Heap grows; classloader leak; stack overflow”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "LEARN",
+      "title": "Concept/contract — Report module POI/iText scope and streaming",
+      "objective": "export / query paging / streaming / fonts; cơ chế cần kiểm chứng: Workbook/PDF memory lifecycle and resource release. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho export / query paging / streaming / fonts; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Report module POI/iText scope and streaming",
+      "objective": "Chốt phần research còn lại: fonts / authorization; nối với Workbook/PDF memory lifecycle and resource release. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "LAB",
+      "title": "Implement — Report module POI/iText scope and streaming",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Synthetic report memory profile; tool mapping cần xác nhận; kèm predicted/observed table và ADR “Sync export so với async bounded export”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Synthetic report memory profile; tool mapping cần xác nhận; kèm predicted/observed table và ADR “Sync export so với async bounded export”."
+    },
+    {
+      "taskCode": "FLOW-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Report module POI/iText scope and streaming",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why export/query paging/streaming/fonts/authorization? How Workbook/PDF memory lifecycle and resource release? What if Large report OOM; export leaks unauthorized data? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

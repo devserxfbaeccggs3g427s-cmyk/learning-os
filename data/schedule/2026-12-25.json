@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-25",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-01: Reconstruct login→logout/session/device; AUTH-02: JWT validation với Nimbus và Spring Security**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SEC-05",
+      "type": "REVIEW",
+      "title": "D+7 — Hash, encryption, signature và HMAC",
+      "objective": "Dựng lại normal/failure timeline của SEC-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct login→logout/session/device",
+      "objective": "Fault: JWT hợp lệ nhưng session revoked. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Identity authority và authorization decision points.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct login→logout/session/device",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Identity/Account/Fund Transfer/token/session/trust? How Identity authority và authorization decision points? What if JWT hợp lệ nhưng session revoked? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "LEARN",
+      "title": "Concept/contract — JWT validation với Nimbus và Spring Security",
+      "objective": "claims / issuer / audience / exp; cơ chế cần kiểm chứng: JWS verify pipeline và claim validation riêng. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho claims / issuer / audience / exp; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "DEEP_DIVE",
+      "title": "Internals — JWT validation với Nimbus và Spring Security",
+      "objective": "exp / nbf / alg / kid; cơ chế cần kiểm chứng: JWS verify pipeline và claim validation riêng. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho exp / nbf / alg / kid; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "LAB",
+      "title": "Implement — JWT validation với Nimbus và Spring Security",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Negative token corpus; không token invalid được accept; kèm predicted/observed table và ADR “Decode JWT so với verify+validate”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Negative token corpus; không token invalid được accept; kèm predicted/observed table và ADR “Decode JWT so với verify+validate”."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — JWT validation với Nimbus và Spring Security",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why claims/issuer/audience/exp/nbf/alg/kid? How JWS verify pipeline và claim validation riêng? What if Wrong aud/alg; expired token; clock skew? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-09",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-15: Gateway 5xx tăng**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-08",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Eureka/Feign/load balancing under instance loss",
+      "objective": "Tự xử lý “Dead instance remains routable; partial 5xx”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "REVIEW",
+      "title": "D+1 — Gateway bottleneck, fallback và observability",
+      "objective": "Không nhìn notes: vẽ Blocking calls and per-route metrics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "REVIEW",
+      "title": "D+7 — Bulkhead và bounded resource isolation",
+      "objective": "Dựng lại normal/failure timeline của GATE-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Gateway bottleneck, fallback và observability",
+      "objective": "Tự xử lý “Gateway CPU high; fallback returns fake success”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-15",
+      "type": "INTERVIEW",
+      "title": "Interview — Gateway 5xx tăng",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Gateway 5xx tăng; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Origin classify→route→dependency/breaker→deployment. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if No route, stale discovery, timeout, filter exception.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-15",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Gateway 5xx tăng",
+      "objective": "Không nhìn notes: vẽ Origin classify→route→dependency/breaker→deployment. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

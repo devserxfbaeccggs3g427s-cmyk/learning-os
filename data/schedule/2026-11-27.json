@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-27",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-11: Disbursement retry và duplicate payout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-10",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Refund safety và concurrent partial refund",
+      "objective": "Không nhìn notes: vẽ Atomic remaining-amount check và status guards; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "LAB",
+      "title": "Implement — Disbursement retry và duplicate payout",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Payout replay matrix với mock hỗ trợ/không hỗ trợ dedup; kèm predicted/observed table và ADR “Automated retry so với investigation hold”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Payout replay matrix với mock hỗ trợ/không hỗ trợ dedup; kèm predicted/observed table và ADR “Automated retry so với investigation hold”."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Disbursement retry và duplicate payout",
+      "objective": "Fault: Timeout rồi retry chi hộ hai lần. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu State transition và downstream dedup contract.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Disbursement retry và duplicate payout",
+      "objective": "Fault: Timeout rồi retry chi hộ hai lần. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu State transition và downstream dedup contract.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Disbursement retry và duplicate payout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why payout business key/beneficiary/attempt? How State transition và downstream dedup contract? What if Timeout rồi retry chi hộ hai lần? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Disbursement retry và duplicate payout",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why payout business key/beneficiary/attempt? How State transition và downstream dedup contract? What if Timeout rồi retry chi hộ hai lần? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

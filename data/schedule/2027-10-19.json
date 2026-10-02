@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-19",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-07: Oracle sequence cho alias account; DATA-02: Fetch strategy và N+1 trên order/assets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "INC-09",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — DB deadlock",
+      "objective": "Không nhìn notes: vẽ Graph→statements→lock order→invariant. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-07",
+      "type": "LAB",
+      "title": "Implement — Oracle sequence cho alias account",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Sequence + uniqueness stress test; gap không thành lỗi giả; kèm predicted/observed table và ADR “Sequence so với MAX+1/UUID theo contract”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Sequence + uniqueness stress test; gap không thành lỗi giả; kèm predicted/observed table và ADR “Sequence so với MAX+1/UUID theo contract”."
+    },
+    {
+      "taskCode": "DB-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Oracle sequence cho alias account",
+      "objective": "Fault: Rollback tạo gap; restart; alias format overflow. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Allocation ngoài kỳ vọng rollback và concurrency.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Oracle sequence cho alias account",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why NEXTVAL/cache/gaps/cycle/unique constraint? How Allocation ngoài kỳ vọng rollback và concurrency? What if Rollback tạo gap; restart; alias format overflow? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DATA-02",
+      "type": "LEARN",
+      "title": "Concept/contract — Fetch strategy và N+1 trên order/assets",
+      "objective": "lazy / eager / join fetch / entity graph / batch; cơ chế cần kiểm chứng: Proxy initialization và query counts. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho lazy / eager / join fetch / entity graph / batch; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DATA-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Fetch strategy và N+1 trên order/assets",
+      "objective": "Không nhìn notes: vẽ Proxy initialization và query counts; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-22",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-04: Retry GET vs POST và idempotency contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-02",
+      "type": "REVIEW",
+      "title": "D+7 — Keycloak/JWKS unavailable và rotation",
+      "objective": "Dựng lại normal/failure timeline của GATE-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-16",
+      "type": "REVIEW",
+      "title": "D+1 — Downstream timeout",
+      "objective": "Không nhìn notes: vẽ Timeout stage→remote evidence→retry owner→pool. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Retry GET vs POST và idempotency contract",
+      "objective": "Chốt phần research còn lại: retry policy; nối với Replay at gateway and side effects behind reads. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "LAB",
+      "title": "Implement — Retry GET vs POST và idempotency contract",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; GET/POST policy table + fault injection; no unsafe retry; kèm predicted/observed table và ADR “Retry at gateway so với use-case-aware retry”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: GET/POST policy table + fault injection; no unsafe retry; kèm predicted/observed table và ADR “Retry at gateway so với use-case-aware retry”."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "LAB",
+      "title": "Implement — Retry GET vs POST và idempotency contract",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; GET/POST policy table + fault injection; no unsafe retry; kèm predicted/observed table và ADR “Retry at gateway so với use-case-aware retry”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: GET/POST policy table + fault injection; no unsafe retry; kèm predicted/observed table và ADR “Retry at gateway so với use-case-aware retry”."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Retry GET vs POST và idempotency contract",
+      "objective": "Fault: POST retry duplicates approval/payment. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Replay at gateway and side effects behind reads.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Retry GET vs POST và idempotency contract",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why HTTP semantics/body replay/retry policy? How Replay at gateway and side effects behind reads? What if POST retry duplicates approval/payment? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-12",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-01: Reconstruct Maker-Checker state machine; FLOW-02: Concurrent approval và content versioning**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-04",
+      "type": "REVIEW",
+      "title": "D+1 — Optimistic vs pessimistic locking",
+      "objective": "Không nhìn notes: vẽ Row locks, wait timeout, stale version detection; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-06",
+      "type": "REVIEW",
+      "title": "D+14 — Resilience4j circuit breaker state machine",
+      "objective": "Bảo vệ trade-off của GATE-06 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Maker-Checker state machine",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; State/role matrix; xác nhận real states; negative tests; kèm predicted/observed table và ADR “State machine so với scattered status if-statements”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: State/role matrix; xác nhận real states; negative tests; kèm predicted/observed table và ADR “State machine so với scattered status if-statements”."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct Maker-Checker state machine",
+      "objective": "Fault: Invalid transition; maker approves own change. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Transition guards and actor capabilities.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct Maker-Checker state machine",
+      "objective": "Fault: Invalid transition; maker approves own change. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Transition guards and actor capabilities.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct Maker-Checker state machine",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why DRAFT/SUBMITTED/APPROVED/REJECTED/PUBLISHED proposed? How Transition guards and actor capabilities? What if Invalid transition; maker approves own change? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "FLOW-02",
+      "type": "LEARN",
+      "title": "Concept/contract — Concurrent approval và content versioning",
+      "objective": "optimistic version / immutable submission snapshot; cơ chế cần kiểm chứng: Conditional update binds reviewed version. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho optimistic version / immutable submission snapshot; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Concurrent approval và content versioning",
+      "objective": "Không nhìn notes: vẽ Conditional update binds reviewed version; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

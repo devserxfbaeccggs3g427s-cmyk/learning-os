@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-21",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-19: Producer/consumer monitoring và replay governance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-09",
+      "type": "REVIEW",
+      "title": "D+14 — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "Bảo vệ trade-off của JAVA-09 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-17",
+      "type": "REVIEW",
+      "title": "D+7 — DB–Kafka Outbox relay proposal",
+      "objective": "Dựng lại normal/failure timeline của KAF-17; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "REVIEW",
+      "title": "D+1 — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Không nhìn notes: vẽ Metric labels and aggregation across instances; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "LEARN",
+      "title": "Concept/contract — Producer/consumer monitoring và replay governance",
+      "objective": "error / retry / latency / lag; cơ chế cần kiểm chứng: Metric aggregation; event lineage; authorization. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho error / retry / latency / lag; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Producer/consumer monitoring và replay governance",
+      "objective": "lag / rebalance / DLQ / retention; cơ chế cần kiểm chứng: Metric aggregation; event lineage; authorization. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho lag / rebalance / DLQ / retention; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "LAB",
+      "title": "Implement — Producer/consumer monitoring và replay governance",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Replay approval criteria + test dataset + dashboard spec; kèm predicted/observed table và ADR “Replay entire topic so với targeted replay”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay approval criteria + test dataset + dashboard spec; kèm predicted/observed table và ADR “Replay entire topic so với targeted replay”."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Producer/consumer monitoring và replay governance",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why error/retry/latency/lag/rebalance/DLQ/retention? How Metric aggregation; event lineage; authorization? What if Replay old financial events sau dedup TTL? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-15",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-04: Account/beneficiary authorization; BANK-06: USD/KHR và i18n EN/VI/KM**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reusable executor và banking response mapping",
+      "objective": "Tự xử lý “Unknown bank code bị map success/failed sai”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-02",
+      "type": "REVIEW",
+      "title": "D+7 — REF CURSOR và resource lifecycle",
+      "objective": "Dựng lại normal/failure timeline của BANK-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-04",
+      "type": "LAB",
+      "title": "Implement — Account/beneficiary authorization",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Ownership+TOCTOU tests; snapshot beneficiary contract; kèm predicted/observed table và ADR “Client-provided identity so với authenticated identity”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Ownership+TOCTOU tests; snapshot beneficiary contract; kèm predicted/observed table và ADR “Client-provided identity so với authenticated identity”."
+    },
+    {
+      "taskCode": "BANK-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Account/beneficiary authorization",
+      "objective": "Fault: IDOR account; beneficiary sửa giữa OTP và submit. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Authorization before side effect; trusted principal.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Account/beneficiary authorization",
+      "objective": "Fault: IDOR account; beneficiary sửa giữa OTP và submit. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Authorization before side effect; trusted principal.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "BANK-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Account/beneficiary authorization",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why account ownership/beneficiary version/limits? How Authorization before side effect; trusted principal? What if IDOR account; beneficiary sửa giữa OTP và submit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — USD/KHR và i18n EN/VI/KM",
+      "objective": "Chốt phần research còn lại: BigDecimal / currency scale; nối với Decimal serialization; Unicode; business vs display amount. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "BANK-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — USD/KHR và i18n EN/VI/KM",
+      "objective": "Không nhìn notes: vẽ Decimal serialization; Unicode; business vs display amount; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-28",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-02: JWT validation với Nimbus và Spring Security**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-01",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct login→logout/session/device",
+      "objective": "Không nhìn notes: vẽ Identity authority và authorization decision points; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — JWT token cache và signing integration GOV",
+      "objective": "Tự xử lý “Token hết hạn đồng loạt; signature service timeout”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reconstruct login→logout/session/device",
+      "objective": "Tự xử lý “JWT hợp lệ nhưng session revoked”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-13",
+      "type": "REVIEW",
+      "title": "D+14 — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Bảo vệ trade-off của PAY-13 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-06",
+      "type": "REVIEW",
+      "title": "D+7 — Request/response signing và replay protection",
+      "objective": "Dựng lại normal/failure timeline của SEC-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "LAB",
+      "title": "Implement — JWT validation với Nimbus và Spring Security",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Negative token corpus; không token invalid được accept; kèm predicted/observed table và ADR “Decode JWT so với verify+validate”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Negative token corpus; không token invalid được accept; kèm predicted/observed table và ADR “Decode JWT so với verify+validate”."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JWT validation với Nimbus và Spring Security",
+      "objective": "Fault: Wrong aud/alg; expired token; clock skew. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu JWS verify pipeline và claim validation riêng.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — JWT validation với Nimbus và Spring Security",
+      "objective": "Không nhìn notes: vẽ JWS verify pipeline và claim validation riêng; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

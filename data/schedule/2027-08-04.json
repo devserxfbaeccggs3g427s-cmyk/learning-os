@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-04",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-08: Eureka/Feign/load balancing under instance loss; GATE-09: Gateway bottleneck, fallback và observability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-07",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Bulkhead và bounded resource isolation",
+      "objective": "Không nhìn notes: vẽ Resource isolation; reactive blocking risk; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "LAB",
+      "title": "Implement — Eureka/Feign/load balancing under instance loss",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Kill instance + registry convergence timeline; kèm predicted/observed table và ADR “Registry discovery so với static routes”.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Kill instance + registry convergence timeline; kèm predicted/observed table và ADR “Registry discovery so với static routes”."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Eureka/Feign/load balancing under instance loss",
+      "objective": "Fault: Dead instance remains routable; partial 5xx. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Discovery cache and connection reuse.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Eureka/Feign/load balancing under instance loss",
+      "objective": "Fault: Dead instance remains routable; partial 5xx. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Discovery cache and connection reuse.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Eureka/Feign/load balancing under instance loss",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why registration/heartbeat/stale registry/client selection? How Discovery cache and connection reuse? What if Dead instance remains routable; partial 5xx? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Gateway bottleneck, fallback và observability",
+      "objective": "Chốt phần research còn lại: event loop / filter cost; nối với Blocking calls and per-route metrics. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "GATE-09",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Gateway bottleneck, fallback và observability",
+      "objective": "Không nhìn notes: vẽ Blocking calls and per-route metrics; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-24",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-19: Producer/consumer monitoring và replay governance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-18",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Kafka transactions/EOS vs external business effects",
+      "objective": "Tự xử lý “Kafka transaction abort nhưng bank đã debit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Tự xử lý “Per-user labels overload metrics; average hides tail”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-12",
+      "type": "REVIEW",
+      "title": "D+7 — Duplicate Kafka messages",
+      "objective": "Dựng lại normal/failure timeline của INC-12; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "REVIEW",
+      "title": "D+14 — Lag, backpressure và slow AI",
+      "objective": "Bảo vệ trade-off của KAF-16 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "LAB",
+      "title": "Implement — Producer/consumer monitoring và replay governance",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Replay approval criteria + test dataset + dashboard spec; kèm predicted/observed table và ADR “Replay entire topic so với targeted replay”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay approval criteria + test dataset + dashboard spec; kèm predicted/observed table và ADR “Replay entire topic so với targeted replay”."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "LAB",
+      "title": "Implement — Producer/consumer monitoring và replay governance",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Replay approval criteria + test dataset + dashboard spec; kèm predicted/observed table và ADR “Replay entire topic so với targeted replay”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay approval criteria + test dataset + dashboard spec; kèm predicted/observed table và ADR “Replay entire topic so với targeted replay”."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Producer/consumer monitoring và replay governance",
+      "objective": "Fault: Replay old financial events sau dedup TTL. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Metric aggregation; event lineage; authorization.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-19",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Producer/consumer monitoring và replay governance",
+      "objective": "Không nhìn notes: vẽ Metric aggregation; event lineage; authorization; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

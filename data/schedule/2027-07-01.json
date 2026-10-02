@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-07-01",
+  "objective": "Tạo và kiểm chứng evidence cho **DIST-05: CAP, consistency models và clock assumptions; SD-01: GOV Payment**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DIST-02",
+      "type": "REVIEW",
+      "title": "D+7 — Deadline budget, retries, backoff và jitter",
+      "objective": "Dựng lại normal/failure timeline của DIST-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-03",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Saga/compensation và unknown outcome",
+      "objective": "Tự xử lý “Compensation fail hoặc original late-success”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "REVIEW",
+      "title": "D+14 — Cache-aside và DB update→invalidate",
+      "objective": "Bảo vệ trade-off của RED-02 khi 2 instances/10x load; nối lại với project SAHA/DEBIT/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DIST-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — CAP, consistency models và clock assumptions",
+      "objective": "Fault: Network partition; clock skew changes expiry/order. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Read/write authority; clock vs causality.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DIST-05",
+      "type": "INTERVIEW",
+      "title": "Interview — CAP, consistency models và clock assumptions",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why linearizability/eventual consistency/partition/time? How Read/write authority; clock vs causality? What if Network partition; clock skew changes expiry/order? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SD-01",
+      "type": "INTERVIEW",
+      "title": "Interview — GOV Payment",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why GOV Payment: create/QR/status/refund/payout/reconcile; ngăn lặp tiền; bank có thể timeout? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if 13 GOV failure rows; current/10x/100x; explicit unknown; no invented bank guarantee? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-20",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-10: Refund safety và concurrent partial refund**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-08",
+      "type": "REVIEW",
+      "title": "D+14 — Processing state, TTL và replay muộn",
+      "objective": "Bảo vệ trade-off của PAY-08 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "LAB",
+      "title": "Implement — Refund safety và concurrent partial refund",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Lab refund tổng không vượt settled amount giả lập; kèm predicted/observed table và ADR “Append refund attempts so với overwrite original”.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Lab refund tổng không vượt settled amount giả lập; kèm predicted/observed table và ADR “Append refund attempts so với overwrite original”."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Refund safety và concurrent partial refund",
+      "objective": "Fault: 2 refund concurrent vượt số đã thanh toán. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic remaining-amount check và status guards.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Refund safety và concurrent partial refund",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why original transaction/refund identity/refundable amount? How Atomic remaining-amount check và status guards? What if 2 refund concurrent vượt số đã thanh toán? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-15",
+  "objective": "Tạo và kiểm chứng evidence cho **OTP-01: OTP challenge model và transaction binding; AUTH-06: Device binding và trusted-device lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Redis session unavailable/data lost",
+      "objective": "Tự xử lý “Redis mất toàn bộ session; stale replica”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "REVIEW",
+      "title": "D+7 — Persistence, replication và session recovery",
+      "objective": "Dựng lại normal/failure timeline của RED-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — OTP challenge model và transaction binding",
+      "objective": "Fault: OTP login dùng xác nhận transfer khác. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Challenge state và one-time scope.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — OTP challenge model và transaction binding",
+      "objective": "Fault: OTP login dùng xác nhận transfer khác. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Challenge state và one-time scope.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "INTERVIEW",
+      "title": "Interview — OTP challenge model và transaction binding",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why purpose/user/device/amount/beneficiary/challenge ID? How Challenge state và one-time scope? What if OTP login dùng xác nhận transfer khác? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "LEARN",
+      "title": "Concept/contract — Device binding và trusted-device lifecycle",
+      "objective": "device enrollment / proof; cơ chế cần kiểm chứng: Possession evidence vs user-controlled identifier. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho device enrollment / proof; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Device binding và trusted-device lifecycle",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why device enrollment/proof/device ID/trust expiry? How Possession evidence vs user-controlled identifier? What if Spoof device ID; cloned app; lost device? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

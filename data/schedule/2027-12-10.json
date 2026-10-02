@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-10",
+  "objective": "Tạo và kiểm chứng evidence cho **AUX-03: Reconstruct Veritas appointment/doctor allocation; AUX-04: Reconstruct Hywork seat/AMIS employee sync**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-02",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "Không nhìn notes: vẽ Authority per state and retry boundary; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-04",
+      "type": "REVIEW",
+      "title": "D+7 — Rolling update và graceful Kafka/API shutdown",
+      "objective": "Dựng lại normal/failure timeline của OPS-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Architecture/trust/tx map + concurrent overlap test; kèm predicted/observed table và ADR “Slot unique key so với interval overlap locking”.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Architecture/trust/tx map + concurrent overlap test; kèm predicted/observed table và ADR “Slot unique key so với interval overlap locking”."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Fault: 2 bookings same doctor; reschedule race. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic reservation invariant and ownership.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Fault: 2 bookings same doctor; reschedule race. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Atomic reservation invariant and ownership.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why time interval/resource/overlap/timezone/reschedule? How Atomic reservation invariant and ownership? What if 2 bookings same doctor; reschedule race? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "LEARN",
+      "title": "Concept/contract — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "seat / time / employee identity / watermark; cơ chế cần kiểm chứng: Incremental cursor and idempotent upsert. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho seat / time / employee identity / watermark; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why seat/time/employee identity/watermark/delete? How Incremental cursor and idempotent upsert? What if Seat double-booked; terminated employee remains active? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

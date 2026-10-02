@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-31",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-05: Asset search/admin CRUD/filter/pagination; FLOW-06: MinIO attachments và DB/file consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-03",
+      "type": "REVIEW",
+      "title": "D+14 — Audit trail và separation of duties",
+      "objective": "Bảo vệ trade-off của FLOW-03 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "LAB",
+      "title": "Implement — Asset search/admin CRUD/filter/pagination",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Search auth matrix + plans + stable pagination; kèm predicted/observed table và ADR “Flexible dynamic filter so với bounded indexed filters”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Search auth matrix + plans + stable pagination; kèm predicted/observed table và ADR “Flexible dynamic filter so với bounded indexed filters”."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Asset search/admin CRUD/filter/pagination",
+      "objective": "Fault: Draft exposed publicly; SQL injection; slow filter. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Query composition/index use/ownership.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Asset search/admin CRUD/filter/pagination",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why public visibility/input validation/filter whitelists? How Query composition/index use/ownership? What if Draft exposed publicly; SQL injection; slow filter? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "LEARN",
+      "title": "Concept/contract — MinIO attachments và DB/file consistency",
+      "objective": "upload / object key / metadata / access; cơ chế cần kiểm chứng: Object store vs local DB atomicity boundary. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho upload / object key / metadata / access; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — MinIO attachments và DB/file consistency",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why upload/object key/metadata/access/download lifecycle? How Object store vs local DB atomicity boundary? What if Upload success DB fail; delete metadata file remains? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

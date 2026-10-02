@@ -1,0 +1,1513 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-01T02:18:05.844Z",
+  "sourceFile": "Daily-Execution-Plan-05-10-2026.md",
+  "dayCount": 300,
+  "blockCount": 1898,
+  "dateRange": {
+    "start": "2026-10-05",
+    "end": "2027-12-22"
+  },
+  "days": [
+    {
+      "date": "2026-10-05",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-01: Reconstruct GOV: ownership, authority và normal flow**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc "
+    },
+    {
+      "date": "2026-10-06",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-01: Reconstruct GOV: ownership, authority và normal flow; PAY-03: Request-ID contract và request fingerprint**. Mục tiêu là output của từng block bên dưới; chỉ đán"
+    },
+    {
+      "date": "2026-10-07",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-03: Request-ID contract và request fingerprint; DB-01: Relational invariant và schema tài chính**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core co"
+    },
+    {
+      "date": "2026-10-08",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-01: Relational invariant và schema tài chính; DB-02: Hai session insert cùng unique key**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete kh"
+    },
+    {
+      "date": "2026-10-09",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-02: Hai session insert cùng unique key; JAVA-01: OOP/SOLID và immutable financial value objects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2026-10-12",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-01: OOP/SOLID và immutable financial value objects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hế"
+    },
+    {
+      "date": "2026-10-13",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-01: OOP/SOLID và immutable financial value objects; SPR-01: IoC/DI và bean resolution trong transfer strategy**. Mục tiêu là output của từng block bên dưới; chỉ đ"
+    },
+    {
+      "date": "2026-10-14",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-01: IoC/DI và bean resolution trong transfer strategy; SPR-04: AOP, JDK proxy, CGLIB và self-invocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu"
+    },
+    {
+      "date": "2026-10-15",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-04: AOP, JDK proxy, CGLIB và self-invocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-16",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-05: Transaction rollback và exception boundary**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2026-10-19",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-05: Transaction rollback và exception boundary; PAY-04: Concurrent claim bằng unique constraint**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core co"
+    },
+    {
+      "date": "2026-10-20",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-04: Concurrent claim bằng unique constraint**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-21",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-04: Concurrent claim bằng unique constraint**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-22",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-05: Duplicate bill khác request duplicate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-23",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-05: Duplicate bill khác request duplicate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-26",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-01: Persistence Context, dirty checking, flush vs commit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc"
+    },
+    {
+      "date": "2026-10-27",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-01: Persistence Context, dirty checking, flush vs commit; SPR-06: Propagation và nhiều datasource**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core"
+    },
+    {
+      "date": "2026-10-28",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-06: Propagation và nhiều datasource**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-29",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-06: Transaction boundary JPA + JdbcTemplate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-10-30",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-06: Transaction boundary JPA + JdbcTemplate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-02",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-06: Transaction boundary JPA + JdbcTemplate; PAY-07: Crash trước/sau commit và response replay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2026-11-03",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-07: Crash trước/sau commit và response replay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-04",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-07: Crash trước/sau commit và response replay; PAY-08: Processing state, TTL và replay muộn**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comple"
+    },
+    {
+      "date": "2026-11-05",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-08: Processing state, TTL và replay muộn**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-06",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-08: Processing state, TTL và replay muộn; PAY-02: Thiết kế state model và invariant thanh toán**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2026-11-09",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-02: Thiết kế state model và invariant thanh toán**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết g"
+    },
+    {
+      "date": "2026-11-10",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-02: Thiết kế state model và invariant thanh toán; BANK-05: REST/TCP timeouts và correlation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comple"
+    },
+    {
+      "date": "2026-11-11",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-05: REST/TCP timeouts và correlation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-12",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-05: REST/TCP timeouts và correlation; PAY-09: Bank thành công nhưng local không biết**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi"
+    },
+    {
+      "date": "2026-11-13",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-09: Bank thành công nhưng local không biết**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-16",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-09: Bank thành công nhưng local không biết**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-17",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-17: Core Banking timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-18",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-19: Duplicate payment**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-19",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-10: Refund safety và concurrent partial refund**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2026-11-20",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-10: Refund safety và concurrent partial refund**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2026-11-25",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-10: Refund safety và concurrent partial refund; PAY-11: Disbursement retry và duplicate payout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2026-11-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-11: Disbursement retry và duplicate payout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-27",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-11: Disbursement retry và duplicate payout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-11-30",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-12: Reconciliation theo nguồn có thẩm quyền**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-01",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-12: Reconciliation theo nguồn có thẩm quyền**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-02",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-12: Reconciliation theo nguồn có thẩm quyền; INC-20: Incorrect payment status**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate"
+    },
+    {
+      "date": "2026-12-03",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-20: Incorrect payment status; SPR-02: Bean lifecycle, scope và mutable singleton**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ g"
+    },
+    {
+      "date": "2026-12-04",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-02: Bean lifecycle, scope và mutable singleton; SPR-07: MVC request lifecycle và validation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comple"
+    },
+    {
+      "date": "2026-12-07",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-07: MVC request lifecycle và validation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-08",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-07: MVC request lifecycle và validation; SEC-01: JWT/JWS/JWE và SecurityFilterChain**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đ"
+    },
+    {
+      "date": "2026-12-09",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-01: JWT/JWS/JWE và SecurityFilterChain; SEC-02: Object-level authorization và public/admin policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core "
+    },
+    {
+      "date": "2026-12-10",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-02: Object-level authorization và public/admin policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã "
+    },
+    {
+      "date": "2026-12-11",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-13: VietQR/Napas QR, receipt và bank inquiry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-14",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-13: VietQR/Napas QR, receipt và bank inquiry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-15",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-14: Service/use-case layer và transfer strategy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2026-12-16",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-14: Service/use-case layer và transfer strategy; SEC-05: Hash, encryption, signature và HMAC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core compl"
+    },
+    {
+      "date": "2026-12-17",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-05: Hash, encryption, signature và HMAC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-18",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-05: Hash, encryption, signature và HMAC; SEC-06: Request/response signing và replay protection**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2026-12-21",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-06: Request/response signing và replay protection**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2026-12-22",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-15: JWT token cache và signing integration GOV**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2026-12-23",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **PAY-15: JWT token cache và signing integration GOV; AUTH-01: Reconstruct login→logout/session/device**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core c"
+    },
+    {
+      "date": "2026-12-24",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-01: Reconstruct login→logout/session/device**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2026-12-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-01: Reconstruct login→logout/session/device; AUTH-02: JWT validation với Nimbus và Spring Security**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu cor"
+    },
+    {
+      "date": "2026-12-28",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-02: JWT validation với Nimbus và Spring Security**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2026-12-29",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-02: JWT validation với Nimbus và Spring Security; RED-01: Structures, TTL và atomic transitions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core c"
+    },
+    {
+      "date": "2026-12-30",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **RED-01: Structures, TTL và atomic transitions; AUTH-03: Refresh token rotation và replay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comp"
+    },
+    {
+      "date": "2026-12-31",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-03: Refresh token rotation và replay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-01-04",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-03: Refresh token rotation và replay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-01-05",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-03: Refresh token rotation và replay proposal; AUTH-04: Logout/password change/revocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complet"
+    },
+    {
+      "date": "2027-01-06",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-04: Logout/password change/revocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-01-07",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-04: Logout/password change/revocation; RED-06: Persistence, replication và session recovery**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core compl"
+    },
+    {
+      "date": "2027-01-08",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **RED-06: Persistence, replication và session recovery; AUTH-05: Redis session unavailable/data lost**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2027-01-11",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-05: Redis session unavailable/data lost**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-01-12",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-05: Redis session unavailable/data lost; INC-13: Redis unavailable**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dự"
+    },
+    {
+      "date": "2027-01-13",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-13: Redis unavailable; OTP-01: OTP challenge model và transaction binding**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, kh"
+    },
+    {
+      "date": "2027-01-14",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-01: OTP challenge model và transaction binding**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-01-15",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-01: OTP challenge model và transaction binding; AUTH-06: Device binding và trusted-device lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu cor"
+    },
+    {
+      "date": "2027-01-18",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-06: Device binding và trusted-device lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2027-01-19",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-06: Device binding và trusted-device lifecycle; RED-04: Distributed counters và rate limits**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core compl"
+    },
+    {
+      "date": "2027-01-20",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **RED-04: Distributed counters và rate limits**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-01-21",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-07: Lockout và credential abuse**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-01-22",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-07: Lockout và credential abuse**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-01-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-07: Key/secret rotation và crypto failure policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết g"
+    },
+    {
+      "date": "2027-01-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-07: Key/secret rotation và crypto failure policy; AUTH-08: JWKS/key rotation và multi-device sessions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu c"
+    },
+    {
+      "date": "2027-01-27",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-08: JWKS/key rotation và multi-device sessions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2027-01-28",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **AUTH-08: JWKS/key rotation và multi-device sessions; INC-21: JWT validation failure**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ ga"
+    },
+    {
+      "date": "2027-01-29",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-21: JWT validation failure; OTP-02: OTP expiry/attempt/atomic consume**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không "
+    },
+    {
+      "date": "2027-02-01",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-02: OTP expiry/attempt/atomic consume**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-02-02",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-02: OTP expiry/attempt/atomic consume**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-02-15",
+      "blockCount": 10,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-02: OTP expiry/attempt/atomic consume; RED-04: Distributed counters và rate limits; AUTH-08: JWKS/key rotation và multi-device sessions; AUTH-07: Lockout và creden"
+    },
+    {
+      "date": "2027-02-16",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-03: Resend rate limit và concurrent issuance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-02-17",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-03: Resend rate limit và concurrent issuance; OTP-04: SMS timeout, delivery và cost control**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comple"
+    },
+    {
+      "date": "2027-02-18",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-04: SMS timeout, delivery và cost control**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-02-19",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-04: SMS timeout, delivery và cost control; INC-23: OTP provider unavailable**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, "
+    },
+    {
+      "date": "2027-02-22",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-23: OTP provider unavailable; OBS-01: Structured logs, correlation và privacy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate"
+    },
+    {
+      "date": "2027-02-23",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OBS-01: Structured logs, correlation và privacy; OTP-05: Masked logging và OTP abuse audit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete kh"
+    },
+    {
+      "date": "2027-02-24",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-05: Masked logging và OTP abuse audit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-02-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **OTP-05: Masked logging và OTP abuse audit; DB-10: Hikari và budget connections**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, k"
+    },
+    {
+      "date": "2027-02-26",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-10: Hikari và budget connections; INC-07: Connection pool exhausted**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa"
+    },
+    {
+      "date": "2027-03-01",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-07: Connection pool exhausted**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-02",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-04: JdbcTemplate resource/exception/parameter handling**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đ"
+    },
+    {
+      "date": "2027-03-03",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-04: JdbcTemplate resource/exception/parameter handling; BANK-01: Stored procedure contract và commit ownership**. Mục tiêu là output của từng block bên dưới; chỉ "
+    },
+    {
+      "date": "2027-03-04",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-01: Stored procedure contract và commit ownership**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết"
+    },
+    {
+      "date": "2027-03-05",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-02: REF CURSOR và resource lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-08",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-02: REF CURSOR và resource lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-09",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-03: Reusable executor và banking response mapping**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết"
+    },
+    {
+      "date": "2027-03-10",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-03: Reusable executor và banking response mapping; INC-18: External API trả unknown result**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comple"
+    },
+    {
+      "date": "2027-03-11",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-18: External API trả unknown result**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-12",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-04: Account/beneficiary authorization**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-15",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-04: Account/beneficiary authorization; BANK-06: USD/KHR và i18n EN/VI/KM**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, kh"
+    },
+    {
+      "date": "2027-03-16",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-06: USD/KHR và i18n EN/VI/KM**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-17",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-06: USD/KHR và i18n EN/VI/KM; BANK-07: Fund Transfer end-to-end reliability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate,"
+    },
+    {
+      "date": "2027-03-18",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-07: Fund Transfer end-to-end reliability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-19",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **BANK-07: Fund Transfer end-to-end reliability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-22",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-02: Mobile Fund Transfer**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-23",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-02: Mobile Fund Transfer**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-24",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-01: Reconstruct topic/event ownership**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-01: Reconstruct topic/event ownership; KAF-02: Producer send lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không"
+    },
+    {
+      "date": "2027-03-26",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-02: Producer send lifecycle; KAF-03: Replication, leader và ISR**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa và"
+    },
+    {
+      "date": "2027-03-29",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-03: Replication, leader và ISR**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-03-30",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-03: Replication, leader và ISR; KAF-04: acks=0/1/all và min.insync.replicas**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, "
+    },
+    {
+      "date": "2027-03-31",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-04: acks=0/1/all và min.insync.replicas; KAF-05: Producer retry và ambiguous acknowledgement**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core compl"
+    },
+    {
+      "date": "2027-04-01",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-05: Producer retry và ambiguous acknowledgement**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2027-04-02",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-06: Idempotent producer: PID và sequence number**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2027-04-05",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-06: Idempotent producer: PID và sequence number; KAF-07: max.in.flight và ordering khi retry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core compl"
+    },
+    {
+      "date": "2027-04-06",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-07: max.in.flight và ordering khi retry**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-07",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-08: Batching, linger, compression và partition choice**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã "
+    },
+    {
+      "date": "2027-04-08",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-08: Batching, linger, compression và partition choice; KAF-09: Key ordering và partition count changes**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu "
+    },
+    {
+      "date": "2027-04-09",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-09: Key ordering và partition count changes**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-12",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-10: Consumer group assignment và parallelism**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-13",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-10: Consumer group assignment và parallelism**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-14",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-11: Offset commit trước/sau DB commit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-15",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-11: Offset commit trước/sau DB commit; KAF-12: Consumer idempotency và Inbox proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi"
+    },
+    {
+      "date": "2027-04-19",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-12: Consumer idempotency và Inbox proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-20",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-12: Consumer idempotency và Inbox proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-21",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-12: Consumer idempotency và Inbox proposal; KAF-13: Rebalance, heartbeat và max poll**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi "
+    },
+    {
+      "date": "2027-04-22",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-13: Rebalance, heartbeat và max poll**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-23",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-13: Rebalance, heartbeat và max poll; INC-11: Kafka rebalance liên tục**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không"
+    },
+    {
+      "date": "2027-04-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-11: Kafka rebalance liên tục; KAF-14: Retry topic, DLQ và poison message**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, khô"
+    },
+    {
+      "date": "2027-04-27",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-14: Retry topic, DLQ và poison message**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-04-28",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-14: Retry topic, DLQ và poison message; KAF-15: Schema evolution và event compatibility**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete k"
+    },
+    {
+      "date": "2027-04-29",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-15: Schema evolution và event compatibility**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-04",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-08: JMM/happens-before/volatile/locks/CAS**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-05",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-08: JMM/happens-before/volatile/locks/CAS; JAVA-09: ThreadPoolExecutor queue/rejection/lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core "
+    },
+    {
+      "date": "2027-05-06",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-09: ThreadPoolExecutor queue/rejection/lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-05-07",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-09: ThreadPoolExecutor queue/rejection/lifecycle; KAF-16: Lag, backpressure và slow AI**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete k"
+    },
+    {
+      "date": "2027-05-10",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-16: Lag, backpressure và slow AI**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-11",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-10: Kafka consumer lag tăng**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-12",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-17: DB–Kafka Outbox relay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-13",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-17: DB–Kafka Outbox relay proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-14",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-17: DB–Kafka Outbox relay proposal; INC-12: Duplicate Kafka messages**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không d"
+    },
+    {
+      "date": "2027-05-17",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-12: Duplicate Kafka messages; KAF-18: Kafka transactions/EOS vs external business effects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete"
+    },
+    {
+      "date": "2027-05-18",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-18: Kafka transactions/EOS vs external business effects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đ"
+    },
+    {
+      "date": "2027-05-19",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-18: Kafka transactions/EOS vs external business effects; OBS-02: Micrometer/Prometheus/Actuator metrics**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu"
+    },
+    {
+      "date": "2027-05-20",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OBS-02: Micrometer/Prometheus/Actuator metrics**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-21",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-19: Producer/consumer monitoring và replay governance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã "
+    },
+    {
+      "date": "2027-05-24",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-19: Producer/consumer monitoring và replay governance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã "
+    },
+    {
+      "date": "2027-05-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **KAF-19: Producer/consumer monitoring và replay governance; CMV-01: Reconstruct CMV boundaries và synchronous/async flows**. Mục tiêu là output của từng block bên dưới;"
+    },
+    {
+      "date": "2027-05-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-01: Reconstruct CMV boundaries và synchronous/async flows; CMV-02: CMS/kho hàng consistency và ordering**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu"
+    },
+    {
+      "date": "2027-05-27",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-02: CMS/kho hàng consistency và ordering**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-05-28",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-02: CMS/kho hàng consistency và ordering; CMV-03: Kafka unavailable và backlog recovery**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete k"
+    },
+    {
+      "date": "2027-05-31",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-03: Kafka unavailable và backlog recovery**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-01",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-03: Kafka unavailable và backlog recovery; CMV-04: AI extraction job identity và async lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core c"
+    },
+    {
+      "date": "2027-06-02",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-04: AI extraction job identity và async lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-06-03",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-04: AI extraction job identity và async lifecycle; CMV-05: Image duplicate detection thresholds**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core co"
+    },
+    {
+      "date": "2027-06-04",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-05: Image duplicate detection thresholds**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-07",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-05: Image duplicate detection thresholds**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-08",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-06: Human review, provenance và sensitive AI inputs**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hế"
+    },
+    {
+      "date": "2027-06-09",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-06: Human review, provenance và sensitive AI inputs; CMV-07: Chứng minh giảm 60% nhập tay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete"
+    },
+    {
+      "date": "2027-06-10",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-07: Chứng minh giảm 60% nhập tay**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-11",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-07: Chứng minh giảm 60% nhập tay; DB-03: ACID, isolation và MVCC qua payment status**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đ"
+    },
+    {
+      "date": "2027-06-14",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-03: ACID, isolation và MVCC qua payment status; CMV-08: Pentaho PDI và batch/stream consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core com"
+    },
+    {
+      "date": "2027-06-15",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-08: Pentaho PDI và batch/stream consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-16",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-08: Pentaho PDI và batch/stream consistency; RED-02: Cache-aside và DB update→invalidate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete "
+    },
+    {
+      "date": "2027-06-17",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **RED-02: Cache-aside và DB update→invalidate**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-18",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-09: Apigee/Redis/ELK topology và integration boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đ"
+    },
+    {
+      "date": "2027-06-21",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **CMV-09: Apigee/Redis/ELK topology và integration boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đ"
+    },
+    {
+      "date": "2027-06-22",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-01: Service boundaries và sync vs async choice**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2027-06-23",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-01: Service boundaries và sync vs async choice; DIST-02: Deadline budget, retries, backoff và jitter**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu c"
+    },
+    {
+      "date": "2027-06-24",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-02: Deadline budget, retries, backoff và jitter; DIST-03: Saga/compensation và unknown outcome**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core co"
+    },
+    {
+      "date": "2027-06-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-03: Saga/compensation và unknown outcome**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-06-28",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-03: Saga/compensation và unknown outcome; DIST-04: 2PC và local atomicity limits**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ "
+    },
+    {
+      "date": "2027-06-29",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-04: 2PC và local atomicity limits; DIST-05: CAP, consistency models và clock assumptions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete"
+    },
+    {
+      "date": "2027-06-30",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-05: CAP, consistency models và clock assumptions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-07-01",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-05: CAP, consistency models và clock assumptions; SD-01: GOV Payment**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không "
+    },
+    {
+      "date": "2027-07-02",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-01: GOV Payment**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-05",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-01: GOV Payment; DIST-06: Capacity, backpressure và graceful degradation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, khôn"
+    },
+    {
+      "date": "2027-07-06",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DIST-06: Capacity, backpressure và graceful degradation; SD-06: CMV Kafka pipeline**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gat"
+    },
+    {
+      "date": "2027-07-07",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-06: CMV Kafka pipeline**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-08",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-06: CMV Kafka pipeline; SEC-03: OAuth2/OIDC/Keycloak boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào"
+    },
+    {
+      "date": "2027-07-09",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-03: OAuth2/OIDC/Keycloak boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-12",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-01: Reconstruct Gateway routing/filter chain**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-13",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-01: Reconstruct Gateway routing/filter chain**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-14",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-02: Keycloak/JWKS unavailable và rotation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-15",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-02: Keycloak/JWKS unavailable và rotation; INC-22: Keycloak unavailable**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, khô"
+    },
+    {
+      "date": "2027-07-16",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-22: Keycloak unavailable; GATE-03: Gateway timeout vs Feign/downstream timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gat"
+    },
+    {
+      "date": "2027-07-19",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-03: Gateway timeout vs Feign/downstream timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết g"
+    },
+    {
+      "date": "2027-07-20",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-03: Gateway timeout vs Feign/downstream timeout; INC-16: Downstream timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate,"
+    },
+    {
+      "date": "2027-07-21",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-16: Downstream timeout; GATE-04: Retry GET vs POST và idempotency contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, k"
+    },
+    {
+      "date": "2027-07-22",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-04: Retry GET vs POST và idempotency contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-07-23",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-04: Retry GET vs POST và idempotency contract; GATE-05: Bucket4j distributed rate limiting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comple"
+    },
+    {
+      "date": "2027-07-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-05: Bucket4j distributed rate limiting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-27",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-05: Bucket4j distributed rate limiting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-07-28",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-06: Resilience4j circuit breaker state machine**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết gi"
+    },
+    {
+      "date": "2027-07-29",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-06: Resilience4j circuit breaker state machine; GATE-07: Bulkhead và bounded resource isolation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core c"
+    },
+    {
+      "date": "2027-07-30",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-07: Bulkhead và bounded resource isolation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-02",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-07: Bulkhead và bounded resource isolation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-03",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-08: Eureka/Feign/load balancing under instance loss**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã h"
+    },
+    {
+      "date": "2027-08-04",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-08: Eureka/Feign/load balancing under instance loss; GATE-09: Gateway bottleneck, fallback và observability**. Mục tiêu là output của từng block bên dưới; chỉ đán"
+    },
+    {
+      "date": "2027-08-05",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-09: Gateway bottleneck, fallback và observability**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết"
+    },
+    {
+      "date": "2027-08-06",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **GATE-09: Gateway bottleneck, fallback và observability; INC-15: Gateway 5xx tăng**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate,"
+    },
+    {
+      "date": "2027-08-09",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-15: Gateway 5xx tăng**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-10",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-04: Optimistic vs pessimistic locking**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-11",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-04: Optimistic vs pessimistic locking; FLOW-01: Reconstruct Maker-Checker state machine**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete kh"
+    },
+    {
+      "date": "2027-08-12",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-01: Reconstruct Maker-Checker state machine; FLOW-02: Concurrent approval và content versioning**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core c"
+    },
+    {
+      "date": "2027-08-13",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-02: Concurrent approval và content versioning**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-08-16",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-03: Audit trail và separation of duties**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-17",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-03: Audit trail và separation of duties; INC-24: Concurrent workflow approval mismatch**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete k"
+    },
+    {
+      "date": "2027-08-18",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-24: Concurrent workflow approval mismatch**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-19",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-04: Reject/resubmit/publish/rollback policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-20",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-04: Reject/resubmit/publish/rollback policy; DB-06: B+Tree và index cho bill/status query**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complet"
+    },
+    {
+      "date": "2027-08-23",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-06: B+Tree và index cho bill/status query**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-24",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-08: Execution plan và statistics**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-08-25",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-08: Execution plan và statistics; INC-05: DB CPU high**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã h"
+    },
+    {
+      "date": "2027-08-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-05: DB CPU high; DB-09: Pagination ổn định của asset/transaction list**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không "
+    },
+    {
+      "date": "2027-08-27",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-09: Pagination ổn định của asset/transaction list**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết g"
+    },
+    {
+      "date": "2027-08-30",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-05: Asset search/admin CRUD/filter/pagination**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-08-31",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-05: Asset search/admin CRUD/filter/pagination; FLOW-06: MinIO attachments và DB/file consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core "
+    },
+    {
+      "date": "2027-09-06",
+      "blockCount": 10,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-06: MinIO attachments và DB/file consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-09-07",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-06: MinIO attachments và DB/file consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-09-08",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-06: MinIO attachments và DB/file consistency; FLOW-07: View tracking correctness và performance**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core c"
+    },
+    {
+      "date": "2027-09-09",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-07: View tracking correctness và performance; JAVA-02: equals/hashCode/generics và identity collections**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấ"
+    },
+    {
+      "date": "2027-09-10",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-02: equals/hashCode/generics và identity collections**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã "
+    },
+    {
+      "date": "2027-09-13",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-03: ArrayList/LinkedList/HashMap/TreeMap internals**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hế"
+    },
+    {
+      "date": "2027-09-14",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-03: ArrayList/LinkedList/HashMap/TreeMap internals; JAVA-07: JVM class loading, memory và GC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comp"
+    },
+    {
+      "date": "2027-09-15",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-07: JVM class loading, memory và GC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-09-16",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-07: JVM class loading, memory và GC; INC-02: CPU 95%**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã "
+    },
+    {
+      "date": "2027-09-17",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-02: CPU 95%**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-09-20",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-08: Report module POI/iText scope and streaming**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết g"
+    },
+    {
+      "date": "2027-09-21",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-08: Report module POI/iText scope and streaming**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết g"
+    },
+    {
+      "date": "2027-09-22",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **FLOW-08: Report module POI/iText scope and streaming; INC-03: Memory tăng liên tục**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gat"
+    },
+    {
+      "date": "2027-09-23",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-03: Memory tăng liên tục; SD-07: Maker-Checker**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-09-24",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-07: Maker-Checker**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-09-27",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-07: Maker-Checker; JAVA-04: ConcurrentHashMap và atomic compound operations**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, k"
+    },
+    {
+      "date": "2027-09-28",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-04: ConcurrentHashMap và atomic compound operations; JAVA-05: Stream/Optional/lambda và side effects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu c"
+    },
+    {
+      "date": "2027-09-29",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-05: Stream/Optional/lambda và side effects; JAVA-06: Exceptions và failure taxonomy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi "
+    },
+    {
+      "date": "2027-09-30",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-06: Exceptions và failure taxonomy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-01",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-06: Exceptions và failure taxonomy; JAVA-10: CPU/IO pool sizing và cancellation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ g"
+    },
+    {
+      "date": "2027-10-04",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-10: CPU/IO pool sizing và cancellation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-05",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-11: CompletableFuture fan-out và ForkJoinPool**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-10-06",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-11: CompletableFuture fan-out và ForkJoinPool**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-10-07",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-11: CompletableFuture fan-out và ForkJoinPool; INC-08: Thread pool exhausted**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate"
+    },
+    {
+      "date": "2027-10-08",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-08: Thread pool exhausted; SPR-03: Configuration và Boot auto-configuration**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, "
+    },
+    {
+      "date": "2027-10-11",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-03: Configuration và Boot auto-configuration; SPR-08: Actuator/config/health và graceful application shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đá"
+    },
+    {
+      "date": "2027-10-12",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-08: Actuator/config/health và graceful application shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào vi"
+    },
+    {
+      "date": "2027-10-13",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **SPR-08: Actuator/config/health và graceful application shutdown; DB-05: Deadlock và lock ordering**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comp"
+    },
+    {
+      "date": "2027-10-14",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-05: Deadlock và lock ordering; INC-09: DB deadlock**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-10-15",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-09: DB deadlock; DB-07: Oracle sequence cho alias account**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc"
+    },
+    {
+      "date": "2027-10-18",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-07: Oracle sequence cho alias account**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-19",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-07: Oracle sequence cho alias account; DATA-02: Fetch strategy và N+1 trên order/assets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete kh"
+    },
+    {
+      "date": "2027-10-20",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-02: Fetch strategy và N+1 trên order/assets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-21",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-06: Slow query**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-22",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-06: Slow query; DATA-03: Bulk operations và persistence context stale**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không "
+    },
+    {
+      "date": "2027-10-25",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-03: Bulk operations và persistence context stale; RED-03: Stampede, penetration và avalanche**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core comp"
+    },
+    {
+      "date": "2027-10-26",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **RED-03: Stampede, penetration và avalanche**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-27",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-14: Cache stampede**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-10-28",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-14: Cache stampede; RED-05: SET NX PX, safe unlock và fencing**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào "
+    },
+    {
+      "date": "2027-10-29",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **RED-05: SET NX PX, safe unlock và fencing; SEC-04: CSRF/CORS/XSS và browser session decisions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete"
+    },
+    {
+      "date": "2027-11-01",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-04: CSRF/CORS/XSS và browser session decisions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-11-02",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-04: CSRF/CORS/XSS và browser session decisions; SD-04: Authentication/session service**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi"
+    },
+    {
+      "date": "2027-11-03",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-04: Authentication/session service**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-04",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OBS-03: Distributed traces và ELK troubleshooting**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-05",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **OBS-03: Distributed traces và ELK troubleshooting; INC-01: API latency 100ms→3s**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, "
+    },
+    {
+      "date": "2027-11-08",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-01: API latency 100ms→3s; OBS-04: SLI/SLO và actionable alerts**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào"
+    },
+    {
+      "date": "2027-11-09",
+      "blockCount": 9,
+      "objective": "Tạo và kiểm chứng evidence cho **OBS-04: SLI/SLO và actionable alerts**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-10",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-03: OTP service cho login/device/transfer; quota/expiry/provider delays**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không"
+    },
+    {
+      "date": "2027-11-11",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-03: OTP service cho login/device/transfer; quota/expiry/provider delays; SD-05: Payment reconciliation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu c"
+    },
+    {
+      "date": "2027-11-12",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-05: Payment reconciliation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-15",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-05: Payment reconciliation; SD-08: API Gateway**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-16",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-08: API Gateway**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-17",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SD-08: API Gateway; DB-11: Oracle/Postgres/MySQL/SQLServer scope check**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa"
+    },
+    {
+      "date": "2027-11-18",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **DB-11: Oracle/Postgres/MySQL/SQLServer scope check; DATA-05: MyBatis mapping và framework choice**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core compl"
+    },
+    {
+      "date": "2027-11-19",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **DATA-05: MyBatis mapping và framework choice; SEC-08: reCAPTCHA v3 và abuse signals scope**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi"
+    },
+    {
+      "date": "2027-11-22",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-08: reCAPTCHA v3 và abuse signals scope**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-23",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **SEC-08: reCAPTCHA v3 và abuse signals scope; OPS-01: Docker image/container lifecycle**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ "
+    },
+    {
+      "date": "2027-11-25",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-01: Docker image/container lifecycle; OPS-02: K8s Pod/Deployment/Service/config/secrets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete k"
+    },
+    {
+      "date": "2027-11-26",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-02: K8s Pod/Deployment/Service/config/secrets**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-29",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-03: Requests/limits/OOMKilled/HPA**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-11-30",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-03: Requests/limits/OOMKilled/HPA; INC-04: OOMKilled**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã h"
+    },
+    {
+      "date": "2027-12-01",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **INC-04: OOMKilled; OPS-04: Rolling update và graceful Kafka/API shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không d"
+    },
+    {
+      "date": "2027-12-02",
+      "blockCount": 5,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-04: Rolling update và graceful Kafka/API shutdown**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-12-03",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-04: Rolling update và graceful Kafka/API shutdown; OPS-05: Git/GitLabCI/Jenkins và release evidence**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu cor"
+    },
+    {
+      "date": "2027-12-06",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **OPS-05: Git/GitLabCI/Jenkins và release evidence; AUX-01: React/Thymeleaf/JSP/Servlet browser-backend contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh "
+    },
+    {
+      "date": "2027-12-07",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-01: React/Thymeleaf/JSP/Servlet browser-backend contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc "
+    },
+    {
+      "date": "2027-12-08",
+      "blockCount": 6,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-02: Reconstruct MyBV payment/e-Contract/IMS**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ."
+    },
+    {
+      "date": "2027-12-09",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-02: Reconstruct MyBV payment/e-Contract/IMS; AUX-03: Reconstruct Veritas appointment/doctor allocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu "
+    },
+    {
+      "date": "2027-12-10",
+      "blockCount": 8,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-03: Reconstruct Veritas appointment/doctor allocation; AUX-04: Reconstruct Hywork seat/AMIS employee sync**. Mục tiêu là output của từng block bên dưới; chỉ đánh d"
+    },
+    {
+      "date": "2027-12-13",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-04: Reconstruct Hywork seat/AMIS employee sync**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ"
+    },
+    {
+      "date": "2027-12-14",
+      "blockCount": 7,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-12-15",
+      "blockCount": 4,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-12-16",
+      "blockCount": 3,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-02: Reconstruct MyBV payment/e-Contract/IMS; JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core"
+    },
+    {
+      "date": "2027-12-17",
+      "blockCount": 2,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-03: Reconstruct Veritas appointment/doctor allocation; JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đán"
+    },
+    {
+      "date": "2027-12-20",
+      "blockCount": 2,
+      "objective": "Tạo và kiểm chứng evidence cho **AUX-04: Reconstruct Hywork seat/AMIS employee sync; JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu c"
+    },
+    {
+      "date": "2027-12-21",
+      "blockCount": 2,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    },
+    {
+      "date": "2027-12-22",
+      "blockCount": 2,
+      "objective": "Tạo và kiểm chứng evidence cho **JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết "
+    }
+  ]
+}

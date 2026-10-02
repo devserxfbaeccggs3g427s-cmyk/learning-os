@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-06",
+  "objective": "Tạo và kiểm chứng evidence cho **OPS-05: Git/GitLabCI/Jenkins và release evidence; AUX-01: React/Thymeleaf/JSP/Servlet browser-backend contract**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OPS-04",
+      "type": "REVIEW",
+      "title": "D+1 — Rolling update và graceful Kafka/API shutdown",
+      "objective": "Không nhìn notes: vẽ In-flight completion and rebalance during rollout; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OPS-05",
+      "type": "LAB",
+      "title": "Implement — Git/GitLabCI/Jenkins và release evidence",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Pipeline design + rollback rehearsal; ownership register; kèm predicted/observed table và ADR “Automated gate so với manual release checklist”.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Pipeline design + rollback rehearsal; ownership register; kèm predicted/observed table và ADR “Automated gate so với manual release checklist”."
+    },
+    {
+      "taskCode": "OPS-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Git/GitLabCI/Jenkins và release evidence",
+      "objective": "Fault: Rollback binary không rollback incompatible data. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Reproducible build/config separation/version identity.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OPS-05",
+      "type": "INTERVIEW",
+      "title": "Interview — Git/GitLabCI/Jenkins và release evidence",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why branch/review/build/test/artifact/deploy/rollback? How Reproducible build/config separation/version identity? What if Rollback binary không rollback incompatible data? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUX-01",
+      "type": "LEARN",
+      "title": "Concept/contract — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "rendering / forms / token / cookies / validation / double submit; cơ chế cần kiểm chứng: Client vs server trust; servlet request lifecycle. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho rendering / forms / token / cookies / validation / double submit; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUX-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Không nhìn notes: vẽ Client vs server trust; servlet request lifecycle; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

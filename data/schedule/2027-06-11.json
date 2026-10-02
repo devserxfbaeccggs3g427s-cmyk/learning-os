@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-11",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-07: Chứng minh giảm 60% nhập tay; DB-03: ACID, isolation và MVCC qua payment status**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-02",
+      "type": "REVIEW",
+      "title": "D+14 — CMS/kho hàng consistency và ordering",
+      "objective": "Bảo vệ trade-off của CMV-02 khi 2 instances/10x load; nối lại với project CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Chứng minh giảm 60% nhập tay",
+      "objective": "Fault: Volume/mix đổi làm số 60% gây hiểu nhầm. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Measurement pipeline and confounders.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "CMV-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Chứng minh giảm 60% nhập tay",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why baseline/sample/time window/denominator/attribution? How Measurement pipeline and confounders? What if Volume/mix đổi làm số 60% gây hiểu nhầm? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "LEARN",
+      "title": "Concept/contract — ACID, isolation và MVCC qua payment status",
+      "objective": "dirty / nonrepeatable / phantom; cơ chế cần kiểm chứng: Snapshot/read consistency; statement vs transaction. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho dirty / nonrepeatable / phantom; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — ACID, isolation và MVCC qua payment status",
+      "objective": "Chốt phần research còn lại: phantom / write skew; nối với Snapshot/read consistency; statement vs transaction. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "LAB",
+      "title": "Implement — ACID, isolation và MVCC qua payment status",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 2-session anomaly matrix, ghi đúng dialect/isolation; kèm predicted/observed table và ADR “Read committed so với serializable/explicit lock”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 2-session anomaly matrix, ghi đúng dialect/isolation; kèm predicted/observed table và ADR “Read committed so với serializable/explicit lock”."
+    },
+    {
+      "taskCode": "DB-03",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — ACID, isolation và MVCC qua payment status",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why dirty/nonrepeatable/phantom/write skew? How Snapshot/read consistency; statement vs transaction? What if Read-check-write cho phép vi phạm invariant? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

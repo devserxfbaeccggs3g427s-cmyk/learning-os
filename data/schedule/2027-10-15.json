@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-15",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-09: DB deadlock; DB-07: Oracle sequence cho alias account**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-05",
+      "type": "REVIEW",
+      "title": "D+1 — Deadlock và lock ordering",
+      "objective": "Không nhìn notes: vẽ Acquisition order và rollback scope; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-08",
+      "type": "REVIEW",
+      "title": "D+7 — Thread pool exhausted",
+      "objective": "Dựng lại normal/failure timeline của INC-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-06",
+      "type": "REVIEW",
+      "title": "D+14 — Exceptions và failure taxonomy",
+      "objective": "Bảo vệ trade-off của JAVA-06 khi 2 instances/10x load; nối lại với project Java17 GOV/SAHA/DEBIT; CMV version chưa xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-09",
+      "type": "INTERVIEW",
+      "title": "Interview — DB deadlock",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why DB deadlock; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Graph→statements→lock order→invariant. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Opposite lock order, long tx, missing index.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-07",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Oracle sequence cho alias account",
+      "objective": "Chốt phần research còn lại: NEXTVAL / cache; nối với Allocation ngoài kỳ vọng rollback và concurrency. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DB-07",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Oracle sequence cho alias account",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why NEXTVAL/cache/gaps/cycle/unique constraint? How Allocation ngoài kỳ vọng rollback và concurrency? What if Rollback tạo gap; restart; alias format overflow? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

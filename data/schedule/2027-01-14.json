@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-14",
+  "objective": "Tạo và kiểm chứng evidence cho **OTP-01: OTP challenge model và transaction binding**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-04",
+      "type": "REVIEW",
+      "title": "D+7 — Logout/password change/revocation",
+      "objective": "Dựng lại normal/failure timeline của AUTH-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-13",
+      "type": "REVIEW",
+      "title": "D+1 — Redis unavailable",
+      "objective": "Không nhìn notes: vẽ Use case impact→network/topology→server stats→client config. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "DEEP_DIVE",
+      "title": "Internals — OTP challenge model và transaction binding",
+      "objective": "user / device / amount / beneficiary / challenge ID; cơ chế cần kiểm chứng: Challenge state và one-time scope. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho user / device / amount / beneficiary / challenge ID; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "LAB",
+      "title": "Implement — OTP challenge model và transaction binding",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Binding contract + wrong-context negative tests; kèm predicted/observed table và ADR “Generic OTP so với transaction-bound challenge”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Binding contract + wrong-context negative tests; kèm predicted/observed table và ADR “Generic OTP so với transaction-bound challenge”."
+    },
+    {
+      "taskCode": "OTP-01",
+      "type": "INTERVIEW",
+      "title": "Interview — OTP challenge model và transaction binding",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why purpose/user/device/amount/beneficiary/challenge ID? How Challenge state và one-time scope? What if OTP login dùng xác nhận transfer khác? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-29",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-03: Replication, leader và ISR**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-02",
+      "type": "REVIEW",
+      "title": "D+1 — Producer send lifecycle",
+      "objective": "Không nhìn notes: vẽ Buffer memory; blocking boundaries; asynchronous errors; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reconstruct topic/event ownership",
+      "objective": "Tự xử lý “Không biết ai phát event hoặc ai replay”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-04",
+      "type": "REVIEW",
+      "title": "D+14 — Account/beneficiary authorization",
+      "objective": "Bảo vệ trade-off của BANK-04 khi 2 instances/10x load; nối lại với project SAHA/GOV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Producer send lifecycle",
+      "objective": "Tự xử lý “send trả future nhưng publish chưa ACK”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Replication, leader và ISR",
+      "objective": "Chốt phần research còn lại: replication factor / ISR; nối với Log replication và leader election assumptions. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "LAB",
+      "title": "Implement — Replication, leader và ISR",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 3-broker lab nếu đủ RAM; ISR transition evidence; kèm predicted/observed table và ADR “Replication factor so với current ISR size”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 3-broker lab nếu đủ RAM; ISR transition evidence; kèm predicted/observed table và ADR “Replication factor so với current ISR size”."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Replication, leader và ISR",
+      "objective": "Fault: Follower lag rồi rời ISR. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Log replication và leader election assumptions.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Replication, leader và ISR",
+      "objective": "Không nhìn notes: vẽ Log replication và leader election assumptions; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

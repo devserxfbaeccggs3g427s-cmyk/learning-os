@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-30",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-03: Replication, leader và ISR; KAF-04: acks=0/1/all và min.insync.replicas**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SD-02",
+      "type": "REVIEW",
+      "title": "D+7 — Mobile Fund Transfer",
+      "objective": "Dựng lại normal/failure timeline của SD-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Replication, leader và ISR",
+      "objective": "Fault: Follower lag rồi rời ISR. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Log replication và leader election assumptions.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Replication, leader và ISR",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why leader/follower/replication factor/ISR? How Log replication và leader election assumptions? What if Follower lag rồi rời ISR? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — acks=0/1/all và min.insync.replicas",
+      "objective": "Chốt phần research còn lại: durability; nối với ack all current ISR vs minISR admission. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "DEEP_DIVE",
+      "title": "Internals — acks=0/1/all và min.insync.replicas",
+      "objective": "availability / ack policy; cơ chế cần kiểm chứng: ack all current ISR vs minISR admission. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho availability / ack policy; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "LAB",
+      "title": "Implement — acks=0/1/all và min.insync.replicas",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; RF3/minISR2 fault matrix; callback outcomes; kèm predicted/observed table và ADR “acks1 so với acksall theo mất dữ liệu chấp nhận”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: RF3/minISR2 fault matrix; callback outcomes; kèm predicted/observed table và ADR “acks1 so với acksall theo mất dữ liệu chấp nhận”."
+    },
+    {
+      "taskCode": "KAF-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — acks=0/1/all và min.insync.replicas",
+      "objective": "Không nhìn notes: vẽ ack all current ISR vs minISR admission; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

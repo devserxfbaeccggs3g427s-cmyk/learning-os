@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-17",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-12: Duplicate Kafka messages; KAF-18: Kafka transactions/EOS vs external business effects**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-17",
+      "type": "REVIEW",
+      "title": "D+1 — DB–Kafka Outbox relay proposal",
+      "objective": "Không nhìn notes: vẽ Row claim; SKIP LOCKED/vendor support; publish-mark gap; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "REVIEW",
+      "title": "D+7 — Lag, backpressure và slow AI",
+      "objective": "Dựng lại normal/failure timeline của KAF-16; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-17",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — DB–Kafka Outbox relay proposal",
+      "objective": "Tự xử lý “Publish succeeds nhưng mark published fail”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-12",
+      "type": "INTERVIEW",
+      "title": "Interview — Duplicate Kafka messages",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Duplicate Kafka messages; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Same event ID?→same/new offset?→relay vs consumer trace. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Relay publish-mark gap, ACK loss, consumer redelivery.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "KAF-18",
+      "type": "LEARN",
+      "title": "Concept/contract — Kafka transactions/EOS vs external business effects",
+      "objective": "transactional producer / read_committed / offset transaction; cơ chế cần kiểm chứng: Kafka atomic write+offset scope. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho transactional producer / read_committed / offset transaction; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-18",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Kafka transactions/EOS vs external business effects",
+      "objective": "Không nhìn notes: vẽ Kafka atomic write+offset scope; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

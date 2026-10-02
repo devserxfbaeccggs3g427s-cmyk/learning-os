@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-19",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-12: Consumer idempotency và Inbox proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-09",
+      "type": "REVIEW",
+      "title": "D+7 — Key ordering và partition count changes",
+      "objective": "Dựng lại normal/failure timeline của KAF-09; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-10",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Consumer group assignment và parallelism",
+      "objective": "Tự xử lý “More consumers than partitions; unsafe shared consumer”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "REVIEW",
+      "title": "D+1 — Offset commit trước/sau DB commit",
+      "objective": "Không nhìn notes: vẽ Committed offset vs processed record vs fetched record; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Offset commit trước/sau DB commit",
+      "objective": "Tự xử lý “DB commit rồi kill trước offset commit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-06",
+      "type": "REVIEW",
+      "title": "D+14 — Idempotent producer: PID và sequence number",
+      "objective": "Bảo vệ trade-off của KAF-06 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Consumer idempotency và Inbox proposal",
+      "objective": "event ID / consumer identity / business unique key; cơ chế cần kiểm chứng: Atomic processed marker + business local transaction. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho event ID / consumer identity / business unique key; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "LAB",
+      "title": "Implement — Consumer idempotency và Inbox proposal",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Unique consumer/event key test; one business effect; kèm predicted/observed table và ADR “Inbox marker so với business-key-only design”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Unique consumer/event key test; one business effect; kèm predicted/observed table và ADR “Inbox marker so với business-key-only design”."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "INTERVIEW",
+      "title": "Interview — Consumer idempotency và Inbox proposal",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why event ID/consumer identity/business unique key? How Atomic processed marker + business local transaction? What if Mark processed commit trước business; duplicate delivery? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

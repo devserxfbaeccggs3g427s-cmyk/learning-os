@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-23",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-06: B+Tree và index cho bill/status query**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-04",
+      "type": "REVIEW",
+      "title": "D+1 — Reject/resubmit/publish/rollback policy",
+      "objective": "Không nhìn notes: vẽ State/version mapping and compensating action; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Reject/resubmit/publish/rollback policy",
+      "objective": "Tự xử lý “Old approved version published after new edit”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-06",
+      "type": "LAB",
+      "title": "Implement — B+Tree và index cho bill/status query",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 3 index candidates + read/write benchmark; kèm predicted/observed table và ADR “Composite index so với nhiều single-column indexes”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 3 index candidates + read/write benchmark; kèm predicted/observed table và ADR “Composite index so với nhiều single-column indexes”."
+    },
+    {
+      "taskCode": "DB-06",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — B+Tree và index cho bill/status query",
+      "objective": "Fault: Low selectivity; skew; write amplification. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Leading columns, range scan, lookup cost.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-06",
+      "type": "INTERVIEW",
+      "title": "Interview — B+Tree và index cho bill/status query",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why composite/covering/selectivity/cardinality? How Leading columns, range scan, lookup cost? What if Low selectivity; skew; write amplification? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — B+Tree và index cho bill/status query",
+      "objective": "Không nhìn notes: vẽ Leading columns, range scan, lookup cost; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

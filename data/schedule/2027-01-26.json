@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-26",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-07: Key/secret rotation và crypto failure policy; AUTH-08: JWKS/key rotation và multi-device sessions**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-05",
+      "type": "REVIEW",
+      "title": "D+14 — Redis session unavailable/data lost",
+      "objective": "Bảo vệ trade-off của AUTH-05 khi 2 instances/10x load; nối lại với project SAHA.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-06",
+      "type": "REVIEW",
+      "title": "D+7 — Device binding và trusted-device lifecycle",
+      "objective": "Dựng lại normal/failure timeline của AUTH-06; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Key/secret rotation và crypto failure policy",
+      "objective": "Fault: Leaked key; unavailable signing service. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Key lifecycle và old/new verifier behavior.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-07",
+      "type": "INTERVIEW",
+      "title": "Interview — Key/secret rotation và crypto failure policy",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why kid/key overlap/secrets custody/audit? How Key lifecycle và old/new verifier behavior? What if Leaked key; unavailable signing service? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "LEARN",
+      "title": "Concept/contract — JWKS/key rotation và multi-device sessions",
+      "objective": "kid / cache overlap / retired keys; cơ chế cần kiểm chứng: Key cache refresh và signature verification failure modes. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho kid / cache overlap / retired keys; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUTH-08",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — JWKS/key rotation và multi-device sessions",
+      "objective": "Không nhìn notes: vẽ Key cache refresh và signature verification failure modes; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

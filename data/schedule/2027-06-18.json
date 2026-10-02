@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-06-18",
+  "objective": "Tạo và kiểm chứng evidence cho **CMV-09: Apigee/Redis/ELK topology và integration boundaries**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "CMV-07",
+      "type": "REVIEW",
+      "title": "D+7 — Chứng minh giảm 60% nhập tay",
+      "objective": "Dựng lại normal/failure timeline của CMV-07; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-02",
+      "type": "REVIEW",
+      "title": "D+1 — Cache-aside và DB update→invalidate",
+      "objective": "Không nhìn notes: vẽ Read-fill race và delayed invalidation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "CMV-09",
+      "type": "LEARN",
+      "title": "Concept/contract — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "gateway policy / cache / log ingestion; cơ chế cần kiểm chứng: Request/event correlation across components. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho gateway policy / cache / log ingestion; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "CMV-09",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "Chốt phần research còn lại: log ingestion; nối với Request/event correlation across components. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "CMV-09",
+      "type": "LAB",
+      "title": "Implement — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Boundary map + correlated incident timeline; kèm predicted/observed table và ADR “Gateway observation so với business completion”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Boundary map + correlated incident timeline; kèm predicted/observed table và ADR “Gateway observation so với business completion”."
+    },
+    {
+      "taskCode": "CMV-09",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Apigee/Redis/ELK topology và integration boundaries",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why gateway policy/cache/log ingestion? How Request/event correlation across components? What if Gateway logs success nhưng consumer failed? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

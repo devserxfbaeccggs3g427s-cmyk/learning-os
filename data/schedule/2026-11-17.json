@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-17",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-17: Core Banking timeout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-02",
+      "type": "REVIEW",
+      "title": "D+7 — Thiết kế state model và invariant thanh toán",
+      "objective": "Dựng lại normal/failure timeline của PAY-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-09",
+      "type": "REVIEW",
+      "title": "D+1 — Bank thành công nhưng local không biết",
+      "objective": "Không nhìn notes: vẽ Timeout stages; lookup key; response mapping; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-17",
+      "type": "INTERVIEW",
+      "title": "Interview — Core Banking timeout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Core Banking timeout; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Preserve identity→query outcome→bank/ESB evidence→local status. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Lost response, bank slow, partial TCP, ESB retry.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-17",
+      "type": "INTERVIEW",
+      "title": "Interview — Core Banking timeout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Core Banking timeout; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Preserve identity→query outcome→bank/ESB evidence→local status. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Lost response, bank slow, partial TCP, ESB retry.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

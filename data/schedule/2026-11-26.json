@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-26",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-11: Disbursement retry và duplicate payout**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-05",
+      "type": "REVIEW",
+      "title": "D+14 — REST/TCP timeouts và correlation",
+      "objective": "Bảo vệ trade-off của BANK-05 khi 2 instances/10x load; nối lại với project SAHA/GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-10",
+      "type": "REVIEW",
+      "title": "D+1 — Refund safety và concurrent partial refund",
+      "objective": "Không nhìn notes: vẽ Atomic remaining-amount check và status guards; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Disbursement retry và duplicate payout",
+      "objective": "beneficiary / attempt; cơ chế cần kiểm chứng: State transition và downstream dedup contract. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho beneficiary / attempt; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "LAB",
+      "title": "Implement — Disbursement retry và duplicate payout",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Payout replay matrix với mock hỗ trợ/không hỗ trợ dedup; kèm predicted/observed table và ADR “Automated retry so với investigation hold”.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Payout replay matrix với mock hỗ trợ/không hỗ trợ dedup; kèm predicted/observed table và ADR “Automated retry so với investigation hold”."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "LAB",
+      "title": "Implement — Disbursement retry và duplicate payout",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Payout replay matrix với mock hỗ trợ/không hỗ trợ dedup; kèm predicted/observed table và ADR “Automated retry so với investigation hold”.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Payout replay matrix với mock hỗ trợ/không hỗ trợ dedup; kèm predicted/observed table và ADR “Automated retry so với investigation hold”."
+    },
+    {
+      "taskCode": "PAY-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Disbursement retry và duplicate payout",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why payout business key/beneficiary/attempt? How State transition và downstream dedup contract? What if Timeout rồi retry chi hộ hai lần? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

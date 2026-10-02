@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-25",
+  "objective": "Tạo và kiểm chứng evidence cho **DATA-03: Bulk operations và persistence context stale; RED-03: Stampede, penetration và avalanche**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DATA-02",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Fetch strategy và N+1 trên order/assets",
+      "objective": "Tự xử lý “N+1; detached lazy access; join pagination wrong”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-06",
+      "type": "REVIEW",
+      "title": "D+1 — Slow query",
+      "objective": "Không nhìn notes: vẽ Separate lock/CPU/IO→plan actual rows→stats→query count. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-03",
+      "type": "REVIEW",
+      "title": "D+14 — Configuration và Boot auto-configuration",
+      "objective": "Bảo vệ trade-off của SPR-03 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Bulk operations và persistence context stale",
+      "objective": "Fault: Bulk update bỏ version guard. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu ORM cache synchronization và JDBC batching.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Bulk operations và persistence context stale",
+      "objective": "Fault: Bulk update bỏ version guard. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu ORM cache synchronization và JDBC batching.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DATA-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Bulk operations và persistence context stale",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why batching/clear/bulk update/version? How ORM cache synchronization và JDBC batching? What if Bulk update bỏ version guard? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "LEARN",
+      "title": "Concept/contract — Stampede, penetration và avalanche",
+      "objective": "hot key / null caching / jitter; cơ chế cần kiểm chứng: Rebuild concurrency và admission. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho hot key / null caching / jitter; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "RED-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Stampede, penetration và avalanche",
+      "objective": "Không nhìn notes: vẽ Rebuild concurrency và admission; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-22",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-15: JWT token cache và signing integration GOV**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SEC-06",
+      "type": "REVIEW",
+      "title": "D+1 — Request/response signing và replay protection",
+      "objective": "Không nhìn notes: vẽ Canonicalization và nonce acceptance window; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "REVIEW",
+      "title": "D+14 — MVC request lifecycle và validation",
+      "objective": "Bảo vệ trade-off của SPR-07 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "LEARN",
+      "title": "Concept/contract — JWT token cache và signing integration GOV",
+      "objective": "service credentials / token expiry / signature service; cơ chế cần kiểm chứng: Refresh single-flight; sign/verify canonical bytes. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho service credentials / token expiry / signature service; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — JWT token cache và signing integration GOV",
+      "objective": "Chốt phần research còn lại: signature service; nối với Refresh single-flight; sign/verify canonical bytes. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "LAB",
+      "title": "Implement — JWT token cache và signing integration GOV",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 10 concurrent refresh + signed payload mutation tests; kèm predicted/observed table và ADR “Local cache so với shared cache sau xác nhận topology”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 10 concurrent refresh + signed payload mutation tests; kèm predicted/observed table và ADR “Local cache so với shared cache sau xác nhận topology”."
+    },
+    {
+      "taskCode": "PAY-15",
+      "type": "INTERVIEW",
+      "title": "Interview — JWT token cache và signing integration GOV",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why service credentials/token expiry/signature service? How Refresh single-flight; sign/verify canonical bytes? What if Token hết hạn đồng loạt; signature service timeout? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

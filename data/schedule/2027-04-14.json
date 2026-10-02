@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-14",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-11: Offset commit trước/sau DB commit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-04",
+      "type": "REVIEW",
+      "title": "D+14 — acks=0/1/all và min.insync.replicas",
+      "objective": "Bảo vệ trade-off của KAF-04 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-10",
+      "type": "REVIEW",
+      "title": "D+1 — Consumer group assignment và parallelism",
+      "objective": "Không nhìn notes: vẽ Assignment; poll thread vs worker completion; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "LEARN",
+      "title": "Concept/contract — Offset commit trước/sau DB commit",
+      "objective": "at-most / at-least-once / offset position; cơ chế cần kiểm chứng: Committed offset vs processed record vs fetched record. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho at-most / at-least-once / offset position; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Offset commit trước/sau DB commit",
+      "objective": "Chốt phần research còn lại: offset position; nối với Committed offset vs processed record vs fetched record. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "LAB",
+      "title": "Implement — Offset commit trước/sau DB commit",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Replay lab: delivery repeated, business invariant preserved; kèm predicted/observed table và ADR “Commit early so với commit after processing”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Replay lab: delivery repeated, business invariant preserved; kèm predicted/observed table và ADR “Commit early so với commit after processing”."
+    },
+    {
+      "taskCode": "KAF-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Offset commit trước/sau DB commit",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why at-most/at-least-once/offset position? How Committed offset vs processed record vs fetched record? What if DB commit rồi kill trước offset commit? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

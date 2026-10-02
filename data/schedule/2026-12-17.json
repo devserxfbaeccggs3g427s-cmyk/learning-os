@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-17",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-05: Hash, encryption, signature và HMAC**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-13",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — VietQR/Napas QR, receipt và bank inquiry",
+      "objective": "Tự xử lý “QR stale/tampered; receipt của user khác”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-14",
+      "type": "REVIEW",
+      "title": "D+1 — Service/use-case layer và transfer strategy",
+      "objective": "Không nhìn notes: vẽ Strategy dispatch và side-effect isolation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-02",
+      "type": "REVIEW",
+      "title": "D+7 — Object-level authorization và public/admin policy",
+      "objective": "Dựng lại normal/failure timeline của SEC-02; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Hash, encryption, signature và HMAC",
+      "objective": "integrity / authenticity / key types; cơ chế cần kiểm chứng: RSA sign vs encrypt; ECDH key agreement+KDF. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho integrity / authenticity / key types; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "LAB",
+      "title": "Implement — Hash, encryption, signature và HMAC",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 4-operation comparison + tamper/verify test; kèm predicted/observed table và ADR “Asymmetric signature so với shared-secret MAC”.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 4-operation comparison + tamper/verify test; kèm predicted/observed table và ADR “Asymmetric signature so với shared-secret MAC”."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Hash, encryption, signature và HMAC",
+      "objective": "Fault: Dùng hash làm authentication; key reuse sai mục đích. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu RSA sign vs encrypt; ECDH key agreement+KDF.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Hash, encryption, signature và HMAC",
+      "objective": "Không nhìn notes: vẽ RSA sign vs encrypt; ECDH key agreement+KDF; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-04-20",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-12: Consumer idempotency và Inbox proposal**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-07",
+      "type": "REVIEW",
+      "title": "D+14 — max.in.flight và ordering khi retry",
+      "objective": "Bảo vệ trade-off của KAF-07 khi 2 instances/10x load; nối lại với project GOV/CMV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-10",
+      "type": "REVIEW",
+      "title": "D+7 — Consumer group assignment và parallelism",
+      "objective": "Dựng lại normal/failure timeline của KAF-10; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "LAB",
+      "title": "Implement — Consumer idempotency và Inbox proposal",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Unique consumer/event key test; one business effect; kèm predicted/observed table và ADR “Inbox marker so với business-key-only design”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Unique consumer/event key test; one business effect; kèm predicted/observed table và ADR “Inbox marker so với business-key-only design”."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "LAB",
+      "title": "Implement — Consumer idempotency và Inbox proposal",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Unique consumer/event key test; one business effect; kèm predicted/observed table và ADR “Inbox marker so với business-key-only design”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Unique consumer/event key test; one business effect; kèm predicted/observed table và ADR “Inbox marker so với business-key-only design”."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Consumer idempotency và Inbox proposal",
+      "objective": "Fault: Mark processed commit trước business; duplicate delivery. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic processed marker + business local transaction.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-12",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Consumer idempotency và Inbox proposal",
+      "objective": "Không nhìn notes: vẽ Atomic processed marker + business local transaction; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-26",
+  "objective": "Tạo và kiểm chứng evidence cho **DATA-01: Persistence Context, dirty checking, flush vs commit**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-04",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Concurrent claim bằng unique constraint",
+      "objective": "Tự xử lý “100 requests cùng key từ 2 instances”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "REVIEW",
+      "title": "D+1 — Duplicate bill khác request duplicate",
+      "objective": "Không nhìn notes: vẽ Business unique index và conditional mutation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Duplicate bill khác request duplicate",
+      "objective": "Tự xử lý “2 request ID khác nhau thanh toán cùng bill”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-05",
+      "type": "REVIEW",
+      "title": "D+7 — Transaction rollback và exception boundary",
+      "objective": "Dựng lại normal/failure timeline của SPR-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Chốt phần research còn lại: entity state / managed; nối với Unit of work; SQL emission; identity map. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Persistence Context, dirty checking, flush vs commit",
+      "objective": "managed / detached / save / flush; cơ chế cần kiểm chứng: Unit of work; SQL emission; identity map. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho managed / detached / save / flush; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "LAB",
+      "title": "Implement — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; SQL/transaction timeline cho save/flush/commit; kèm predicted/observed table và ADR “Managed update so với explicit JDBC SQL”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: SQL/transaction timeline cho save/flush/commit; kèm predicted/observed table và ADR “Managed update so với explicit JDBC SQL”."
+    },
+    {
+      "taskCode": "DATA-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Persistence Context, dirty checking, flush vs commit",
+      "objective": "Không nhìn notes: vẽ Unit of work; SQL emission; identity map; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

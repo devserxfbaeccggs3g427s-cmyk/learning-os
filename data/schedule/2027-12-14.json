@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-14",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-12: Virtual threads as optional upgrade research**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-01",
+      "type": "REVIEW",
+      "title": "D+7 — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Dựng lại normal/failure timeline của AUX-01; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUX-04",
+      "type": "REVIEW",
+      "title": "D+1 — Reconstruct Hywork seat/AMIS employee sync",
+      "objective": "Không nhìn notes: vẽ Incremental cursor and idempotent upsert; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "LEARN",
+      "title": "Concept/contract — Virtual threads as optional upgrade research",
+      "objective": "JDK version / scheduling / blocking; cơ chế cần kiểm chứng: Pinned-version lifecycle and compatibility constraints. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho JDK version / scheduling / blocking; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Virtual threads as optional upgrade research",
+      "objective": "Chốt phần research còn lại: resource limits; nối với Pinned-version lifecycle and compatibility constraints. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "LAB",
+      "title": "Implement — Virtual threads as optional upgrade research",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Upgrade ADR only, separate runtime experiment if chosen; kèm predicted/observed table và ADR “Virtual threads so với bounded platform threads”.",
+      "startMinute": 1290,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Upgrade ADR only, separate runtime experiment if chosen; kèm predicted/observed table và ADR “Virtual threads so với bounded platform threads”."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Virtual threads as optional upgrade research",
+      "objective": "Fault: More concurrency exhausts DB; Java17 cannot run feature. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Pinned-version lifecycle and compatibility constraints.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-12",
+      "type": "INTERVIEW",
+      "title": "Interview — Virtual threads as optional upgrade research",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why JDK version/scheduling/blocking/resource limits? How Pinned-version lifecycle and compatibility constraints? What if More concurrency exhausts DB; Java17 cannot run feature? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

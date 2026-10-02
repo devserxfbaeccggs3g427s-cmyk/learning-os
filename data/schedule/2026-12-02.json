@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-02",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-12: Reconciliation theo nguồn có thẩm quyền; INC-20: Incorrect payment status**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-10",
+      "type": "REVIEW",
+      "title": "D+7 — Refund safety và concurrent partial refund",
+      "objective": "Dựng lại normal/failure timeline của PAY-10; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Fault: Bank success local pending; amount/currency mismatch. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Matching keys; late arrival; checkpoint/re-run.",
+      "startMinute": 1205,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why cutoff/timezone/settlement/status matching? How Matching keys; late arrival; checkpoint/re-run? What if Bank success local pending; amount/currency mismatch? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-20",
+      "type": "INTERVIEW",
+      "title": "Interview — Incorrect payment status",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Incorrect payment status; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Authority→matching refs→transition order→version guards. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Stale update, wrong mapping, missed callback, late settlement.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

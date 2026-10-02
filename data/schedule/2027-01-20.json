@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-20",
+  "objective": "Tạo và kiểm chứng evidence cho **RED-04: Distributed counters và rate limits**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-06",
+      "type": "REVIEW",
+      "title": "D+1 — Device binding và trusted-device lifecycle",
+      "objective": "Không nhìn notes: vẽ Possession evidence vs user-controlled identifier; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-13",
+      "type": "REVIEW",
+      "title": "D+7 — Redis unavailable",
+      "objective": "Dựng lại normal/failure timeline của INC-13; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "RED-04",
+      "type": "LAB",
+      "title": "Implement — Distributed counters và rate limits",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; 2-instance quota test; policy on Redis error; kèm predicted/observed table và ADR “Per-instance so với shared bucket”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 2-instance quota test; policy on Redis error; kèm predicted/observed table và ADR “Per-instance so với shared bucket”."
+    },
+    {
+      "taskCode": "RED-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Distributed counters và rate limits",
+      "objective": "Fault: 2 gateways vượt quota; clock skew. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic bucket state và time assumptions.",
+      "startMinute": 1275,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "RED-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Distributed counters và rate limits",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why token bucket/sliding window/identity/key scope? How Atomic bucket state và time assumptions? What if 2 gateways vượt quota; clock skew? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "RED-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Distributed counters và rate limits",
+      "objective": "Không nhìn notes: vẽ Atomic bucket state và time assumptions; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

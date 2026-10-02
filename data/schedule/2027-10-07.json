@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-07",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-11: CompletableFuture fan-out và ForkJoinPool; INC-08: Thread pool exhausted**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-10",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — CPU/IO pool sizing và cancellation",
+      "objective": "Tự xử lý “80 threads trên pool DB10; timeout task vẫn chạy”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "Fault: One future timeout; sibling tasks continue; commonPool starves. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Completion/executor selection and exception propagation.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "INTERVIEW",
+      "title": "Interview — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why thenApply/thenCompose/allOf/get/join/handle/exceptionally? How Completion/executor selection and exception propagation? What if One future timeout; sibling tasks continue; commonPool starves? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Thread pool exhausted",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Thread pool exhausted; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Thread dump→executor queue→dependency→timeout/cancel. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Blocked IO, unbounded queue, wrong executor, deadlock.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

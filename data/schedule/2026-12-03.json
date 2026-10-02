@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-03",
+  "objective": "Tạo và kiểm chứng evidence cho **INC-20: Incorrect payment status; SPR-02: Bean lifecycle, scope và mutable singleton**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-12",
+      "type": "REVIEW",
+      "title": "D+1 — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Không nhìn notes: vẽ Matching keys; late arrival; checkpoint/re-run; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-20",
+      "type": "INTERVIEW",
+      "title": "Interview — Incorrect payment status",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Incorrect payment status; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Authority→matching refs→transition order→version guards. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Stale update, wrong mapping, missed callback, late settlement.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Bean lifecycle, scope và mutable singleton",
+      "objective": "Chốt phần research còn lại: PostConstruct / PreDestroy; nối với Creation/injection/init/destruction; scoped proxy. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Bean lifecycle, scope và mutable singleton",
+      "objective": "PreDestroy / singleton / request / prototype; cơ chế cần kiểm chứng: Creation/injection/init/destruction; scoped proxy. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho PreDestroy / singleton / request / prototype; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "LAB",
+      "title": "Implement — Bean lifecycle, scope và mutable singleton",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Concurrent request isolation + lifecycle trace; kèm predicted/observed table và ADR “Stateless singleton so với request scope”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Concurrent request isolation + lifecycle trace; kèm predicted/observed table và ADR “Stateless singleton so với request scope”."
+    },
+    {
+      "taskCode": "SPR-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Bean lifecycle, scope và mutable singleton",
+      "objective": "Không nhìn notes: vẽ Creation/injection/init/destruction; scoped proxy; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

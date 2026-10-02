@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-10",
+  "objective": "Tạo và kiểm chứng evidence cho **KAF-16: Lag, backpressure và slow AI**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "JAVA-08",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — JMM/happens-before/volatile/locks/CAS",
+      "objective": "Tự xử lý “volatile counter lost update; unsafe publication”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-09",
+      "type": "REVIEW",
+      "title": "D+1 — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "Không nhìn notes: vẽ Queue-before-max admission and worker lifecycle; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-09",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — ThreadPoolExecutor queue/rejection/lifecycle",
+      "objective": "Tự xử lý “Pool full; unbounded queue OOM; task discarded”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "LAB",
+      "title": "Implement — Lag, backpressure và slow AI",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; Lag-age and queue metrics; bounded admission policy; kèm predicted/observed table và ADR “More consumers so với optimize dependency/partitioning”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Lag-age and queue metrics; bounded admission policy; kèm predicted/observed table và ADR “More consumers so với optimize dependency/partitioning”."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Lag, backpressure và slow AI",
+      "objective": "Fault: Input 10x; AI stalls; memory queue grows. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Queue growth; partition skew; bounded concurrency.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "KAF-16",
+      "type": "INTERVIEW",
+      "title": "Interview — Lag, backpressure và slow AI",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why record lag/age/service rate/poll batch? How Queue growth; partition skew; bounded concurrency? What if Input 10x; AI stalls; memory queue grows? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

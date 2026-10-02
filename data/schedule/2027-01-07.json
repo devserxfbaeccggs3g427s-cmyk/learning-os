@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-01-07",
+  "objective": "Tạo và kiểm chứng evidence cho **AUTH-04: Logout/password change/revocation; RED-06: Persistence, replication và session recovery**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUTH-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Refresh token rotation và replay proposal",
+      "objective": "Không nhìn notes: vẽ Atomic rotate và concurrent refresh arbitration; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUTH-04",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Logout/password change/revocation",
+      "objective": "Fault: Đổi mật khẩu nhưng access token còn dùng được. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Online lookup vs expiry-only enforcement.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUTH-04",
+      "type": "INTERVIEW",
+      "title": "Interview — Logout/password change/revocation",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why session version/revocation latency/device scope? How Online lookup vs expiry-only enforcement? What if Đổi mật khẩu nhưng access token còn dùng được? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Persistence, replication và session recovery",
+      "objective": "Chốt phần research còn lại: RDB / AOF; nối với Acknowledged write durability assumptions. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Persistence, replication và session recovery",
+      "objective": "AOF / replica / Sentinel / Cluster conceptual; cơ chế cần kiểm chứng: Acknowledged write durability assumptions. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho AOF / replica / Sentinel / Cluster conceptual; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "LAB",
+      "title": "Implement — Persistence, replication và session recovery",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Outage/restart scenario matrix; topology cần xác nhận; kèm predicted/observed table và ADR “Availability so với revocation/state consistency”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Outage/restart scenario matrix; topology cần xác nhận; kèm predicted/observed table và ADR “Availability so với revocation/state consistency”."
+    },
+    {
+      "taskCode": "RED-06",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Persistence, replication và session recovery",
+      "objective": "Không nhìn notes: vẽ Acknowledged write durability assumptions; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

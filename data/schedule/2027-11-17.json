@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-11-17",
+  "objective": "Tạo và kiểm chứng evidence cho **SD-08: API Gateway; DB-11: Oracle/Postgres/MySQL/SQLServer scope check**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "SD-05",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Payment reconciliation",
+      "objective": "Không nhìn notes: vẽ Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SD-08",
+      "type": "INTERVIEW",
+      "title": "Interview — API Gateway",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why API Gateway: public/admin routing, JWT, rate limits, discovery, resilience? How Requirements → estimate → API/data → architecture → failure → scale; chưa xem solution? What if JWKS outage vs login outage; no unsafe retry; capacity, budgets, 429/5xx correctness? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "LEARN",
+      "title": "Concept/contract — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "dialect / isolation / sequence; cơ chế cần kiểm chứng: Driver và engine-specific behavior. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho dialect / isolation / sequence; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "sequence / upsert / pagination; cơ chế cần kiểm chứng: Driver và engine-specific behavior. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho sequence / upsert / pagination; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "LAB",
+      "title": "Implement — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Compatibility table: verified vs chưa thử; project mapping; kèm predicted/observed table và ADR “Portable abstraction so với vendor-specific SQL”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Compatibility table: verified vs chưa thử; project mapping; kèm predicted/observed table và ADR “Portable abstraction so với vendor-specific SQL”."
+    },
+    {
+      "taskCode": "DB-11",
+      "type": "INTERVIEW",
+      "title": "Interview — Oracle/Postgres/MySQL/SQLServer scope check",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why dialect/isolation/sequence/upsert/pagination? How Driver và engine-specific behavior? What if Copy SQL/locking assumption giữa engines? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

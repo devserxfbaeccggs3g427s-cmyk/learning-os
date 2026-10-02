@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-03-09",
+  "objective": "Tạo và kiểm chứng evidence cho **BANK-03: Reusable executor và banking response mapping**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "BANK-02",
+      "type": "REVIEW",
+      "title": "D+1 — REF CURSOR và resource lifecycle",
+      "objective": "Không nhìn notes: vẽ Cursor/statement/connection ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-01",
+      "type": "REVIEW",
+      "title": "D+14 — Structured logs, correlation và privacy",
+      "objective": "Bảo vệ trade-off của OBS-01 khi 2 instances/10x load; nối lại với project CMV và áp dụng đề xuất GOV/SAHA/DEBIT.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "LEARN",
+      "title": "Concept/contract — Reusable executor và banking response mapping",
+      "objective": "typed params / result / error taxonomy; cơ chế cần kiểm chứng: Type conversion; deterministic error mapping. Ghi predicted behavior trước lab.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho typed params / result / error taxonomy; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reusable executor và banking response mapping",
+      "objective": "Chốt phần research còn lại: error taxonomy; nối với Type conversion; deterministic error mapping. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "LAB",
+      "title": "Implement — Reusable executor và banking response mapping",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Contract tests success/business reject/technical/unknown; kèm predicted/observed table và ADR “Generic executor so với explicit operation adapters”.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Contract tests success/business reject/technical/unknown; kèm predicted/observed table và ADR “Generic executor so với explicit operation adapters”."
+    },
+    {
+      "taskCode": "BANK-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Reusable executor và banking response mapping",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why typed params/result/error taxonomy? How Type conversion; deterministic error mapping? What if Unknown bank code bị map success/failed sai? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

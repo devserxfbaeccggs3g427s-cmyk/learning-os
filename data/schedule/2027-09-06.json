@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-09-06",
+  "objective": "Tạo và kiểm chứng evidence cho **FLOW-06: MinIO attachments và DB/file consistency**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "DB-08",
+      "type": "REVIEW",
+      "title": "D+7 — Execution plan và statistics",
+      "objective": "Dựng lại normal/failure timeline của DB-08; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "REVIEW",
+      "title": "D+1 — Asset search/admin CRUD/filter/pagination",
+      "objective": "Không nhìn notes: vẽ Query composition/index use/ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "INC-05",
+      "type": "REVIEW",
+      "title": "D+7 — DB CPU high",
+      "objective": "Dựng lại normal/failure timeline của INC-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-09",
+      "type": "REVIEW",
+      "title": "D+7 — Pagination ổn định của asset/transaction list",
+      "objective": "Dựng lại normal/failure timeline của DB-09; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-04",
+      "type": "REVIEW",
+      "title": "D+14 — Reject/resubmit/publish/rollback policy",
+      "objective": "Bảo vệ trade-off của FLOW-04 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-05",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Asset search/admin CRUD/filter/pagination",
+      "objective": "Tự xử lý “Draft exposed publicly; SQL injection; slow filter”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-06",
+      "type": "REVIEW",
+      "title": "D+14 — B+Tree và index cho bill/status query",
+      "objective": "Bảo vệ trade-off của DB-06 khi 2 instances/10x load; nối lại với project GOV/SAHA/DEBIT/CMV.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — MinIO attachments và DB/file consistency",
+      "objective": "Chốt phần research còn lại: access / download lifecycle; nối với Object store vs local DB atomicity boundary. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "LAB",
+      "title": "Implement — MinIO attachments và DB/file consistency",
+      "objective": "Checkpoint implementation 15 phút: tạo fixture/config tối thiểu, ghi bước chạy tiếp; Orphan lifecycle lab; unauthorized download negative test; kèm predicted/observed table và ADR “Pre-upload so với staged upload/finalize proposal”.",
+      "startMinute": 1320,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Orphan lifecycle lab; unauthorized download negative test; kèm predicted/observed table và ADR “Pre-upload so với staged upload/finalize proposal”."
+    },
+    {
+      "taskCode": "FLOW-06",
+      "type": "INTERVIEW",
+      "title": "Interview — MinIO attachments và DB/file consistency",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why upload/object key/metadata/access/download lifecycle? How Object store vs local DB atomicity boundary? What if Upload success DB fail; delete metadata file remains? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

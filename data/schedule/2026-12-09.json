@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-12-09",
+  "objective": "Tạo và kiểm chứng evidence cho **SEC-01: JWT/JWS/JWE và SecurityFilterChain; SEC-02: Object-level authorization và public/admin policy**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-10",
+      "type": "REVIEW",
+      "title": "D+14 — Refund safety và concurrent partial refund",
+      "objective": "Bảo vệ trade-off của PAY-10 khi 2 instances/10x load; nối lại với project GOV.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "PAY-12",
+      "type": "REVIEW",
+      "title": "D+7 — Reconciliation theo nguồn có thẩm quyền",
+      "objective": "Dựng lại normal/failure timeline của PAY-12; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SPR-07",
+      "type": "REVIEW",
+      "title": "D+1 — MVC request lifecycle và validation",
+      "objective": "Không nhìn notes: vẽ Argument binding và exception resolution; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "SEC-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JWT/JWS/JWE và SecurityFilterChain",
+      "objective": "Fault: JWT decode thành auth; filter order bypass. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Filter ordering/context construction.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-01",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — JWT/JWS/JWE và SecurityFilterChain",
+      "objective": "Fault: JWT decode thành auth; filter order bypass. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Filter ordering/context construction.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "SEC-01",
+      "type": "INTERVIEW",
+      "title": "Interview — JWT/JWS/JWE và SecurityFilterChain",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why authn/authz/claims/signature/encryption? How Filter ordering/context construction? What if JWT decode thành auth; filter order bypass? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1290,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "SEC-02",
+      "type": "LEARN",
+      "title": "Concept/contract — Object-level authorization và public/admin policy",
+      "objective": "ownership / scopes / roles / tenant; cơ chế cần kiểm chứng: Method/resource authorization beyond gateway. Ghi predicted behavior trước lab.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho ownership / scopes / roles / tenant; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "SEC-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Object-level authorization và public/admin policy",
+      "objective": "Không nhìn notes: vẽ Method/resource authorization beyond gateway; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-02-26",
+  "objective": "Tạo và kiểm chứng evidence cho **DB-10: Hikari và budget connections; INC-07: Connection pool exhausted**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OBS-01",
+      "type": "FAILURE_DRILL",
+      "title": "D+3 — Structured logs, correlation và privacy",
+      "objective": "Tự xử lý “Lost correlation; OTP/token/PII logged”; ghi từng state, retry và lý do chọn recovery.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-04",
+      "type": "REVIEW",
+      "title": "D+7 — SMS timeout, delivery và cost control",
+      "objective": "Dựng lại normal/failure timeline của OTP-04; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-05",
+      "type": "REVIEW",
+      "title": "D+1 — Masked logging và OTP abuse audit",
+      "objective": "Không nhìn notes: vẽ Logging pipeline và sensitive field handling; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "LAB",
+      "title": "Implement — Hikari và budget connections",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Pool saturation graph; concurrency cap bảo vệ DB; kèm predicted/observed table và ADR “Tăng pool so với giảm transaction duration”.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Pool saturation graph; concurrency cap bảo vệ DB; kèm predicted/observed table và ADR “Tăng pool so với giảm transaction duration”."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Hikari và budget connections",
+      "objective": "Fault: DB chậm giữ connections; pool exhausted. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Pool queue; total replicas × pool capacity.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Hikari và budget connections",
+      "objective": "Fault: DB chậm giữ connections; pool exhausted. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Pool queue; total replicas × pool capacity.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "DB-10",
+      "type": "INTERVIEW",
+      "title": "Interview — Hikari và budget connections",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why active/idle/pending/acquire timeout/leak? How Pool queue; total replicas × pool capacity? What if DB chậm giữ connections; pool exhausted? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1305,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "INC-07",
+      "type": "INTERVIEW",
+      "title": "Weekly mock — Connection pool exhausted",
+      "objective": "Weekly checkpoint: 1 scenario từ tuần này + 1 trade-off; cập nhật learned/labs/review/completed/carry-over. No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why Connection pool exhausted; khi drill bổ sung time window, impacted operation và synthetic baseline.? How Pool pending→holders→DB wait→code holds connection. Mỗi bước nêu evidence sẽ bác bỏ hypothesis nào.? What if Long tx, leak, locks, nested requires-new.? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

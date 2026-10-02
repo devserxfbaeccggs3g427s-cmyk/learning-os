@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-06",
+  "objective": "Tạo và kiểm chứng evidence cho **PAY-01: Reconstruct GOV: ownership, authority và normal flow; PAY-03: Request-ID contract và request fingerprint**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "PAY-01",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct GOV: ownership, authority và normal flow",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why create/status/receipt/inquiry/refund/disbursement/reconcile? How API contract và source-of-truth từng field? What if Client thấy failed nhưng bank đã success? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Request-ID contract và request fingerprint",
+      "objective": "scope / tenant / operation / payload canonicalization; cơ chế cần kiểm chứng: Stable hash; canonical amount/null/field order. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Notes có assumptions + diagram cho scope / tenant / operation / payload canonicalization; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "LAB",
+      "title": "Implement — Request-ID contract và request fingerprint",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Contract và 8 test vectors hash/scope; kèm predicted/observed table và ADR “Raw JSON hash so với canonical semantic fields”.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Contract và 8 test vectors hash/scope; kèm predicted/observed table và ADR “Raw JSON hash so với canonical semantic fields”."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Request-ID contract và request fingerprint",
+      "objective": "Fault: Cùng key khác body; key mới cùng nghiệp vụ. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Stable hash; canonical amount/null/field order.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "PAY-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Request-ID contract và request fingerprint",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why scope/tenant/operation/payload canonicalization? How Stable hash; canonical amount/null/field order? What if Cùng key khác body; key mới cùng nghiệp vụ? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

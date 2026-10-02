@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-08-03",
+  "objective": "Tạo và kiểm chứng evidence cho **GATE-08: Eureka/Feign/load balancing under instance loss**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "GATE-03",
+      "type": "REVIEW",
+      "title": "D+14 — Gateway timeout vs Feign/downstream timeout",
+      "objective": "Bảo vệ trade-off của GATE-03 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-05",
+      "type": "REVIEW",
+      "title": "D+7 — Bucket4j distributed rate limiting",
+      "objective": "Dựng lại normal/failure timeline của GATE-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-07",
+      "type": "REVIEW",
+      "title": "D+1 — Bulkhead và bounded resource isolation",
+      "objective": "Không nhìn notes: vẽ Resource isolation; reactive blocking risk; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1220,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "LEARN",
+      "title": "Concept/contract — Eureka/Feign/load balancing under instance loss",
+      "objective": "registration / heartbeat; cơ chế cần kiểm chứng: Discovery cache and connection reuse. Ghi predicted behavior trước lab.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho registration / heartbeat; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Eureka/Feign/load balancing under instance loss",
+      "objective": "stale registry / client selection; cơ chế cần kiểm chứng: Discovery cache and connection reuse. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho stale registry / client selection; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "LAB",
+      "title": "Implement — Eureka/Feign/load balancing under instance loss",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Kill instance + registry convergence timeline; kèm predicted/observed table và ADR “Registry discovery so với static routes”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Kill instance + registry convergence timeline; kèm predicted/observed table và ADR “Registry discovery so với static routes”."
+    },
+    {
+      "taskCode": "GATE-08",
+      "type": "INTERVIEW",
+      "title": "Interview — Eureka/Feign/load balancing under instance loss",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why registration/heartbeat/stale registry/client selection? How Discovery cache and connection reuse? What if Dead instance remains routable; partial 5xx? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-02-17",
+  "objective": "Tạo và kiểm chứng evidence cho **OTP-03: Resend rate limit và concurrent issuance; OTP-04: SMS timeout, delivery và cost control**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "OTP-02",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — OTP expiry/attempt/atomic consume",
+      "objective": "Không nhìn notes: vẽ Atomic compare+consume; check-and-set race; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OTP-03",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Resend rate limit và concurrent issuance",
+      "objective": "Fault: Resend song song; code cũ arrive sau code mới. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Atomic issuance/version invalidation.",
+      "startMinute": 1205,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OTP-03",
+      "type": "INTERVIEW",
+      "title": "Interview — Resend rate limit và concurrent issuance",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why cooldown/quota/challenge version/old code policy? How Atomic issuance/version invalidation? What if Resend song song; code cũ arrive sau code mới? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "OTP-04",
+      "type": "LEARN",
+      "title": "Concept/contract — SMS timeout, delivery và cost control",
+      "objective": "send request ID / provider receipt / status; cơ chế cần kiểm chứng: Unknown delivery vs send failure; retry contract. Ghi predicted behavior trước lab.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Notes có assumptions + diagram cho send request ID / provider receipt / status; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OTP-04",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — SMS timeout, delivery và cost control",
+      "objective": "Không nhìn notes: vẽ Unknown delivery vs send failure; retry contract; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

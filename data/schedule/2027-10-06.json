@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-10-06",
+  "objective": "Tạo và kiểm chứng evidence cho **JAVA-11: CompletableFuture fan-out và ForkJoinPool**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "FLOW-08",
+      "type": "REVIEW",
+      "title": "D+14 — Report module POI/iText scope and streaming",
+      "objective": "Bảo vệ trade-off của FLOW-08 khi 2 instances/10x load; nối lại với project DEBIT.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-05",
+      "type": "REVIEW",
+      "title": "D+7 — Stream/Optional/lambda và side effects",
+      "objective": "Dựng lại normal/failure timeline của JAVA-05; chỉ ra metric/log bác bỏ một hypothesis sai.",
+      "startMinute": 1205,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "LAB",
+      "title": "Implement — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "Hoàn thiện implementation/assertions và lưu baseline; 3 mocks fanout budget; gather outcomes/cancel policy; kèm predicted/observed table và ADR “Dedicated IO executor so với commonPool”.",
+      "startMinute": 1220,
+      "durationMinutes": 45,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: 3 mocks fanout budget; gather outcomes/cancel policy; kèm predicted/observed table và ADR “Dedicated IO executor so với commonPool”."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "Fault: One future timeout; sibling tasks continue; commonPool starves. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Completion/executor selection and exception propagation.",
+      "startMinute": 1275,
+      "durationMinutes": 60,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "JAVA-11",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — CompletableFuture fan-out và ForkJoinPool",
+      "objective": "Không nhìn notes: vẽ Completion/executor selection and exception propagation; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}

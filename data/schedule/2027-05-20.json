@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-05-20",
+  "objective": "Tạo và kiểm chứng evidence cho **OBS-02: Micrometer/Prometheus/Actuator metrics**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "KAF-18",
+      "type": "REVIEW",
+      "title": "D+1 — Kafka transactions/EOS vs external business effects",
+      "objective": "Không nhìn notes: vẽ Kafka atomic write+offset scope; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Micrometer/Prometheus/Actuator metrics",
+      "objective": "histogram / p95 / cardinality / business counters; cơ chế cần kiểm chứng: Metric labels and aggregation across instances. Ghi predicted behavior trước lab.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho histogram / p95 / cardinality / business counters; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "LAB",
+      "title": "Implement — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Dashboard spec with bounded labels and event-age metrics; kèm predicted/observed table và ADR “Histogram so với averaging instance percentiles”.",
+      "startMinute": 1235,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Dashboard spec with bounded labels and event-age metrics; kèm predicted/observed table và ADR “Histogram so với averaging instance percentiles”."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "LAB",
+      "title": "Implement — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Checkpoint implementation 15 phút: hoàn thiện assertion/kiểm tra output còn thiếu; Dashboard spec with bounded labels and event-age metrics; kèm predicted/observed table và ADR “Histogram so với averaging instance percentiles”.",
+      "startMinute": 1275,
+      "durationMinutes": 15,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Dashboard spec with bounded labels and event-age metrics; kèm predicted/observed table và ADR “Histogram so với averaging instance percentiles”."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Micrometer/Prometheus/Actuator metrics",
+      "objective": "Fault: Per-user labels overload metrics; average hides tail. Chèn failpoint/concurrency barrier và dự đoán state trước/sau. Đối chiếu Metric labels and aggregation across instances.",
+      "startMinute": 1290,
+      "durationMinutes": 45,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "OBS-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Micrometer/Prometheus/Actuator metrics",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why RED/USE/histogram/p95/cardinality/business counters? How Metric labels and aggregation across instances? What if Per-user labels overload metrics; average hides tail? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    }
+  ]
+}

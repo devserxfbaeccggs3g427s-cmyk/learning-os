@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "date": "2027-12-09",
+  "objective": "Tạo và kiểm chứng evidence cho **AUX-02: Reconstruct MyBV payment/e-Contract/IMS; AUX-03: Reconstruct Veritas appointment/doctor allocation**. Mục tiêu là output của từng block bên dưới; chỉ đánh dấu core complete khi đủ gate, không dựa vào việc đã hết giờ.",
+  "blocks": [
+    {
+      "taskCode": "AUX-01",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — React/Thymeleaf/JSP/Servlet browser-backend contract",
+      "objective": "Không nhìn notes: vẽ Client vs server trust; servlet request lifecycle; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 750,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    },
+    {
+      "taskCode": "AUX-02",
+      "type": "FAILURE_DRILL",
+      "title": "Break/debug — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "Fault: Payment success nhưng contract chưa issue; IMS partial sync. Chạy lại fault/retry, đọc logs/metrics và giải thích actual khác predicted. Đối chiếu Authority per state and retry boundary.",
+      "startMinute": 1205,
+      "durationMinutes": 30,
+      "deliverable": "Experiment evidence: state trước/sau, caller outcome, effect count/latency phù hợp; root-cause và giới hạn guarantee."
+    },
+    {
+      "taskCode": "AUX-02",
+      "type": "INTERVIEW",
+      "title": "Interview — Reconstruct MyBV payment/e-Contract/IMS",
+      "objective": "No-notes (phần lab chưa chạy phải ghi prediction, không claim evidence): Why contract identity/payment state/sync/authorization? How Authority per state and retry boundary? What if Payment success nhưng contract chưa issue; IMS partial sync? Chọn 2–3 câu theo thời lượng, thu âm hoặc viết trước khi đối chiếu.",
+      "startMinute": 1235,
+      "durationMinutes": 15,
+      "deliverable": "Câu trả lời tự viết/thu âm + tự review đúng/sai/missing; L4/L5 yếu → LEARNED — NEEDS ACTIVE RECALL."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "REVIEW",
+      "title": "Synthesis/handoff — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Chốt phần research còn lại: time interval / resource; nối với Atomic reservation invariant and ownership. Ghi dự đoán để mở implementation, không mở chủ đề ngoài task.",
+      "startMinute": 1250,
+      "durationMinutes": 15,
+      "deliverable": "Research handoff note + predicted outcome + bước implementation kế tiếp."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "DEEP_DIVE",
+      "title": "Internals — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "resource / overlap / timezone / reschedule; cơ chế cần kiểm chứng: Atomic reservation invariant and ownership. Ghi predicted behavior trước lab.",
+      "startMinute": 1275,
+      "durationMinutes": 30,
+      "deliverable": "Notes có assumptions + diagram cho resource / overlap / timezone / reschedule; 1 counterexample và 2 câu hỏi cần verify."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "LAB",
+      "title": "Implement — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Chuẩn bị fixture/schema/mock và baseline; Architecture/trust/tx map + concurrent overlap test; kèm predicted/observed table và ADR “Slot unique key so với interval overlap locking”.",
+      "startMinute": 1305,
+      "durationMinutes": 30,
+      "deliverable": "Code/model increment + cách chạy + baseline evidence; deliverable gốc: Architecture/trust/tx map + concurrent overlap test; kèm predicted/observed table và ADR “Slot unique key so với interval overlap locking”."
+    },
+    {
+      "taskCode": "AUX-03",
+      "type": "REVIEW",
+      "title": "Recall phần vừa học — Reconstruct Veritas appointment/doctor allocation",
+      "objective": "Không nhìn notes: vẽ Atomic reservation invariant and ownership; nêu một boundary và điều chưa được evidence xác nhận.",
+      "startMinute": 1345,
+      "durationMinutes": 15,
+      "deliverable": "Recall note: 3 ý đúng, 1 lỗ hổng, verdict PASS hoặc NEEDS REVIEW; không chỉ đọc lại."
+    }
+  ]
+}
