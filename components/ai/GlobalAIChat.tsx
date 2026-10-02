@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Card, CardContent, Input, Button } from "@/components/ui";
+import { useEffect, useRef, useState } from "react";
+import { Card, CardContent, Input, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "./ChatTranscript";
 import { ChatModeToggle } from "./ChatModeToggle";
 import { PromptSuggestions } from "./PromptSuggestions";
-import { Send, Loader2, Plus, MessageSquare, History, X } from "lucide-react";
+import { Send, Loader2, Plus, MessageSquare, History, X, Sparkles, Wand2 } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
@@ -31,6 +31,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
     mode: "GLOBAL",
     fallbackTopics: GLOBAL_PROMPT_TOPICS,
   });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     preloadTaskLinks();
@@ -73,6 +74,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
     stream.send({ userId, mode: "GLOBAL", prompt, conversationId, renderMode: mode });
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
   }
 
   function sendPrompt(prompt: string) {
@@ -80,6 +82,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
     stream.send({ userId, mode: "GLOBAL", prompt, conversationId, renderMode: mode });
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
   }
 
   async function openConversation(id: string) {
@@ -105,16 +108,25 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
     setConversationId(null);
     setMessages([]);
     setInput("");
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
+  }
+
+  // Auto-grow the textarea up to ~5 lines.
+  function autosize(el: HTMLTextAreaElement) {
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 180)}px`;
   }
 
   const historyList = (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 p-3">
-      <Button size="sm" onClick={startNewChat} className="w-full shrink-0">
-        <Plus className="h-4 w-4" /> New chat
-      </Button>
-      <div className="min-h-0 flex-1 space-y-1 overflow-y-auto scroll-thin">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0 border-b border-border p-4">
+        <Button size="lg" onClick={startNewChat} className="w-full">
+          <Plus className="h-4 w-4" /> New chat
+        </Button>
+      </div>
+      <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto p-3 scroll-thin">
         {list.length === 0 && (
-          <p className="px-2 py-3 text-xs text-muted-foreground">
+          <p className="px-2 py-4 text-sm text-muted-foreground">
             No conversations yet — send a message to start.
           </p>
         )}
@@ -126,11 +138,11 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
               setMobileHistoryOpen(false);
             }}
             className={cn(
-              "flex w-full items-start gap-2 rounded-md px-2 py-2 text-left text-xs hover:bg-accent",
+              "flex w-full items-start gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm transition-colors hover:bg-accent",
               c.id === conversationId && "bg-accent",
             )}
           >
-            <MessageSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+            <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
             <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
           </button>
         ))}
@@ -139,9 +151,9 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   );
 
   return (
-    <div className="grid h-full gap-3 lg:grid-cols-[260px_1fr_300px]">
+    <div className="grid h-full gap-4 lg:grid-cols-[280px_minmax(0,1fr)_360px]">
       {/* Sidebar — conversation history (desktop inline) */}
-      <Card className="hidden h-full min-h-0 flex-col overflow-hidden lg:flex">
+      <Card className="hidden h-full min-h-0 flex-col overflow-hidden border-border/80 shadow-sm lg:flex">
         {historyList}
       </Card>
 
@@ -154,9 +166,9 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
             onClick={() => setMobileHistoryOpen(false)}
             className="absolute inset-0 bg-black/40"
           />
-          <Card className="absolute inset-y-0 left-0 flex w-72 flex-col overflow-hidden shadow-xl">
-            <div className="flex shrink-0 items-center justify-between border-b border-border p-2">
-              <span className="px-1 text-xs font-semibold">History</span>
+          <Card className="absolute inset-y-0 left-0 flex w-80 flex-col overflow-hidden shadow-xl">
+            <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3">
+              <span className="text-sm font-semibold">History</span>
               <Button
                 size="icon"
                 variant="ghost"
@@ -171,31 +183,14 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
         </div>
       )}
 
-      {/* Suggested questions (mobile, collapsible above chat) */}
-      <details className="overflow-hidden rounded-md border border-border bg-card lg:hidden">
-        <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent">
-          Suggested questions
-        </summary>
-        <div className="p-2">
-          <PromptSuggestions
-            topics={suggestions.topics}
-            onSelect={sendPrompt}
-            disabled={stream.loading}
-            loading={suggestions.loading}
-            error={suggestions.error}
-            source={suggestions.source}
-            onRefresh={suggestions.refresh}
-            className="border-0 shadow-none"
-            subtitle="Click any prompt to send it."
-          />
-        </div>
-      </details>
-
       {/* Chat pane */}
-      <Card className="flex h-full min-h-0 flex-col overflow-hidden">
+      <Card className="flex h-full min-h-0 flex-col overflow-hidden border-border/80 shadow-sm">
         <CardContent className="flex min-h-0 flex-1 flex-col gap-0 p-0">
-          <div className="flex shrink-0 items-center justify-between border-b border-border px-3 py-2 lg:hidden">
-            <span className="text-xs font-semibold">Global AI Chat</span>
+          {/* Mobile-only header */}
+          <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-3 lg:hidden">
+            <span className="flex items-center gap-2 text-sm font-semibold">
+              <Sparkles className="h-4 w-4 text-primary" /> Global AI Chat
+            </span>
             <Button
               size="sm"
               variant="outline"
@@ -204,37 +199,85 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
               <History className="h-4 w-4" /> History
             </Button>
           </div>
+
+          {/* Desktop header */}
+          <div className="hidden shrink-0 border-b border-border px-6 py-4 lg:block">
+            <h2 className="flex items-center gap-2.5 text-lg font-semibold leading-tight">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Sparkles className="h-5 w-5" />
+              </span>
+              Global AI Chat
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Cross-task queries. AI knows your roadmap, notes, and recent activity.
+            </p>
+          </div>
+
           <div className="min-h-0 flex-1 overflow-y-auto bg-muted/10 scroll-thin">
             {loadingHistory ? (
-              <p className="p-4 text-sm text-muted-foreground">Loading conversation…</p>
+              <p className="p-6 text-sm text-muted-foreground">Loading conversation…</p>
             ) : (
               <ChatTranscript
                 items={messages.map((m, i) => ({ id: i, role: m.role, content: m.content }))}
                 streamingText={stream.text}
                 thinking={thinking}
-                className="space-y-3 p-4"
+                className="space-y-4 p-6"
+                bubbleMaxWidthClass="max-w-[78%]"
                 emptyState={
-                  <p className="text-sm text-muted-foreground">
-                    Ask anything across your roadmap.
-                  </p>
+                  <div className="flex h-full flex-col items-center justify-center px-6 py-12 text-center">
+                    <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <Wand2 className="h-7 w-7" />
+                    </div>
+                    <h3 className="text-base font-semibold">Ask anything across your roadmap</h3>
+                    <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                      Pick a suggested question on the right, or type your own. The AI uses your schedule, notes, and open tasks as context.
+                    </p>
+                  </div>
                 }
               />
             )}
           </div>
-          <div className="flex shrink-0 items-center gap-2 border-t border-border p-3">
-            <ChatModeToggle />
-            <Input
-              placeholder="Ask anything…"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
-              }}
-              disabled={stream.loading}
-            />
-            <Button onClick={send} disabled={stream.loading || !input.trim()}>
-              {stream.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-            </Button>
+
+          {/* Composer */}
+          <div className="shrink-0 border-t border-border bg-card p-4">
+            <div className="flex items-end gap-3">
+              <ChatModeToggle />
+              <div className="flex-1">
+                <Textarea
+                  ref={textareaRef}
+                  rows={1}
+                  placeholder="Ask anything… (Enter to send, Shift+Enter for newline)"
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    autosize(e.target);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      send();
+                    }
+                  }}
+                  disabled={stream.loading}
+                  className="min-h-[44px] resize-none px-4 py-2.5 text-sm leading-relaxed"
+                />
+              </div>
+              <Button
+                size="lg"
+                onClick={send}
+                disabled={stream.loading || !input.trim()}
+                className="h-[44px] px-5"
+              >
+                {stream.loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" />
+                    <span className="ml-1.5 hidden sm:inline">Send</span>
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -249,10 +292,30 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
           error={suggestions.error}
           source={suggestions.source}
           onRefresh={suggestions.refresh}
-          className="h-full overflow-y-auto"
-          subtitle="Click any prompt to send it."
+          className="h-full"
+          subtitle="Click a prompt to send it instantly."
         />
       </div>
+
+      {/* Suggested questions (mobile, collapsible above chat) */}
+      <details className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm lg:hidden">
+        <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-muted-foreground hover:bg-accent">
+          Suggested questions
+        </summary>
+        <div className="p-3">
+          <PromptSuggestions
+            topics={suggestions.topics}
+            onSelect={sendPrompt}
+            disabled={stream.loading}
+            loading={suggestions.loading}
+            error={suggestions.error}
+            source={suggestions.source}
+            onRefresh={suggestions.refresh}
+            className="border-0 shadow-none"
+            subtitle="Click a prompt to send it."
+          />
+        </div>
+      </details>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
+import { useState, useEffect, useRef } from "react";
+import { Card, CardContent, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
 import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
 import { PromptSuggestions } from "@/components/ai/PromptSuggestions";
-import { Send, Loader2, MessageCircleQuestion, Sparkles, Plus, MessageSquare } from "lucide-react";
+import { Send, Loader2, Sparkles, MessageSquare, Plus, Wand2 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
@@ -39,6 +39,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
     taskId,
     fallbackTopics: TUTOR_PROMPT_TOPICS(taskTitle),
   });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const thinking = stream.loading && !stream.text;
 
   useEffect(() => {
@@ -71,6 +72,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
     stream.send({ userId, taskId, mode: "TUTOR", prompt, conversationId, renderMode: mode });
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
   }
 
   async function openConversation(id: string) {
@@ -96,20 +98,27 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
     setConversationId(null);
     setMessages([]);
     setInput("");
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
+  }
+
+  // Auto-grow the textarea up to ~5 lines.
+  function autosize(el: HTMLTextAreaElement) {
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 180)}px`;
   }
 
   return (
-    <div className="grid gap-3 lg:grid-cols-[260px_1fr_280px]">
+    <div className="grid h-full min-h-0 gap-4 lg:grid-cols-[280px_minmax(0,1fr)_360px]">
       {/* History sidebar */}
-      <Card className="flex h-[60vh] min-h-0 flex-col overflow-hidden lg:h-[calc(100vh-200px)]">
-        <CardHeader className="shrink-0 border-b border-border p-3">
-          <Button size="sm" onClick={startNewChat} className="w-full">
+      <Card className="flex h-full flex-col border-border/80 shadow-sm">
+        <div className="shrink-0 border-b border-border p-4">
+          <Button size="lg" onClick={startNewChat} className="w-full">
             <Plus className="h-4 w-4" /> New chat
           </Button>
-        </CardHeader>
-        <CardContent className="min-h-0 flex-1 gap-1 overflow-y-auto p-2 scroll-thin">
+        </div>
+        <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto p-3 scroll-thin">
           {list.length === 0 && (
-            <p className="px-2 py-3 text-xs text-muted-foreground">
+            <p className="px-2 py-4 text-sm text-muted-foreground">
               No saved conversations for this task yet.
             </p>
           )}
@@ -118,27 +127,35 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
               key={c.id}
               onClick={() => openConversation(c.id)}
               className={cn(
-                "flex w-full items-start gap-2 rounded-md px-2 py-2 text-left text-xs hover:bg-accent",
+                "flex w-full items-start gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm transition-colors hover:bg-accent",
                 c.id === conversationId && "bg-accent",
               )}
             >
-              <MessageSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+              <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
               <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
             </button>
           ))}
-        </CardContent>
+        </div>
       </Card>
 
       {/* Chat pane */}
-      <Card className="flex h-[60vh] min-h-0 flex-col overflow-hidden lg:h-[calc(100vh-200px)]">
-        <CardHeader className="shrink-0 border-b border-border">
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" /> AI Tutor · {taskTitle}
-          </CardTitle>
-        </CardHeader>
-        <div className="min-h-0 flex-1 overflow-y-auto p-3 scroll-thin">
+      <Card className="flex h-full min-h-0 flex-col overflow-hidden border-border/80 shadow-sm">
+        {/* Header */}
+        <div className="shrink-0 border-b border-border px-6 py-4">
+          <h2 className="flex items-center gap-2.5 text-lg font-semibold leading-tight">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Sparkles className="h-5 w-5" />
+            </span>
+            <span className="line-clamp-1 min-w-0 flex-1">AI Tutor · {taskTitle}</span>
+          </h2>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Ask anything. Answers are grounded in your task notes and the roadmap.
+          </p>
+        </div>
+
+        <div className="min-h-0 flex-1 overflow-y-auto bg-muted/10 scroll-thin">
           {loadingHistory ? (
-            <div className="rounded-md bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
+            <div className="rounded-md bg-muted/30 p-6 text-sm leading-6 text-muted-foreground">
               Loading conversation…
             </div>
           ) : (
@@ -146,53 +163,87 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
               items={messages.map((m, i) => ({ id: i, role: m.role, content: m.content }))}
               streamingText={stream.text}
               thinking={thinking}
-              className="space-y-2"
+              className="space-y-4 p-6"
+              bubbleMaxWidthClass="max-w-[78%]"
               emptyState={
-                <div className="rounded-md bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
-                  Ask anything. I'll keep them tied to your task and notes.
+                <div className="flex h-full flex-col items-center justify-center px-6 py-12 text-center">
+                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Wand2 className="h-7 w-7" />
+                  </div>
+                  <h3 className="text-base font-semibold">Ask anything about this task</h3>
+                  <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                    I'll tie every answer to your task and notes. Try one of the suggested questions on the right, or type your own.
+                  </p>
                 </div>
               }
             />
           )}
         </div>
-        <div className="shrink-0 border-t border-border p-3">
-          <div className="flex items-center gap-2">
+
+        {/* Composer */}
+        <div className="shrink-0 border-t border-border bg-card p-4">
+          <div className="flex items-end gap-3">
             <ChatModeToggle />
-            <Input
-              placeholder="Ask the tutor…"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  send(input);
-                }
-              }}
-              disabled={stream.loading}
-            />
-            <Button onClick={() => send(input)} disabled={stream.loading || !input.trim()}>
-              {stream.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            <div className="flex-1">
+              <Textarea
+                ref={textareaRef}
+                rows={1}
+                placeholder="Ask the tutor… (Enter to send, Shift+Enter for newline)"
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  autosize(e.target);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    send(input);
+                  }
+                }}
+                disabled={stream.loading}
+                className="min-h-[44px] resize-none px-4 py-2.5 text-sm leading-relaxed"
+              />
+            </div>
+            <Button
+              size="lg"
+              onClick={() => send(input)}
+              disabled={stream.loading || !input.trim()}
+              className="h-[44px] px-5"
+            >
+              {stream.loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  <Send className="h-4 w-4" />
+                  <span className="ml-1.5 hidden sm:inline">Send</span>
+                </>
+              )}
             </Button>
           </div>
         </div>
       </Card>
 
-      {/* Suggested questions by topic */}
-      <div className="space-y-3">
-        <PromptSuggestions
-          topics={suggestions.topics}
-          onSelect={(p) => send(p)}
-          disabled={stream.loading}
-          loading={suggestions.loading}
-          error={suggestions.error}
-          source={suggestions.source}
-          onRefresh={suggestions.refresh}
-          defaultOpenId={suggestions.topics[0]?.id}
-          title="Prompt ideas"
-          subtitle="Click any prompt to send it."
-        />
-        <div className="rounded-md border border-dashed border-border p-3 text-[10px] leading-relaxed text-muted-foreground">
-          Conversations auto-save per task. <span className="font-mono">{note.length}</span> chars of notes available as context.
+      {/* Suggested questions + notes hint */}
+      <div className="flex min-h-0 flex-col gap-4">
+        <div className="min-h-0 flex-1">
+          <PromptSuggestions
+            topics={suggestions.topics}
+            onSelect={(p) => send(p)}
+            disabled={stream.loading}
+            loading={suggestions.loading}
+            error={suggestions.error}
+            source={suggestions.source}
+            onRefresh={suggestions.refresh}
+            defaultOpenId={suggestions.topics[0]?.id}
+            title="Prompt ideas"
+            subtitle="Click a prompt to send it instantly."
+            className="h-full"
+          />
+        </div>
+        <div className="shrink-0 rounded-lg border border-dashed border-border bg-muted/20 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+          <p>
+            <span className="font-semibold text-foreground">{note.length}</span> chars of notes available as context. Conversations auto-save per task.
+          </p>
         </div>
       </div>
     </div>
