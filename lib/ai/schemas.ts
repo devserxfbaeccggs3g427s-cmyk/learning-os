@@ -50,19 +50,182 @@ export const QuizOptionSchema = z.object({
   text: z.string().min(1),
 });
 
-export const QuizQuestionGenerationSchema = z
+const QUESTION_TYPE_ALIASES: Record<string, (typeof QUESTION_TYPES)[number]> = {
+  MULTIPLE_ANSWER: "MULTIPLE_CHOICE",
+  MULTIPLE_SELECT: "MULTIPLE_CHOICE",
+  MULTI_SELECT: "MULTIPLE_CHOICE",
+  MULTI: "MULTIPLE_CHOICE",
+  FILL_IN_THE_BLANK: "SHORT_ANSWER",
+  FILL_BLANK: "SHORT_ANSWER",
+  FILL: "SHORT_ANSWER",
+  ESSAY: "SHORT_ANSWER",
+  OPEN_ENDED: "SHORT_ANSWER",
+  TEXT: "SHORT_ANSWER",
+  MULTIPLE_CHOICE: "MULTIPLE_CHOICE",
+  SINGLE_CHOICE: "SINGLE_CHOICE",
+  TRUE_FALSE: "TRUE_FALSE",
+  SHORT_ANSWER: "SHORT_ANSWER",
+};
+
+function normalizeOptions(raw: unknown): unknown[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((item, i) => {
+    if (typeof item === "string") {
+      const trimmed = item.trim();
+      const lower = trimmed.toLowerCase();
+      const id =
+        lower === "true" || lower === "false"
+          ? lower
+          : typeof item === "string" && item.trim().length <= 3 && /^[a-zA-Z0-9]+$/.test(item.trim())
+            ? item.trim()
+            : `opt_${i + 1}`;
+      return { id, text: trimmed };
+    }
+    if (item && typeof item === "object") {
+      const obj = item as Record<string, unknown>;
+      const text =
+        (typeof obj.text === "string" && obj.text) ||
+        (typeof obj.label === "string" && obj.label) ||
+        (typeof obj.value === "string" && obj.value) ||
+        (typeof obj.option === "string" && obj.option) ||
+        "";
+      const id =
+        (typeof obj.id === "string" && obj.id) ||
+        (typeof obj.key === "string" && obj.key) ||
+        `opt_${i + 1}`;
+      return { id, text };
+    }
+    return { id: `opt_${i + 1}`, text: String(item ?? "") };
+  });
+}
+
+function normalizeQuestion(raw: unknown): unknown {
+  if (!raw || typeof raw !== "object") return raw;
+  const q = { ...(raw as Record<string, unknown>) };
+
+  if (typeof q.questionType === "string") {
+    const upper = q.questionType.toUpperCase().replace(/[\s-]+/g, "_");
+    q.questionType = QUESTION_TYPE_ALIASES[upper] ?? q.questionType;
+  }
+
+  if (typeof q.prompt !== "string" || !q.prompt.trim()) {
+    const fallback =
+      (typeof q.question === "string" && q.question) ||
+      (typeof q.text === "string" && q.text) ||
+      (typeof q.stem === "string" && q.stem) ||
+      "";
+    if (fallback) q.prompt = fallback;
+  }
+
+  if (!Array.isArray(q.correctOptionIds)) {
+    const alt =
+      q.correctOptionIds ??
+      q.correctAnswers ??
+      q.correctAnswer ??
+      q.correct ??
+      q.answers ??
+      q.answer;
+    if (Array.isArray(alt)) q.correctOptionIds = alt;
+    else if (typeof alt === "string") q.correctOptionIds = [alt];
+    else q.correctOptionIds = [];
+  }
+
+  if (!Array.isArray(q.options) && Array.isArray(q.choices)) {
+    q.options = q.choices;
+  }
+
+  if (typeof q.explanation !== "string" || !q.explanation.trim()) {
+    const alt =
+      (typeof q.reason === "string" && q.reason) ||
+      (typeof q.rationale === "string" && q.rationale) ||
+      (typeof q.why === "string" && q.why) ||
+      (typeof q.justification === "string" && q.justification) ||
+      "";
+    if (alt) q.explanation = alt;
+  }
+
+  for (const key of ["prompt", "explanation"] as const) {
+    if (q[key] === null) q[key] = "";
+  }
+
+  if (!Array.isArray(q.tags)) {
+    q.tags = [];
+  }
+
+  if (q.questionType === "SHORT_ANSWER") {
+    delete q.options;
+  } else {
+    q.options = normalizeOptions(q.options);
+
+    const correctIds: unknown[] = Array.isArray(q.correctOptionIds) ? q.correctOptionIds : [];
+    const optIdByText = new Map<string, string>();
+    for (const o of q.options as Array<{ id: string; text: string }>) {
+      optIdByText.set(o.text.trim().toLowerCase(), o.id);
+    }
+    const seen = new Set<string>();
+    q.correctOptionIds = correctIds
+      .map((c) => {
+        if (typeof c !== "string") return null;
+        const trimmed = c.trim();
+        if (!trimmed) return null;
+        const byText = optIdByText.get(trimmed.toLowerCase());
+        if (byText) return byText;
+        if (
+          Array.isArray(q.options) &&
+          (q.options as unknown[]).some((o) => (o as { id: string }).id === trimmed)
+        ) {
+          return trimmed;
+        }
+        return trimmed;
+      })
+      .filter((v): v is string => {
+        if (typeof v !== "string") return false;
+        if (seen.has(v)) return false;
+        seen.add(v);
+        return true;
+      });
+  }
+
+  return q;
+}
+
+const RawQuizQuestionSchema = z
   .object({
     questionType: z.enum(QUESTION_TYPES).default("SINGLE_CHOICE"),
-    prompt: z.string().min(1),
-    options: z.array(QuizOptionSchema).min(2).max(8),
-    correctOptionIds: z.array(z.string().min(1)),
-    explanation: z.string().min(1),
+    prompt: z.string().min(1).optional(),
+    options: z.array(QuizOptionSchema).min(2).max(8).optional(),
+    correctOptionIds: z.array(z.string().min(1)).optional(),
+    explanation: z.string().optional(),
     difficulty: z.enum(QUIZ_DIFFICULTIES).default("INTERMEDIATE"),
     tags: z.array(z.string()).default([]),
     source: z.string().optional(),
   })
+  .transform((q) => ({
+    ...q,
+    options: q.options ?? [],
+    correctOptionIds: q.correctOptionIds ?? [],
+    explanation: q.explanation ?? "",
+  }))
   .superRefine((q, ctx) => {
-    const ids = new Set(q.options.map((o) => o.id));
+    if (!q.prompt || q.prompt.length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "prompt is required",
+        path: ["prompt"],
+      });
+      return;
+    }
+    if (q.questionType !== "SHORT_ANSWER") {
+      if (!q.options || q.options.length < 2) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `${q.questionType} must have at least 2 options`,
+          path: ["options"],
+        });
+        return;
+      }
+    }
+    const ids = new Set((q.options ?? []).map((o) => o.id));
     for (const id of q.correctOptionIds) {
       if (!ids.has(id)) {
         ctx.addIssue({
@@ -97,9 +260,29 @@ export const QuizQuestionGenerationSchema = z
     }
   });
 
-export const QuizGenerationSchema = z.object({
-  questions: z.array(QuizQuestionGenerationSchema).min(1).max(50),
-});
+export const QuizQuestionGenerationSchema = z.preprocess(
+  normalizeQuestion,
+  RawQuizQuestionSchema,
+);
+
+export const QuizGenerationSchema = z.preprocess(
+  (raw) => {
+    if (!raw || typeof raw !== "object") return raw;
+    const obj = { ...(raw as Record<string, unknown>) };
+    if (!Array.isArray(obj.questions)) {
+      const alt =
+        (Array.isArray(obj.items) && obj.items) ||
+        (Array.isArray(obj.quizQuestions) && obj.quizQuestions) ||
+        (Array.isArray(obj.data) && obj.data) ||
+        null;
+      if (alt) obj.questions = alt;
+    }
+    return obj;
+  },
+  z.object({
+    questions: z.array(QuizQuestionGenerationSchema).min(1).max(50),
+  }),
+);
 
 export type QuizGeneration = z.infer<typeof QuizGenerationSchema>;
 export type QuizQuestionGeneration = z.infer<typeof QuizQuestionGenerationSchema>;

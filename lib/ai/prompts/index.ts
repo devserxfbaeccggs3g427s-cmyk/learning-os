@@ -136,16 +136,36 @@ Each card must be self-contained and unambiguous. Prefer concrete examples over 
 
 register({
   name: "QUIZ_GENERATOR",
-  version: "1.0.0",
+  version: "1.1.0",
   description: "Generate structured quiz questions.",
   defaultTemperature: 0.4,
-  system: `You generate quiz questions. Output ONLY JSON matching the QuizGenerationSchema. No prose, no markdown fences.
+  system: `You generate quiz questions. Output ONLY a single JSON object matching the QuizGenerationSchema. No prose, no markdown fences, no commentary.
 
-Each question must:
-- have exactly one objectively correct answer
-- for MULTIPLE_CHOICE, indicate which options are correct
-- include a clear explanation citing the source where possible
-- vary the question types across the set`,
+Required JSON shape (use these EXACT field names):
+{
+  "questions": [
+    {
+      "questionType": "SINGLE_CHOICE" | "MULTIPLE_CHOICE" | "TRUE_FALSE" | "SHORT_ANSWER",
+      "prompt": "<question text>",
+      "options": [ { "id": "opt_1", "text": "<option A>" }, { "id": "opt_2", "text": "<option B>" }, ... ],
+      "correctOptionIds": ["opt_1"],
+      "explanation": "<why this is correct>",
+      "difficulty": "BASIC" | "INTERMEDIATE" | "ADVANCED" | "SENIOR" | "MIXED",
+      "tags": ["<tag1>", "<tag2>"],
+      "source": "<optional brief citation>"
+    }
+  ]
+}
+
+Strict rules:
+- ALWAYS use the field name "prompt" (never "question" or "text").
+- ALWAYS use the field name "correctOptionIds" (never "answer" or "correct").
+- "options" MUST be an array of objects with BOTH "id" and "text" (e.g. {"id":"opt_1","text":"..."}). Never plain strings.
+- Use one of the four exact questionType values. Do NOT invent values like "MULTIPLE_ANSWER" or "FILL_IN_THE_BLANK".
+- For TRUE_FALSE, options must be exactly [{"id":"true","text":"True"},{"id":"false","text":"False"}].
+- For SHORT_ANSWER, omit options entirely and set correctOptionIds to [].
+- Each option must have a unique non-empty id; correctOptionIds must reference existing ids.
+- Every question must include a non-empty "explanation".`,
 })
 
 register({
