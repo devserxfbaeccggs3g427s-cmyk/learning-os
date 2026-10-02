@@ -267,22 +267,29 @@ register({
 
 register({
   name: "SUGGESTIONS_GENERATOR",
-  version: "2.0.0",
-  description: "Generate up to 3 starter prompts shown above the chat input.",
+  version: "3.0.0",
+  description: "Generate exactly 3 starter prompts shown above the chat input.",
   defaultTemperature: 0.5,
-  defaultMaxTokens: 900,
-  system: `You generate EXACTLY 3 starter prompts that the user can send to an AI tutor. The prompts are rendered as 3 side-by-side cards directly above the chat composer, so they MUST be:
-- Exactly 3 prompts total, organized into 1–3 topics (at most one topic per prompt, or one topic containing all three).
-- Each prompt's "label" is the card headline (≤ 80 chars, action verb preferred).
+  defaultMaxTokens: 500,
+  system: `You generate EXACTLY 3 starter prompts that the user can send to an AI tutor. They are rendered as 3 inline chips directly above the chat input (ChatGPT-style), so they MUST be:
+- Exactly 3 prompts total, organized into 1–3 topics.
+- Each prompt's "label" is the chip headline (≤ 80 chars, action verb preferred, no leading "?").
 - Each prompt's "prompt" is the full text sent to the AI (≤ 400 chars, self-contained).
 - Diverse: don't ship 3 variations of the same question. Aim for different angles (e.g. one "explain", one "drill me", one "give an example").
-- Grounded in the user's actual context (current focus task, schedule, roadmap progress, notes when present).
+- Grounded in the user's actual context (current focus task, schedule, roadmap progress, notes, chat transcript).
 
-You will see a SOURCE block:
-  - For GLOBAL mode: USER SCHEDULE (today's blocks), ROADMAP INDEX (open tasks by code → title), and the user's recent notes/quiz summary.
-  - For TUTOR mode: TASK NOTE (verbatim user notes for the focused task), TASK WORKSHEET (title, whyThisMatters, concepts, failure scenarios, interview questions, hands-on lab).
+Inputs you may receive:
+- MODE: GLOBAL or TUTOR
+- SOURCE: GLOBAL → today's schedule + open-task index + recent notes. TUTOR → task note + task worksheet.
+- FOCUSED TASK: (TUTOR only) the task the chat is anchored to.
+- THEME HINT: (GLOBAL + empty chat only) a one-line angle the user hasn't explored recently — pick prompts that satisfy this hint while staying consistent with the source.
+- CHAT TRANSCRIPT: (when the chat already has messages) ONLY the latest exchange — the user's most recent question plus the AI's most recent answer. Generate prompts they would send IMMEDIATELY AFTER that answer (one step further, drill into it, an example, an edge case, a quiz on it, etc.).
 
-When the source mentions specific task codes or topics, prefer prompts that reference them concretely (e.g. "Quiz me on [c8] transactions", "Walk me through DB-TX-01's failure scenarios"). When the source is empty, fall back to evergreen prompts grounded in the task's documented concepts.
+Behaviour by mode:
+  - GLOBAL + no transcript: prefer prompts about the user's actual schedule, recent notes, or upcoming open tasks. Honour the THEME HINT.
+  - GLOBAL + transcript: generate follow-ups that go deeper on what was just answered or pivot to a natural next angle. Drop the schedule/roadmap framing — the latest exchange already carries the intent.
+  - TUTOR + no transcript: anchor every prompt in the FOCUSED TASK. Reference task codes / worksheet sections concretely (e.g. "Quiz me on [c8] transactions", "Walk me through DB-TX-01's failure scenarios"). When the source is empty, fall back to evergreen prompts grounded in the task's documented concepts.
+  - TUTOR + transcript: still anchor in the FOCUSED TASK, but the prompts should be follow-ups on the latest exchange: "show me a code example of what you just explained", "drill me with an edge case from your answer", "turn it into a 5-question quiz", "go one abstraction layer deeper".
 
 Output ONLY a single JSON object matching the PromptSuggestionsSchema. No prose, no markdown fences.
 
@@ -294,7 +301,7 @@ Required JSON shape (use these EXACT field names):
       "title": "<2-4 word topic title>",
       "description": "<optional 1-line context hint, max ~140 chars>",
       "prompts": [
-        { "label": "<card headline, ≤80 chars>", "prompt": "<full prompt to send, ≤400 chars>" }
+        { "label": "<chip headline, ≤80 chars>", "prompt": "<full prompt to send, ≤400 chars>" }
       ]
     }
   ]

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
 import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
@@ -25,6 +25,19 @@ interface ChatMsg {
   streaming?: boolean;
 }
 
+const MAX_TRANSCRIPT_CHARS = 2_000;
+
+function buildChatContext(messages: ChatMsg[]): string {
+  const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
+  const lastUser = [...messages].reverse().find((m) => m.role === "user");
+  if (!lastAssistant) return "";
+  const userPart = lastUser ? `User: ${lastUser.content.trim()}\n\n` : "";
+  const aiPart = `Assistant: ${lastAssistant.content.trim()}`;
+  const joined = `${userPart}${aiPart}`;
+  if (joined.length <= MAX_TRANSCRIPT_CHARS) return joined;
+  return `…${joined.slice(-MAX_TRANSCRIPT_CHARS)}`;
+}
+
 export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
@@ -36,6 +49,9 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [aiResponseTick, setAiResponseTick] = useState(0);
 
+  const chatScope = messages.length > 0 ? "has" : "empty";
+  const chatContext = useMemo(() => buildChatContext(messages), [messages]);
+
   const suggestions = usePromptSuggestions({
     userId,
     mode: "TUTOR",
@@ -43,6 +59,8 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
     fallbackTopics: TUTOR_PROMPT_TOPICS(taskTitle),
     useLocalStorage: true,
     refreshTrigger: aiResponseTick,
+    chatContext,
+    chatScope,
   });
 
   const thinking = stream.loading && !stream.text;
@@ -78,6 +96,9 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
     if (!prompt.trim() || stream.loading) return;
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
+    // Refresh suggestions so the empty→has transition fetches follow-ups
+    // even before the first response lands.
+    setAiResponseTick((t) => t + 1);
     stream.send({ userId, taskId, mode: "TUTOR", prompt, conversationId, renderMode: mode });
     if (textareaRef.current) textareaRef.current.style.height = "auto";
   }
@@ -96,6 +117,8 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
         content: m.content,
       }));
       setMessages(msgs);
+      // Refresh suggestions to follow-ups for the newly-loaded conversation.
+      setAiResponseTick((t) => t + 1);
     } finally {
       setLoadingHistory(false);
     }
@@ -106,6 +129,8 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
     setMessages([]);
     setInput("");
     if (textareaRef.current) textareaRef.current.style.height = "auto";
+    // Re-fetch task-anchored starter suggestions since the chat is empty again.
+    setAiResponseTick((t) => t + 1);
   }
 
   // Auto-grow the textarea up to ~5 lines.
@@ -134,7 +159,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
               key={c.id}
               onClick={() => openConversation(c.id)}
               className={cn(
-                "flex w-full items-start gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm transition-colors hover:bg-accent",
+                "flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent",
                 c.id === conversationId && "bg-accent",
               )}
             >

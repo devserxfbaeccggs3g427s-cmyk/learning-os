@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { PromptTopic } from "@/components/ai/ChatSuggestions";
 
 export type SuggestionSource = "fallback" | "cache" | "fresh";
+export type ChatScope = "empty" | "has";
 
 export interface UsePromptSuggestionsParams {
   userId: string;
@@ -17,6 +18,14 @@ export interface UsePromptSuggestionsParams {
    * AI response. Pass `stream.done` or a counter that increments on `done`.
    */
   refreshTrigger?: number | string;
+  /**
+   * Snapshot of the conversation transcript. When non-empty, suggestions are
+   * follow-ups grounded in this transcript. When undefined, behaviour is the
+   * legacy "day-cached generic" mode.
+   */
+  chatContext?: string;
+  /** Hint for which kind of suggestions to generate. */
+  chatScope?: ChatScope;
   /** When true, no fetch happens. Caller still gets fallbackTopics. */
   disabled?: boolean;
 }
@@ -29,7 +38,7 @@ export interface UsePromptSuggestionsResult {
   refresh: () => void;
 }
 
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const PREFIX = "ai-suggestions";
 
 /** YYYY-MM-DD in local time — rotates the cache daily. */
@@ -41,9 +50,16 @@ function todayKey(): string {
   return `${y}-${m}-${day}`;
 }
 
-function cacheKey(userId: string, mode: string, taskId: string | null | undefined, day: string, useLocal: boolean): string {
+function cacheKey(
+  userId: string,
+  mode: string,
+  taskId: string | null | undefined,
+  day: string,
+  useLocal: boolean,
+  scope: ChatScope,
+): string {
   const store = useLocal ? "local" : "session";
-  return `${PREFIX}:${CACHE_VERSION}:${store}:${userId}:${mode}:${taskId ?? "_global"}:${day}`;
+  return `${PREFIX}:${CACHE_VERSION}:${store}:${userId}:${mode}:${taskId ?? "_global"}:${scope}:${day}`;
 }
 
 interface CachedEntry {
@@ -91,19 +107,37 @@ function writeCache(key: string, topics: PromptTopic[], useLocal: boolean): void
  *
  *  1. Show `fallbackTopics` immediately so the UI never looks empty.
  *  2. Hit storage (local or session) for today's cached AI suggestions → swap in.
+ *     Caching only applies when `chatScope === "empty"`; when the chat has
+ *     content, every refresh is fresh (follow-ups need to reflect the latest
+ *     transcript, not yesterday's chat).
  *  3. Fire-and-forget fetch to `/api/ai/suggestions` → on success, cache + swap.
  *  4. `refresh()` (or `refreshTrigger` change) bypasses the cache and re-fetches.
- *  5. For localStorage mode, suggestions persist across page loads and tabs.
+ *  5. When `chatContext` changes to a non-empty value, a debounced refresh
+ *     fires so follow-ups stay in sync with the running conversation.
+ *  6. For localStorage mode, "empty" suggestions persist across page loads and tabs.
  */
 export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePromptSuggestionsResult {
-  const { userId, mode, taskId, fallbackTopics, useLocalStorage = false, refreshTrigger, disabled } = params;
+  const {
+    userId,
+    mode,
+    taskId,
+    fallbackTopics,
+    useLocalStorage = false,
+    refreshTrigger,
+    chatContext,
+    chatScope = "empty",
+    disabled,
+  } = params;
   const [topics, setTopics] = useState<PromptTopic[]>(fallbackTopics);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [source, setSource] = useState<SuggestionSource>("fallback");
 
-  const key = cacheKey(userId, mode, taskId, todayKey(), useLocalStorage);
+  const key = cacheKey(userId, mode, taskId, todayKey(), useLocalStorage, chatScope);
   const abortRef = useRef<AbortController | null>(null);
+  // Track last non-empty chatContext we fetched for, so transient string churn
+  // (e.g. typing) doesn't spam the network.
+  const lastChatCtxRef = useRef<string | null>(null);
 
   const fetchFresh = useCallback(
     async (bypassCache: boolean) => {
@@ -112,7 +146,8 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
       const ctrl = new AbortController();
       abortRef.current = ctrl;
 
-      if (!bypassCache) {
+      const useCache = chatScope === "empty";
+      if (!bypassCache && useCache) {
         const cached = readCache(key, useLocalStorage);
         if (cached && cached.length > 0) {
           setTopics(cached);
@@ -128,7 +163,13 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
         const r = await fetch("/api/ai/suggestions", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ userId, mode, taskId: taskId ?? null }),
+          body: JSON.stringify({
+            userId,
+            mode,
+            taskId: taskId ?? null,
+            chatContext: chatScope === "has" ? chatContext ?? "" : undefined,
+            chatScope,
+          }),
           signal: ctrl.signal,
         });
         if (!r.ok) {
@@ -145,7 +186,7 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
         if (ctrl.signal.aborted) return;
         setTopics(j.topics);
         setSource("fresh");
-        writeCache(key, j.topics, useLocalStorage);
+        if (useCache) writeCache(key, j.topics, useLocalStorage);
       } catch (err) {
         if (ctrl.signal.aborted) return;
         const msg = err instanceof Error ? err.message : "Failed to load suggestions";
@@ -155,10 +196,10 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
         if (!ctrl.signal.aborted) setLoading(false);
       }
     },
-    [userId, mode, taskId, disabled, key, useLocalStorage],
+    [userId, mode, taskId, disabled, key, useLocalStorage, chatContext, chatScope],
   );
 
-  // Initial load + re-load when scope key changes.
+  // Initial load + re-load when scope key changes (user, mode, task, scope).
   useEffect(() => {
     fetchFresh(false);
     return () => {
@@ -167,12 +208,27 @@ export function usePromptSuggestions(params: UsePromptSuggestionsParams): UsePro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchFresh]);
 
-  // External refresh signal (e.g. after each AI response).
+  // External refresh signal (e.g. after each AI response, or after sending
+  // a user message). Always bypasses the cache.
   useEffect(() => {
     if (refreshTrigger === undefined) return;
     fetchFresh(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshTrigger]);
+
+  // Follow the running chat — when `chatContext` changes to a non-empty value,
+  // refresh suggestions with a short debounce so we don't fire on every
+  // keystroke if the caller is recomputing it eagerly.
+  useEffect(() => {
+    if (!chatContext) return;
+    if (lastChatCtxRef.current === chatContext) return;
+    lastChatCtxRef.current = chatContext;
+    const t = setTimeout(() => {
+      fetchFresh(true);
+    }, 350);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatContext]);
 
   const refresh = useCallback(() => {
     fetchFresh(true);
