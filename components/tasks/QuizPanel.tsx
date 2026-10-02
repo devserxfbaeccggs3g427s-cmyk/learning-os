@@ -1,7 +1,21 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from "@/components/ui";
-import { ListChecks, Plus, Loader2, ChevronLeft, ChevronRight, Check, X, AlertCircle } from "lucide-react";
+import {
+  ListChecks,
+  Plus,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  X,
+  AlertCircle,
+  CheckSquare,
+  Square,
+  Circle,
+  CheckCircle2,
+  SkipForward,
+} from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
 interface QuizPanelProps {
@@ -257,19 +271,23 @@ function QuizRunner({ quizId, onBack }: { quizId: string; onBack: () => void }) 
     setPicked([id]);
   }
 
+  const isMulti = q.questionType === "MULTIPLE_CHOICE";
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-base">
-          Question {index + 1} / {questions.length}
-          {q.questionType && (
-            <span className="ml-2 text-[10px] uppercase tracking-wide text-muted-foreground">{q.questionType.replace("_", " ")}</span>
-          )}
+        <CardTitle className="flex items-center gap-2 text-base">
+          <span>Question {index + 1} / {questions.length}</span>
+          {q.questionType && <TypeBadge type={q.questionType} />}
         </CardTitle>
         <Button variant="outline" size="sm" onClick={onBack}><ChevronLeft className="h-3 w-3" /> Back</Button>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm font-medium leading-6">{q.prompt}</p>
+
+        {!isMalformed && !isShortAnswer && (
+          <TypeHint type={q.questionType} />
+        )}
 
         {isMalformed && (
           <div className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-amber-900 dark:text-amber-200">
@@ -314,15 +332,27 @@ function QuizRunner({ quizId, onBack }: { quizId: string; onBack: () => void }) 
                     type="button"
                     disabled={submitted}
                     onClick={() => togglePick(o.id)}
+                    aria-pressed={selected}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-md border px-3 py-2 text-left text-sm transition-colors",
+                      "flex w-full items-center gap-3 rounded-md border px-3 py-3 text-left text-sm transition-colors",
                       selected ? "border-primary bg-primary/5" : "border-border hover:bg-accent",
                       showCorrect && "border-emerald-500 bg-emerald-500/10",
                       showWrong && "border-red-500 bg-red-500/10",
                       !o.text?.trim() && "italic text-muted-foreground",
                     )}
                   >
-                    <span>{o.text?.trim() || "(empty option)"}</span>
+                    {isMulti ? (
+                      selected ? (
+                        <CheckSquare className="h-4 w-4 shrink-0 text-primary" />
+                      ) : (
+                        <Square className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      )
+                    ) : selected ? (
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
+                    ) : (
+                      <Circle className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    )}
+                    <span className="flex-1">{o.text?.trim() || "(empty option)"}</span>
                     {showCorrect && <Check className="h-4 w-4 text-emerald-600" />}
                     {showWrong && <X className="h-4 w-4 text-red-600" />}
                   </button>
@@ -337,20 +367,82 @@ function QuizRunner({ quizId, onBack }: { quizId: string; onBack: () => void }) 
             {q.explanation}
           </div>
         )}
-        <div className="flex justify-end gap-2">
-          {!submitted && (
-            <Button onClick={submit} disabled={!canSubmit || isMalformed}>
-              {submitting ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null}
-              Submit
-            </Button>
-          )}
-          {submitted && (
-            <Button onClick={next}>
-              {index === questions.length - 1 ? "Finish" : "Next"} <ChevronRight className="h-4 w-4" />
-            </Button>
-          )}
+        <div className="flex justify-between gap-2">
+          <div>
+            {!submitted && isMalformed && (
+              <Button variant="outline" onClick={next}>
+                <SkipForward className="mr-1 h-4 w-4" /> Skip
+              </Button>
+            )}
+          </div>
+          <div className="flex justify-end gap-2">
+            {!submitted && (
+              <Button onClick={submit} disabled={!canSubmit || isMalformed}>
+                {submitting ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null}
+                Submit
+              </Button>
+            )}
+            {submitted && (
+              <Button onClick={next}>
+                {index === questions.length - 1 ? "Finish" : "Next"} <ChevronRight className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+function TypeBadge({ type }: { type: string }) {
+  const meta: Record<string, { label: string; className: string }> = {
+    SINGLE_CHOICE: {
+      label: "Single choice",
+      className: "border-blue-500/40 bg-blue-500/10 text-blue-700 dark:text-blue-300",
+    },
+    MULTIPLE_CHOICE: {
+      label: "Multiple choice",
+      className: "border-purple-500/40 bg-purple-500/10 text-purple-700 dark:text-purple-300",
+    },
+    TRUE_FALSE: {
+      label: "True / False",
+      className: "border-teal-500/40 bg-teal-500/10 text-teal-700 dark:text-teal-300",
+    },
+    SHORT_ANSWER: {
+      label: "Short answer",
+      className: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+    },
+  };
+  const m = meta[type] ?? { label: type.replace(/_/g, " "), className: "border-border bg-secondary text-secondary-foreground" };
+  return (
+    <Badge className={cn("text-[10px] uppercase tracking-wide", m.className)}>{m.label}</Badge>
+  );
+}
+
+function TypeHint({ type }: { type: string }) {
+  const hints: Record<string, { icon: React.ReactNode; text: string; className: string }> = {
+    SINGLE_CHOICE: {
+      icon: <Circle className="h-3.5 w-3.5" />,
+      text: "Chọn 1 đáp án đúng nhất.",
+      className: "border-blue-500/30 bg-blue-500/5 text-blue-700 dark:text-blue-300",
+    },
+    MULTIPLE_CHOICE: {
+      icon: <CheckSquare className="h-3.5 w-3.5" />,
+      text: "Chọn TẤT CẢ đáp án đúng — có thể chọn nhiều.",
+      className: "border-purple-500/40 bg-purple-500/10 font-medium text-purple-700 dark:text-purple-300",
+    },
+    TRUE_FALSE: {
+      icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+      text: "Chọn Đúng hoặc Sai.",
+      className: "border-teal-500/30 bg-teal-500/5 text-teal-700 dark:text-teal-300",
+    },
+  };
+  const h = hints[type];
+  if (!h) return null;
+  return (
+    <div className={cn("flex items-center gap-2 rounded-md border px-3 py-2 text-xs", h.className)}>
+      {h.icon}
+      <span>{h.text}</span>
+    </div>
   );
 }
