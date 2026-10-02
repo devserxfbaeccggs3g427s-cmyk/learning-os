@@ -2,19 +2,25 @@
  * AI Quiz generator.
  *
  * Mirrors the flashcard generator but persists into Quiz/Question tables.
+ *
+ * Source-aware: instead of a flat task excerpt, builds a full roadmap-aware
+ * context block (ROADMAP CONTEXT + ROADMAP TREE + PREREQUISITES + DEPENDENTS
+ * + TASK NOTE) so the generated questions stay on-topic for the focused
+ * task. When the user has no notes, falls back to the assembled context
+ * rather than emitting an empty prompt that drifts off-topic.
  */
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { quizzes, quizQuestions, taskNotes, tasks, aiArtifactRecords } from "@/lib/db/schema";
+import { quizzes, quizQuestions, aiArtifactRecords } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
 import { resolveAIConfig, getDefaultUser } from "@/lib/ai/service";
 import { getProvider } from "@/lib/ai/registry";
 import { getPrompt, renderUser } from "@/lib/ai/prompts";
 import { QuizGenerationSchema, type QuizGeneration } from "@/lib/ai/schemas";
 import { AI_GENERATION } from "@/config/domain";
-import { clamp } from "@/lib/ai/context";
+import { buildTaskContext, clamp } from "@/lib/ai/context";
+import { buildLanguageDirective, getDefaultLanguage } from "@/lib/ai/language";
 
 const Body = z.object({
   taskId: z.string(),
@@ -39,38 +45,51 @@ export async function POST(req: Request) {
   }
   const provider = getProvider(cfg.provider, { apiKey: cfg.apiKey, baseUrl: cfg.baseUrl });
 
-  const taskRow = (await db.select().from(tasks).where(eq(tasks.id, parsed.data.taskId)).limit(1))[0];
-  if (!taskRow) return NextResponse.json({ error: "Task not found" }, { status: 404 });
-  const noteRow = (await db.select().from(taskNotes).where(eq(taskNotes.taskId, parsed.data.taskId)).limit(1))[0];
+  // Build the source-aware context. We always fetch task + roadmap data so
+  // the AI knows the topic even when notes are empty (the previous behavior
+  // was: notes empty → "(no source provided)" → generic, off-topic quiz).
+  const { taskRow, noteRow, contextMd } = await buildTaskContext({
+    userId: user.id,
+    taskId: parsed.data.taskId,
+    budgetChars: AI_GENERATION.contextBudget.notesChars,
+  });
+  if (!taskRow) {
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
 
   let source = "";
   if (parsed.data.source === "SELECTED_CONTENT" && parsed.data.selectedContent) {
     source = parsed.data.selectedContent;
   } else if (parsed.data.source === "TaskContext") {
-    source = [
-      `Task: ${taskRow.code ?? ""} ${taskRow.title}`,
-      taskRow.description ?? "",
-      taskRow.whyThisMatters ?? "",
-    ].join("\n");
+    source = contextMd;
   } else if (parsed.data.source === "NOTE_ONLY" || parsed.data.source === "NOTES_AND_AI") {
-    source = noteRow?.content ?? "";
+    // Prefer the user's notes; fall back to the assembled task+roadmap
+    // context when notes are empty so the AI still stays on-topic.
+    source = noteRow?.content?.trim() ? noteRow.content : contextMd;
   }
   source = clamp(source, AI_GENERATION.contextBudget.notesChars);
 
   const sysPrompt = getPrompt("QUIZ_GENERATOR");
+  // Quiz prose fields (prompt, options[].text, explanation) must respect
+  // the user's configured output language. We inject the directive into the
+  // user message (not the system prompt) so it doesn't conflict with the
+  // strict "Output ONLY JSON" contract in QUIZ_GENERATOR.
+  const userLang = await getDefaultLanguage(user.id);
+  const langDirective = buildLanguageDirective(userLang);
   const messages = [
     { role: "system" as const, content: sysPrompt.system },
     {
       role: "user" as const,
-      content: renderUser(
-        `Generate exactly {{count}} quiz questions.\nDifficulty: {{difficulty}}.\nFocus: {{focus}}.\n\nSource:\n{{source}}`,
-        {
-          count: String(parsed.data.count),
-          difficulty: parsed.data.difficulty,
-          focus: parsed.data.focus,
-          source: source || "(no source provided)",
-        },
-      ),
+      content:
+        renderUser(
+          `Generate exactly {{count}} quiz questions.\nDifficulty: {{difficulty}}.\nFocus: {{focus}}.\n\nSource:\n{{source}}`,
+          {
+            count: String(parsed.data.count),
+            difficulty: parsed.data.difficulty,
+            focus: parsed.data.focus,
+            source: source || "(no source provided)",
+          },
+        ) + langDirective,
     },
   ];
 

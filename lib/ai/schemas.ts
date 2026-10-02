@@ -25,18 +25,144 @@ export const FlashcardBackSchema = z.object({
   code: z.string().optional(),
 });
 
-export const FlashcardGenerationCardSchema = z.object({
-  cardType: z.enum(["BASIC", "QA", "SCENARIO", "CLOZE"]).default("BASIC"),
-  front: FlashcardFrontSchema,
-  back: FlashcardBackSchema,
-  explanation: z.string().optional(),
-  difficulty: z.enum(FLASHCARD_DIFFICULTIES).default("MEDIUM"),
-  tags: z.array(z.string()).default([]),
-});
+const FLASHCARD_CARD_TYPE_ALIASES: Record<string, "BASIC" | "QA" | "SCENARIO" | "CLOZE"> = {
+  BASIC: "BASIC",
+  QA: "QA",
+  Q_A: "QA",
+  QUESTION_ANSWER: "QA",
+  Q: "QA",
+  SCENARIO: "SCENARIO",
+  CASE: "SCENARIO",
+  SITUATION: "SCENARIO",
+  CLOZE: "CLOZE",
+  FILL: "CLOZE",
+  FILL_IN_THE_BLANK: "CLOZE",
+  FILL_BLANK: "CLOZE",
+};
 
-export const FlashcardGenerationSchema = z.object({
-  cards: z.array(FlashcardGenerationCardSchema).min(1).max(50),
-});
+const FLASHCARD_DIFFICULTY_ALIASES: Record<string, (typeof FLASHCARD_DIFFICULTIES)[number]> = {
+  EASY: "EASY",
+  SIMPLE: "EASY",
+  BEGINNER: "EASY",
+  BASIC: "EASY",
+  MEDIUM: "MEDIUM",
+  INTERMEDIATE: "MEDIUM",
+  NORMAL: "MEDIUM",
+  MODERATE: "MEDIUM",
+  HARD: "HARD",
+  DIFFICULT: "HARD",
+  ADVANCED: "HARD",
+  SENIOR: "HARD",
+};
+
+/**
+ * Normalize a single card from the model's output. Many models wrap or
+ * rename them; coerce everything into the canonical shape so callers never
+ * see a `parse failure` for what is essentially a successful generation.
+ */
+function normalizeFlashcard(raw: unknown): unknown {
+  if (!raw || typeof raw !== "object") return raw;
+  const c = { ...(raw as Record<string, unknown>) };
+
+  // cardType aliases
+  if (typeof c.cardType === "string") {
+    const upper = c.cardType.toUpperCase().replace(/[\s-]+/g, "_");
+    c.cardType = FLASHCARD_CARD_TYPE_ALIASES[upper] ?? c.cardType;
+  }
+
+  // front: accept {text} | string | {value} | {front}
+  if (c.front && typeof c.front === "object") {
+    const f = { ...(c.front as Record<string, unknown>) };
+    if (typeof f.text !== "string" || !f.text.trim()) {
+      f.text =
+        (typeof f.value === "string" && f.value) ||
+        (typeof f.question === "string" && f.question) ||
+        (typeof f.prompt === "string" && f.prompt) ||
+        (typeof f.q === "string" && f.q) ||
+        "";
+    }
+    c.front = f;
+  } else if (typeof c.front === "string") {
+    c.front = { text: c.front };
+  } else if (typeof c.question === "string") {
+    c.front = { text: c.question };
+  } else if (typeof c.q === "string") {
+    c.front = { text: c.q };
+  }
+
+  // back: accept {text} | string | {value} | {answer}
+  if (c.back && typeof c.back === "object") {
+    const b = { ...(c.back as Record<string, unknown>) };
+    if (typeof b.text !== "string" || !b.text.trim()) {
+      b.text =
+        (typeof b.value === "string" && b.value) ||
+        (typeof b.answer === "string" && b.answer) ||
+        (typeof b.a === "string" && b.a) ||
+        (typeof b.explanation === "string" && b.explanation) ||
+        "";
+    }
+    c.back = b;
+  } else if (typeof c.back === "string") {
+    c.back = { text: c.back };
+  } else if (typeof c.answer === "string") {
+    c.back = { text: c.answer };
+  } else if (typeof c.a === "string") {
+    c.back = { text: c.a };
+  }
+
+  // difficulty aliases
+  if (typeof c.difficulty === "string") {
+    const upper = c.difficulty.toUpperCase().replace(/[\s-]+/g, "_");
+    c.difficulty = FLASHCARD_DIFFICULTY_ALIASES[upper] ?? c.difficulty;
+  }
+
+  if (typeof c.explanation !== "string" || !c.explanation.trim()) {
+    const e =
+      (typeof c.note === "string" && c.note) ||
+      (typeof c.notes === "string" && c.notes) ||
+      (typeof c.rationale === "string" && c.rationale) ||
+      "";
+    if (e) c.explanation = e;
+  }
+
+  if (!Array.isArray(c.tags)) c.tags = [];
+  return c;
+}
+
+export const FlashcardGenerationCardSchema = z.preprocess(
+  normalizeFlashcard,
+  z.object({
+    cardType: z.enum(["BASIC", "QA", "SCENARIO", "CLOZE"]).default("BASIC"),
+    front: FlashcardFrontSchema,
+    back: FlashcardBackSchema,
+    explanation: z.string().optional(),
+    difficulty: z.enum(FLASHCARD_DIFFICULTIES).default("MEDIUM"),
+    tags: z.array(z.string()).default([]),
+  }),
+);
+
+export const FlashcardGenerationSchema = z.preprocess(
+  (raw) => {
+    // Accept a bare array as the deck.
+    if (Array.isArray(raw)) return { cards: raw };
+    if (!raw || typeof raw !== "object") return raw;
+    const obj = { ...(raw as Record<string, unknown>) };
+    if (!Array.isArray(obj.cards)) {
+      const alt =
+        (Array.isArray(obj.flashcards) && obj.flashcards) ||
+        (Array.isArray(obj.deck) && obj.deck) ||
+        (Array.isArray(obj.decks) && obj.decks) ||
+        (Array.isArray(obj.items) && obj.items) ||
+        (Array.isArray(obj.data) && obj.data) ||
+        null;
+      if (alt) obj.cards = alt;
+    }
+    return obj;
+  },
+  z.object({
+    cards: z.array(FlashcardGenerationCardSchema).min(1).max(50),
+  }),
+);
 
 export type FlashcardGeneration = z.infer<typeof FlashcardGenerationSchema>;
 export type FlashcardGenerationCard = z.infer<typeof FlashcardGenerationCardSchema>;

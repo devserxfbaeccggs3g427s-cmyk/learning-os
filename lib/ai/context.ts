@@ -6,10 +6,14 @@
  * section clearly tagged so the model can keep TASK NOTE vs AI GENERAL
  * KNOWLEDGE separate.
  */
+import { eq, inArray } from "drizzle-orm";
 import type { TaskRow } from "@/lib/db/schema/tasks";
 import type { TaskNoteRow } from "@/lib/db/schema/notes";
+import { db } from "@/lib/db/client";
+import { tasks, taskNotes, taskDependencies, modules, tracks } from "@/lib/db/schema";
 import { getTodayView } from "@/lib/db/queries/schedule";
 import { listTaskCodeIndex } from "@/lib/db/queries/tasks";
+import { listRoadmaps, getRoadmapTree } from "@/lib/db/queries/roadmap";
 
 export interface ContextSection {
   label:
@@ -224,6 +228,108 @@ function renderRoadmapTree(
     }
   }
   return lines.join("\n");
+}
+
+/**
+ * Build a complete task-scoped context block (ROADMAP CONTEXT + ROADMAP
+ * TREE + PREREQUISITES + DEPENDENTS + TASK NOTE) for a single task in one
+ * parallelized pass. Used by tutor chat, interview, quiz generation, and
+ * flashcard generation so all features see the same roadmap-aware picture.
+ *
+ * Returns both the raw task+note rows (so callers can branch on whether
+ * notes are empty) and the rendered Markdown block (ready to prefix to the
+ * user message or use as the source for generation prompts).
+ */
+export async function buildTaskContext(args: {
+  userId: string;
+  taskId: string;
+  budgetChars?: number;
+}): Promise<{
+  taskRow: TaskRow | undefined;
+  noteRow: Pick<TaskNoteRow, "content"> | undefined;
+  sections: ContextSection[];
+  contextMd: string;
+}> {
+  const { userId, taskId } = args;
+  const budgetChars = args.budgetChars ?? 8_000;
+
+  // Parallel: task row + note row + breadcrumb + dependency edges + roadmaps.
+  const [task, noteRow] = await Promise.all([
+    db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1).then((r) => r[0]),
+    db.select().from(taskNotes).where(eq(taskNotes.taskId, taskId)).limit(1).then((r) => r[0]),
+  ]);
+
+  let breadcrumb: { trackTitle?: string; moduleTitle?: string } | undefined;
+  let roadmapTree: import("@/lib/db/queries/roadmap").RoadmapTree | null = null;
+  let prereqTasks: Array<{ code: string | null; title: string; status: string }> = [];
+  let dependentTasks: Array<{ code: string | null; title: string; status: string }> = [];
+
+  if (task) {
+    const [depsFrom, depsTo, rms] = await Promise.all([
+      db
+        .select({ depId: taskDependencies.dependsOnTaskId, kind: taskDependencies.kind })
+        .from(taskDependencies)
+        .where(eq(taskDependencies.taskId, task.id)),
+      db
+        .select({ taskId: taskDependencies.taskId, kind: taskDependencies.kind })
+        .from(taskDependencies)
+        .where(eq(taskDependencies.dependsOnTaskId, task.id)),
+      listRoadmaps(userId),
+    ]);
+
+    // Breadcrumb: track title (joined with module) + module title (second tiny query).
+    const trackJoin = await db
+      .select({ title: tracks.title })
+      .from(modules)
+      .innerJoin(tracks, eq(tracks.id, modules.trackId))
+      .where(eq(modules.id, task.moduleId))
+      .limit(1)
+      .then((r) => r[0]);
+    const modTitle = await db
+      .select({ title: modules.title })
+      .from(modules)
+      .where(eq(modules.id, task.moduleId))
+      .limit(1)
+      .then((r) => r[0]?.title);
+    breadcrumb = { trackTitle: trackJoin?.title, moduleTitle: modTitle };
+
+    const depIds = Array.from(new Set([...depsFrom.map((d) => d.depId), ...depsTo.map((d) => d.taskId)]));
+    if (depIds.length > 0) {
+      const depRows = await db
+        .select({ id: tasks.id, code: tasks.code, title: tasks.title, status: tasks.status })
+        .from(tasks)
+        .where(inArray(tasks.id, depIds));
+      const depMap = new Map(depRows.map((r) => [r.id, r]));
+      prereqTasks = depsFrom
+        .map((d) => depMap.get(d.depId))
+        .filter((r): r is NonNullable<typeof r> => !!r);
+      dependentTasks = depsTo
+        .map((d) => depMap.get(d.taskId))
+        .filter((r): r is NonNullable<typeof r> => !!r);
+    }
+
+    const first = rms[0];
+    if (first) {
+      roadmapTree = await getRoadmapTree(userId, first.id);
+    }
+  }
+
+  const sections = assembleContext({
+    taskFull: task ?? null,
+    breadcrumb,
+    roadmapTree,
+    prereqTasks,
+    dependentTasks,
+    note: noteRow ? { content: noteRow.content } : null,
+    options: { budgetChars },
+  });
+  const contextMd = renderContext(sections);
+  return {
+    taskRow: task,
+    noteRow: noteRow ? { content: noteRow.content } : undefined,
+    sections,
+    contextMd,
+  };
 }
 
 /**

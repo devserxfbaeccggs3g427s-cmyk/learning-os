@@ -6,18 +6,16 @@
  */
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eq, and, desc, asc, inArray } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { aiConversations, aiMessages, taskNotes, tasks, taskDependencies, modules, tracks, roadmaps } from "@/lib/db/schema";
+import { aiConversations, aiMessages } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
 import { getPrompt } from "@/lib/ai/prompts";
 import { resolveAIConfig, getDefaultUser } from "@/lib/ai/service";
 import { getProvider } from "@/lib/ai/registry";
-import { assembleContext, assembleGlobalContext, renderContext } from "@/lib/ai/context";
-import { listRoadmaps } from "@/lib/db/queries/roadmap";
+import { assembleGlobalContext, buildTaskContext, renderContext } from "@/lib/ai/context";
 import { AIProviderError } from "@/lib/ai/provider";
 import { applyLanguageDirective, getDefaultLanguage } from "@/lib/ai/language";
-import { nowIso } from "@/lib/utils/time";
 import { getStudyDate } from "@/lib/utils/study-date";
 
 const Body = z.object({
@@ -68,61 +66,12 @@ export async function POST(req: Request) {
   // Build context if not overridden
   let contextMd = parsed.data.contextOverride ?? "";
   if (!parsed.data.contextOverride && parsed.data.taskId) {
-    const taskRow = (await db.select().from(tasks).where(eq(tasks.id, parsed.data.taskId)).limit(1))[0];
-    const noteRow = (await db.select().from(taskNotes).where(eq(taskNotes.taskId, parsed.data.taskId)).limit(1))[0];
-
-    // Breadcrumb (track › module) + dependency graph. Round-trip and memoize
-    // on the task row so we issue 4 parallel queries (1 per independent
-    // dep), not 4 sequential awaits.
-    let breadcrumb: { trackTitle?: string; moduleTitle?: string } | undefined;
-    let roadmapTree: import("@/lib/db/queries/roadmap").RoadmapTree | null = null;
-    let prereqTasks: Array<{ code: string | null; title: string; status: string }> = [];
-    let dependentTasks: Array<{ code: string | null; title: string; status: string }> = [];
-
-    if (taskRow) {
-      const [mod, depsFrom, depsTo, rms] = await Promise.all([
-        db.select({ title: tracks.title }).from(modules).innerJoin(tracks, eq(tracks.id, modules.trackId)).where(eq(modules.id, taskRow.moduleId)).limit(1).then((r) => r[0]),
-        db.select({ depId: taskDependencies.dependsOnTaskId, kind: taskDependencies.kind }).from(taskDependencies).where(eq(taskDependencies.taskId, taskRow.id)),
-        db.select({ taskId: taskDependencies.taskId, kind: taskDependencies.kind }).from(taskDependencies).where(eq(taskDependencies.dependsOnTaskId, taskRow.id)),
-        listRoadmaps(user.id),
-      ]);
-      breadcrumb = { trackTitle: mod?.title, moduleTitle: undefined };
-      // mod row gives track title; module title needs a second tiny query
-      const modTitle = (await db.select({ title: modules.title }).from(modules).where(eq(modules.id, taskRow.moduleId)).limit(1))[0]?.title;
-      breadcrumb.moduleTitle = modTitle;
-
-      const depIds = Array.from(new Set([...depsFrom.map((d) => d.depId), ...depsTo.map((d) => d.taskId)]));
-      if (depIds.length > 0) {
-        const depRows = await db
-          .select({ id: tasks.id, code: tasks.code, title: tasks.title, status: tasks.status })
-          .from(tasks)
-          .where(inArray(tasks.id, depIds));
-        const depMap = new Map(depRows.map((r) => [r.id, r]));
-        prereqTasks = depsFrom
-          .map((d) => depMap.get(d.depId))
-          .filter((r): r is NonNullable<typeof r> => !!r);
-        dependentTasks = depsTo
-          .map((d) => depMap.get(d.taskId))
-          .filter((r): r is NonNullable<typeof r> => !!r);
-      }
-
-      const { getRoadmapTree } = await import("@/lib/db/queries/roadmap");
-      const first = rms[0];
-      if (first) {
-        roadmapTree = await getRoadmapTree(user.id, first.id);
-      }
-    }
-
-    const sections = assembleContext({
-      taskFull: taskRow,
-      breadcrumb,
-      roadmapTree,
-      prereqTasks,
-      dependentTasks,
-      note: noteRow ? { content: noteRow.content } : null,
-      options: { budgetChars: 8_000 },
+    const { contextMd: built } = await buildTaskContext({
+      userId: user.id,
+      taskId: parsed.data.taskId,
+      budgetChars: 8_000,
     });
-    contextMd = renderContext(sections);
+    contextMd = built;
   } else if (!parsed.data.contextOverride && !parsed.data.taskId) {
     // Global chat (sidebar / instructor / dashboards). Pull today's schedule
     // and the task-code index so the AI can answer questions like "what
@@ -136,8 +85,19 @@ export async function POST(req: Request) {
     contextMd = renderContext(sections);
   }
 
-  // Build messages: system + history + user
-  const sysPrompt = getPrompt("TUTOR_SYSTEM");
+  // Pick a prompt that matches the active mode. Each mode has its own
+  // persona (interviewer, incident commander, etc.) and now also includes
+  // the source-aware roadmap rules.
+  const sysPrompt =
+    parsed.data.mode === "INTERVIEW"
+      ? getPrompt("TUTOR_INTERVIEWER")
+      : parsed.data.mode === "FAILURE_DRILL"
+        ? getPrompt("TUTOR_FAILURE_DRILL")
+        : parsed.data.mode === "DEBUG_DRILL"
+          ? getPrompt("TUTOR_DEBUG_DRILL")
+          : parsed.data.mode === "KNOWLEDGE_GAP"
+            ? getPrompt("TUTOR_KNOWLEDGE_GAP")
+            : getPrompt("TUTOR_SYSTEM");
   const userLang = await getDefaultLanguage(user.id);
   const systemContent = applyLanguageDirective(sysPrompt.system, userLang);
   const history = await db
