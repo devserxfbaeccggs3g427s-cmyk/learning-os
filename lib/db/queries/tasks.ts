@@ -122,6 +122,54 @@ export function listTasks(input: ListTasksInput) {
  * tracks / modules (e.g. task-creation forms). The /tasks list view no
  * longer needs this — listTasks() now JOINs the breadcrumb in.
  */
+
+/**
+ * Compact code → title index for the AI global chat.
+ * Returns at most `limit` rows, ordered to prefer tasks the user is most
+ * likely to ask about: not-yet-mastered first, then by module order.
+ */
+export type TaskCodeIndexRow = {
+  code: string | null;
+  title: string;
+  status: string;
+  priority: string;
+  moduleTitle: string;
+  trackTitle: string;
+};
+
+const TASK_CODE_INDEX_PROJECTION = {
+  code: tasks.code,
+  title: tasks.title,
+  status: tasks.status,
+  priority: tasks.priority,
+  moduleTitle: modules.title,
+  trackTitle: tracks.title,
+} as const;
+
+async function _listTaskCodeIndex(
+  userId: string,
+  limit: number,
+): Promise<TaskCodeIndexRow[]> {
+  return db
+    .select(TASK_CODE_INDEX_PROJECTION)
+    .from(tasks)
+    .innerJoin(modules, eq(modules.id, tasks.moduleId))
+    .innerJoin(tracks, eq(tracks.id, modules.trackId))
+    .innerJoin(roadmaps, eq(roadmaps.id, tracks.roadmapId))
+    .where(
+      sql`${roadmaps.userId} = ${userId} and ${tasks.status} not in ('MASTERED','LEARNED')`,
+    )
+    .orderBy(asc(tasks.orderIndex))
+    .limit(limit);
+}
+
+export function listTaskCodeIndex(userId: string, limit = 400) {
+  return unstable_cache(
+    () => _listTaskCodeIndex(userId, limit),
+    ["task-code-index", userId, String(limit)],
+    { revalidate: 300, tags: [`tasks:${userId}`] },
+  )();
+}
 async function _listHierarchy(userId: string) {
   const rms = await db
     .select({ id: roadmaps.id, title: roadmaps.title })

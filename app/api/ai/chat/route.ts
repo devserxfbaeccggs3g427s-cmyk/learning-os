@@ -6,17 +6,19 @@
  */
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eq, and, desc, asc } from "drizzle-orm";
+import { eq, and, desc, asc, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { aiConversations, aiMessages, taskNotes, tasks } from "@/lib/db/schema";
+import { aiConversations, aiMessages, taskNotes, tasks, taskDependencies, modules, tracks, roadmaps } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
 import { getPrompt } from "@/lib/ai/prompts";
 import { resolveAIConfig, getDefaultUser } from "@/lib/ai/service";
 import { getProvider } from "@/lib/ai/registry";
-import { assembleContext } from "@/lib/ai/context";
+import { assembleContext, assembleGlobalContext, renderContext } from "@/lib/ai/context";
+import { listRoadmaps } from "@/lib/db/queries/roadmap";
 import { AIProviderError } from "@/lib/ai/provider";
 import { applyLanguageDirective, getDefaultLanguage } from "@/lib/ai/language";
 import { nowIso } from "@/lib/utils/time";
+import { getStudyDate } from "@/lib/utils/study-date";
 
 const Body = z.object({
   conversationId: z.string().nullable().optional(),
@@ -68,40 +70,70 @@ export async function POST(req: Request) {
   if (!parsed.data.contextOverride && parsed.data.taskId) {
     const taskRow = (await db.select().from(tasks).where(eq(tasks.id, parsed.data.taskId)).limit(1))[0];
     const noteRow = (await db.select().from(taskNotes).where(eq(taskNotes.taskId, parsed.data.taskId)).limit(1))[0];
-    contextMd = [
-      ":::INPUTS",
-      JSON.stringify({
-        task: taskRow
-          ? {
-              code: taskRow.code,
-              title: taskRow.title,
-              description: taskRow.description,
-              status: taskRow.status,
-              priority: taskRow.priority,
-              difficulty: taskRow.difficulty,
-              estimatedMinutes: taskRow.estimatedMinutes,
-            }
-          : null,
-        notes: noteRow ? { content: noteRow.content } : null,
-      }, null, 2),
-      ":::",
-    ].join("\n");
-    // Use assembleContext to wrap labeled sections
+
+    // Breadcrumb (track › module) + dependency graph. Round-trip and memoize
+    // on the task row so we issue 4 parallel queries (1 per independent
+    // dep), not 4 sequential awaits.
+    let breadcrumb: { trackTitle?: string; moduleTitle?: string } | undefined;
+    let roadmapTree: import("@/lib/db/queries/roadmap").RoadmapTree | null = null;
+    let prereqTasks: Array<{ code: string | null; title: string; status: string }> = [];
+    let dependentTasks: Array<{ code: string | null; title: string; status: string }> = [];
+
+    if (taskRow) {
+      const [mod, depsFrom, depsTo, rms] = await Promise.all([
+        db.select({ title: tracks.title }).from(modules).innerJoin(tracks, eq(tracks.id, modules.trackId)).where(eq(modules.id, taskRow.moduleId)).limit(1).then((r) => r[0]),
+        db.select({ depId: taskDependencies.dependsOnTaskId, kind: taskDependencies.kind }).from(taskDependencies).where(eq(taskDependencies.taskId, taskRow.id)),
+        db.select({ taskId: taskDependencies.taskId, kind: taskDependencies.kind }).from(taskDependencies).where(eq(taskDependencies.dependsOnTaskId, taskRow.id)),
+        listRoadmaps(user.id),
+      ]);
+      breadcrumb = { trackTitle: mod?.title, moduleTitle: undefined };
+      // mod row gives track title; module title needs a second tiny query
+      const modTitle = (await db.select({ title: modules.title }).from(modules).where(eq(modules.id, taskRow.moduleId)).limit(1))[0]?.title;
+      breadcrumb.moduleTitle = modTitle;
+
+      const depIds = Array.from(new Set([...depsFrom.map((d) => d.depId), ...depsTo.map((d) => d.taskId)]));
+      if (depIds.length > 0) {
+        const depRows = await db
+          .select({ id: tasks.id, code: tasks.code, title: tasks.title, status: tasks.status })
+          .from(tasks)
+          .where(inArray(tasks.id, depIds));
+        const depMap = new Map(depRows.map((r) => [r.id, r]));
+        prereqTasks = depsFrom
+          .map((d) => depMap.get(d.depId))
+          .filter((r): r is NonNullable<typeof r> => !!r);
+        dependentTasks = depsTo
+          .map((d) => depMap.get(d.taskId))
+          .filter((r): r is NonNullable<typeof r> => !!r);
+      }
+
+      const { getRoadmapTree } = await import("@/lib/db/queries/roadmap");
+      const first = rms[0];
+      if (first) {
+        roadmapTree = await getRoadmapTree(user.id, first.id);
+      }
+    }
+
     const sections = assembleContext({
-      task: taskRow
-        ? {
-            code: taskRow.code,
-            title: taskRow.title,
-            description: taskRow.description,
-            status: taskRow.status,
-            priority: taskRow.priority,
-            difficulty: taskRow.difficulty,
-            estimatedMinutes: taskRow.estimatedMinutes,
-          }
-        : null,
+      taskFull: taskRow,
+      breadcrumb,
+      roadmapTree,
+      prereqTasks,
+      dependentTasks,
       note: noteRow ? { content: noteRow.content } : null,
+      options: { budgetChars: 8_000 },
     });
-    contextMd = sections.map((s) => `:::section[${s.label}]\n${s.content}\n:::`).join("\n\n");
+    contextMd = renderContext(sections);
+  } else if (!parsed.data.contextOverride && !parsed.data.taskId) {
+    // Global chat (sidebar / instructor / dashboards). Pull today's schedule
+    // and the task-code index so the AI can answer questions like "what
+    // should I do today?" or "what is c8?" without the user re-pasting.
+    const studyDate = await getStudyDate();
+    const sections = await assembleGlobalContext({
+      userId: user.id,
+      studyDate,
+      options: { includeRelatedTasks: true, budgetChars: 6_000 },
+    });
+    contextMd = renderContext(sections);
   }
 
   // Build messages: system + history + user

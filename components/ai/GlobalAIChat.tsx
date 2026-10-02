@@ -7,6 +7,7 @@ import { Send, Loader2, Plus, MessageSquare, History, X } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
+import { preloadTaskLinks } from "@/lib/ai/useTaskLinks";
 import { cn } from "@/lib/utils/cn";
 
 interface GlobalAIChatProps { userId: string }
@@ -22,6 +23,10 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   const { list, refresh } = useConversationList({ userId, scope: "global", mode: "GLOBAL" });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
+
+  useEffect(() => {
+    preloadTaskLinks();
+  }, []);
 
   // Show "thinking" dots while the request is in flight but no text yet.
   const thinking = stream.loading && !stream.text;
