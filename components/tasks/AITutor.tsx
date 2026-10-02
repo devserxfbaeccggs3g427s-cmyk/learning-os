@@ -166,19 +166,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
           </p>
         </div>
 
-        {/* Suggestions row — visible when chat empty or AI is done, hidden while streaming */}
-        {!isStreaming && (
-          <ChatSuggestions
-            topics={suggestions.topics}
-            onSelect={(p) => send(p)}
-            disabled={stream.loading}
-            loading={suggestions.loading}
-            error={suggestions.error}
-            source={suggestions.source}
-            onRefresh={suggestions.refresh}
-          />
-        )}
-
+        {/* Suggestions row — hidden while streaming */}
         <div className="min-h-0 flex-1 overflow-y-auto bg-muted/10 scroll-thin">
           {loadingHistory ? (
             <div className="rounded-md bg-muted/30 p-6 text-sm leading-6 text-muted-foreground">
@@ -207,9 +195,23 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
         </div>
 
         {/* Composer */}
-        <div className="shrink-0 border-t border-border bg-card p-4">
+        <div className="shrink-0 border-t border-border bg-card p-4 pt-3">
+          {!isStreaming && (
+            <ChatSuggestions
+              topics={suggestions.topics}
+              onSelect={(p) => send(p)}
+              disabled={stream.loading}
+              loading={suggestions.loading}
+              error={suggestions.error}
+              source={suggestions.source}
+              onRefresh={suggestions.refresh}
+              className="mb-2"
+            />
+          )}
           <div className="flex items-end gap-3">
-            <ChatModeToggle />
+            <div className="flex h-11 shrink-0 items-center">
+              <ChatModeToggle />
+            </div>
             <div className="flex-1">
               <Textarea
                 ref={textareaRef}
@@ -234,7 +236,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
               size="lg"
               onClick={() => send(input)}
               disabled={stream.loading || !input.trim()}
-              className="h-[44px] px-5"
+              className="h-11 px-5"
             >
               {stream.loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

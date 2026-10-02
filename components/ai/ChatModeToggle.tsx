@@ -7,7 +7,7 @@ import { Zap, Loader2 } from "lucide-react";
 function ChatModeToggleInner() {
   const [mode, setMode] = useChatMode();
   return (
-    <div className="inline-flex shrink-0 items-center rounded-md border border-border bg-background p-0.5 text-[10px]">
+    <div className="inline-flex shrink-0 items-center rounded-md border border-border bg-background p-0.5 text-xs">
       <button
         type="button"
         onClick={() => setMode("stream")}
