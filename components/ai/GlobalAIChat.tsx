@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, Input, Button } from "@/components/ui";
 import { ChatTranscript } from "./ChatTranscript";
 import { ChatModeToggle } from "./ChatModeToggle";
+import { PromptSuggestions } from "./PromptSuggestions";
 import { Send, Loader2, Plus, MessageSquare, History, X } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
 import { preloadTaskLinks } from "@/lib/ai/useTaskLinks";
+import { usePromptSuggestions } from "@/lib/ai/usePromptSuggestions";
+import { GLOBAL_PROMPT_TOPICS } from "@/lib/ai/suggestions";
 import { cn } from "@/lib/utils/cn";
 
 interface GlobalAIChatProps { userId: string }
@@ -23,6 +26,11 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   const { list, refresh } = useConversationList({ userId, scope: "global", mode: "GLOBAL" });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
+  const suggestions = usePromptSuggestions({
+    userId,
+    mode: "GLOBAL",
+    fallbackTopics: GLOBAL_PROMPT_TOPICS,
+  });
 
   useEffect(() => {
     preloadTaskLinks();
@@ -62,6 +70,13 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   function send() {
     if (!input.trim() || stream.loading) return;
     const prompt = input;
+    setMessages((m) => [...m, { role: "user", content: prompt }]);
+    setInput("");
+    stream.send({ userId, mode: "GLOBAL", prompt, conversationId, renderMode: mode });
+  }
+
+  function sendPrompt(prompt: string) {
+    if (!prompt.trim() || stream.loading) return;
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
     stream.send({ userId, mode: "GLOBAL", prompt, conversationId, renderMode: mode });
@@ -124,7 +139,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   );
 
   return (
-    <div className="grid h-full gap-3 lg:grid-cols-[260px_1fr]">
+    <div className="grid h-full gap-3 lg:grid-cols-[260px_1fr_300px]">
       {/* Sidebar — conversation history (desktop inline) */}
       <Card className="hidden h-full min-h-0 flex-col overflow-hidden lg:flex">
         {historyList}
@@ -155,6 +170,26 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
           </Card>
         </div>
       )}
+
+      {/* Suggested questions (mobile, collapsible above chat) */}
+      <details className="overflow-hidden rounded-md border border-border bg-card lg:hidden">
+        <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent">
+          Suggested questions
+        </summary>
+        <div className="p-2">
+          <PromptSuggestions
+            topics={suggestions.topics}
+            onSelect={sendPrompt}
+            disabled={stream.loading}
+            loading={suggestions.loading}
+            error={suggestions.error}
+            source={suggestions.source}
+            onRefresh={suggestions.refresh}
+            className="border-0 shadow-none"
+            subtitle="Click any prompt to send it."
+          />
+        </div>
+      </details>
 
       {/* Chat pane */}
       <Card className="flex h-full min-h-0 flex-col overflow-hidden">
@@ -203,6 +238,21 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Suggested questions (desktop) */}
+      <div className="hidden min-h-0 lg:block">
+        <PromptSuggestions
+          topics={suggestions.topics}
+          onSelect={sendPrompt}
+          disabled={stream.loading}
+          loading={suggestions.loading}
+          error={suggestions.error}
+          source={suggestions.source}
+          onRefresh={suggestions.refresh}
+          className="h-full overflow-y-auto"
+          subtitle="Click any prompt to send it."
+        />
+      </div>
     </div>
   );
 }

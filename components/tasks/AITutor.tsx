@@ -3,11 +3,14 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
 import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
+import { PromptSuggestions } from "@/components/ai/PromptSuggestions";
 import { Send, Loader2, MessageCircleQuestion, Sparkles, Plus, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
+import { usePromptSuggestions } from "@/lib/ai/usePromptSuggestions";
+import { TUTOR_PROMPT_TOPICS } from "@/lib/ai/suggestions";
 
 interface AITutorProps {
   userId: string;
@@ -22,15 +25,6 @@ interface ChatMsg {
   streaming?: boolean;
 }
 
-const QUICK = [
-  { label: "Explain this", prompt: "Explain this task to me from scratch." },
-  { label: "Why it matters", prompt: "Why does this matter in production?" },
-  { label: "Internals", prompt: "Walk me through the internals." },
-  { label: "Failure mode", prompt: "What is the most common production failure mode for this?" },
-  { label: "Example", prompt: "Show me a concrete code example." },
-  { label: "Interview Q", prompt: "Ask me one interview question on this task." },
-];
-
 export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
@@ -39,6 +33,12 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
   const { list, refresh } = useConversationList({ userId, mode: "TUTOR", taskId });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
+  const suggestions = usePromptSuggestions({
+    userId,
+    mode: "TUTOR",
+    taskId,
+    fallbackTopics: TUTOR_PROMPT_TOPICS(taskTitle),
+  });
   const thinking = stream.loading && !stream.text;
 
   useEffect(() => {
@@ -177,27 +177,24 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
         </div>
       </Card>
 
-      {/* Quick actions */}
-      <Card className="h-fit">
-        <CardHeader>
-          <CardTitle className="text-sm">Quick actions</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-2">
-          {QUICK.map((q) => (
-            <button
-              key={q.label}
-              onClick={() => send(q.prompt)}
-              disabled={stream.loading}
-              className="rounded-md border border-border bg-background p-2 text-left text-xs hover:bg-accent disabled:opacity-50"
-            >
-              {q.label}
-            </button>
-          ))}
-          <div className="mt-2 text-[10px] text-muted-foreground">
-            Conversations auto-save per task. <span className="font-mono">{note.length}</span> chars of notes available as context.
-          </div>
-        </CardContent>
-      </Card>
+      {/* Suggested questions by topic */}
+      <div className="space-y-3">
+        <PromptSuggestions
+          topics={suggestions.topics}
+          onSelect={(p) => send(p)}
+          disabled={stream.loading}
+          loading={suggestions.loading}
+          error={suggestions.error}
+          source={suggestions.source}
+          onRefresh={suggestions.refresh}
+          defaultOpenId={suggestions.topics[0]?.id}
+          title="Prompt ideas"
+          subtitle="Click any prompt to send it."
+        />
+        <div className="rounded-md border border-dashed border-border p-3 text-[10px] leading-relaxed text-muted-foreground">
+          Conversations auto-save per task. <span className="font-mono">{note.length}</span> chars of notes available as context.
+        </div>
+      </div>
     </div>
   );
 }

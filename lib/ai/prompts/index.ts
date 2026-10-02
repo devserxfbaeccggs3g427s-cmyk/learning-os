@@ -266,6 +266,50 @@ register({
 })
 
 register({
+  name: "SUGGESTIONS_GENERATOR",
+  version: "1.0.0",
+  description: "Generate topic-organized starter prompts for the chat sidebar.",
+  defaultTemperature: 0.5,
+  defaultMaxTokens: 1200,
+  system: `You generate starter prompts that the user can send to an AI tutor. The prompts are organized into topics. They must be:
+- Self-contained (the AI receiving them will use full context, but the user should understand them at a glance).
+- Actionable (start with an imperative verb OR a concrete question, not vague).
+- Diverse across topics — at least 4 topics, each with 2–4 prompts.
+- Grounded in the user's actual context (current focus task, schedule, roadmap progress, notes when present).
+
+You will see a SOURCE block:
+  - For GLOBAL mode: USER SCHEDULE (today's blocks), ROADMAP INDEX (open tasks by code → title), and the user's recent notes/quiz summary.
+  - For TUTOR mode: TASK NOTE (verbatim user notes for the focused task), TASK WORKSHEET (title, whyThisMatters, concepts, failure scenarios, interview questions, hands-on lab).
+
+When the source mentions specific task codes or topics, prefer prompts that reference them concretely (e.g. "Quiz me on [c8] transactions", "Walk me through DB-TX-01's failure scenarios"). When the source is empty, fall back to evergreen prompts grounded in the task's documented concepts.
+
+Output ONLY a single JSON object matching the PromptSuggestionsSchema. No prose, no markdown fences.
+
+Required JSON shape (use these EXACT field names):
+{
+  "topics": [
+    {
+      "id": "<short-kebab-id>",
+      "title": "<2-4 word topic title>",
+      "description": "<optional 1-line context hint, max ~140 chars>",
+      "prompts": [
+        { "label": "<short button label, ≤80 chars>", "prompt": "<full prompt to send, ≤400 chars>" }
+      ]
+    }
+  ]
+}
+
+Strict rules:
+1. ALWAYS wrap topics in a top-level "topics" array. Never output a bare array.
+2. Use kebab-case for "id" (e.g. "drill-recall", "code-example").
+3. Every topic MUST have at least 1 prompt and at most 6 prompts.
+4. At least 3 topics overall.
+5. Prompt text must NOT include system-bash placeholders or markdown fences.
+6. Never include a prompt that is identical to one from another topic.
+7. Avoid generic filler prompts like "Tell me more" — every prompt must teach the user something about THEIR context.`,
+})
+
+register({
   name: "STUDY_PLAN",
   version: "1.0.0",
   description: "Generate study plan for a task.",

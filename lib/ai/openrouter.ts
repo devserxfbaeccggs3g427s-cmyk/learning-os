@@ -227,26 +227,13 @@ export class OpenRouterProvider implements AIProvider {
       messages,
       options: { response_format: { type: "json_object" } },
     });
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(res.text);
-    } catch (err) {
-      // try to recover from ```json``` fences
-      const m = res.text.match(/```(?:json)?\s*([\s\S]*?)```/);
-      if (m?.[1]) {
-        try {
-          parsed = JSON.parse(m[1]);
-        } catch {
-          throw new AIProviderError("malformed_output", "Model returned invalid JSON", this.id, err);
-        }
-      } else {
-        throw new AIProviderError(
-          "malformed_output",
-          "Model returned invalid JSON",
-          this.id,
-          err,
-        );
-      }
+    const parsed = tryRepairJson(res.text);
+    if (parsed === null) {
+      throw new AIProviderError(
+        "malformed_output",
+        "Model returned invalid JSON",
+        this.id,
+      );
     }
     const result = req.schema.safeParse(parsed);
     if (!result.success) {
@@ -317,5 +304,77 @@ export class OpenRouterProvider implements AIProvider {
     } catch (err) {
       return { ok: false, message: err instanceof Error ? err.message : "Connection failed" };
     }
+  }
+}
+
+/**
+ * Best-effort extraction of a JSON value from a model response that was
+ * supposed to be pure JSON but isn't. Handles:
+ *   - Direct JSON
+ *   - ```json ... ``` or ``` ... ``` fences (anywhere in the text)
+ *   - Prose wrapping a JSON object/array (locate first `{`/`[` and walk
+ *     balanced braces respecting strings/escapes)
+ *
+ * Returns the parsed value, or `null` if no JSON can be recovered.
+ */
+function tryRepairJson(text: string): unknown | null {
+  if (typeof text !== "string" || text.length === 0) return null;
+  const trimmed = text.trim();
+
+  // 1. Direct parse.
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    // fall through
+  }
+
+  // 2. Extract fenced code blocks (json or unlabeled). Try each in order.
+  const fences = [...trimmed.matchAll(/```(?:json)?\s*([\s\S]*?)```/g)].map((m) => m[1] ?? "");
+  for (const body of fences) {
+    try {
+      return JSON.parse(body.trim());
+    } catch {
+      // try next fence
+    }
+  }
+
+  // 3. Locate the first JSON value start and walk balanced braces.
+  const start = trimmed.search(/[\[{]/);
+  if (start < 0) return null;
+  const open = trimmed[start];
+  const close = open === "[" ? "]" : "}";
+  let depth = 0;
+  let inStr = false;
+  let escape = false;
+  let end = -1;
+  for (let i = start; i < trimmed.length; i++) {
+    const ch = trimmed[i];
+    if (escape) {
+      escape = false;
+      continue;
+    }
+    if (!inStr && ch === "\\") {
+      escape = true;
+      continue;
+    }
+    if (ch === '"') {
+      inStr = !inStr;
+      continue;
+    }
+    if (inStr) continue;
+    if (ch === open) depth++;
+    else if (ch === close) {
+      depth--;
+      if (depth === 0) {
+        end = i;
+        break;
+      }
+    }
+  }
+  if (end < 0) return null;
+  try {
+    return JSON.parse(trimmed.slice(start, end + 1));
+  } catch {
+    return null;
   }
 }

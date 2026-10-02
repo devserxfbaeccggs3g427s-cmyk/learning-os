@@ -461,6 +461,30 @@ export const StudyPlanSchema = z.object({
 export type StudyPlan = z.infer<typeof StudyPlanSchema>;
 
 // ----------------------------------------------------------------------------
+// Prompt suggestions (AI-generated starter prompts by topic)
+// ----------------------------------------------------------------------------
+
+export const PromptSuggestionItemSchema = z.object({
+  label: z.string().min(1).max(80),
+  prompt: z.string().min(1).max(400),
+});
+
+export const PromptSuggestionTopicSchema = z.object({
+  id: z.string().min(1).max(40),
+  title: z.string().min(1).max(60),
+  description: z.string().max(140).optional(),
+  prompts: z.array(PromptSuggestionItemSchema).min(1).max(6),
+});
+
+export const PromptSuggestionsSchema = z.object({
+  topics: z.array(PromptSuggestionTopicSchema).min(1).max(8),
+});
+
+export type PromptSuggestionTopic = z.infer<typeof PromptSuggestionTopicSchema>;
+export type PromptSuggestionItem = z.infer<typeof PromptSuggestionItemSchema>;
+export type PromptSuggestions = z.infer<typeof PromptSuggestionsSchema>;
+
+// ----------------------------------------------------------------------------
 // Roadmap import
 // ----------------------------------------------------------------------------
 
