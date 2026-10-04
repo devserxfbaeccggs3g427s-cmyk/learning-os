@@ -164,16 +164,31 @@ export function FrameChatDialog({
     const finalText = stream.error
       ? `⚠️ ${stream.error.message} (${stream.error.kind})`
       : stream.text;
+
+    // A turn that failed was this frame's ONLY turn when the frame
+    // held no exchange before it — the server deleted that row rather
+    // than keep an empty conversation. Undo the optimistic user bubble
+    // and drop the id, so the transcript does not get re-attached to
+    // whatever frame the next message mints. The error itself stays
+    // on screen; only the orphaned question goes.
+    const orphan = !!stream.error && !messages.some((m) => m.role === "assistant");
+
     if (finalText) {
+      const text = finalText;
       setMessages((cur) => {
-        const copy = [...cur];
+        const copy = orphan ? cur.slice(0, -1) : [...cur];
         const last = copy[copy.length - 1];
-        if (last?.role === "assistant") copy[copy.length - 1] = { ...last, content: finalText };
-        else copy.push({ id: `m-${copy.length}`, role: "assistant", content: finalText });
+        if (last?.role === "assistant") copy[copy.length - 1] = { ...last, content: text };
+        else copy.push({ id: `m-${copy.length}`, role: "assistant", content: text });
         return copy;
       });
     }
-    if (stream.frameId && stream.frameId !== frameId) setFrameId(stream.frameId);
+    if (orphan) {
+      setFrameId(null);
+      setFrameTitle(NEW_CHAT_TITLE);
+    } else if (stream.frameId && stream.frameId !== frameId) {
+      setFrameId(stream.frameId);
+    }
     stream.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stream.done]);

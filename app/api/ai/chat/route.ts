@@ -8,12 +8,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { eq, asc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { aiConversations, aiMessages } from "@/lib/db/schema";
+import { aiConversations, aiMessages, tasks } from "@/lib/db/schema";
 import { ids } from "@/lib/utils/ids";
 import { getPrompt } from "@/lib/ai/prompts";
 import { resolveAIConfig, getDefaultUser } from "@/lib/ai/service";
 import { getProvider } from "@/lib/ai/registry";
 import { assembleGlobalContext, buildTaskContext, renderContext } from "@/lib/ai/context";
+import { titleFromPrompt } from "@/lib/ai/frame/title";
 import { AIProviderError } from "@/lib/ai/provider";
 import { applyLanguageDirective, getDefaultLanguage } from "@/lib/ai/language";
 import { getStudyDate } from "@/lib/utils/study-date";
@@ -46,12 +47,35 @@ export async function POST(req: Request) {
   let convId = parsed.data.conversationId;
   if (!convId) {
     convId = ids.aiConv();
+    // Name it after the first question, using the SAME rule the chat
+    // frames use (lib/ai/frame/title.ts). This route used to do
+    // `prompt.slice(0, 60)`, which kept newlines (a multi-line prompt
+    // became a ragged one-line sidebar row), clipped to a private 60
+    // that no other layer agreed with, and carried no task tag even
+    // though the task is in scope right here on the body. Three
+    // divergence bugs from one duplicated rule.
+    //
+    // The code lookup is one extra query on conversation creation —
+    // a once-per-conversation cost, and it buys a sidebar where
+    // "[PAY-01] idempotency check" is distinguishable from four other
+    // "idempotency check" rows.
+    let taskCode: string | null = null;
+    if (parsed.data.taskId) {
+      const bound = (
+        await db
+          .select({ code: tasks.code })
+          .from(tasks)
+          .where(eq(tasks.id, parsed.data.taskId))
+          .limit(1)
+      )[0];
+      taskCode = bound?.code ?? null;
+    }
     await db.insert(aiConversations).values({
       id: convId,
       userId: user.id,
       taskId: parsed.data.taskId ?? null,
       mode: parsed.data.mode,
-      title: parsed.data.prompt.slice(0, 60),
+      title: titleFromPrompt(parsed.data.prompt, taskCode),
     });
   }
 
@@ -192,6 +216,17 @@ export async function POST(req: Request) {
           content: `⚠️ ${message} (${kind})`,
           metadata: { error: true, kind },
         });
+        // A conversation whose only turn failed is an empty
+        // conversation — the same rule the chat frames follow. The row
+        // exists for the rest of THIS request so the client can stream
+        // the error, then goes away; otherwise every failed first
+        // message leaves a titled, one-error row the user never had a
+        // conversation in. `history` is this conversation's messages
+        // INCLUDING the user message just inserted, so `<= 1` means
+        // this turn was the first.
+        if (history.length <= 1) {
+          await db.delete(aiConversations).where(eq(aiConversations.id, convId!));
+        }
         send({ type: "error", kind, message });
       } finally {
         ctrlStream.close();

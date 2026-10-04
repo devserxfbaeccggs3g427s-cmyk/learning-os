@@ -34,7 +34,7 @@ import { buildFrameCorpus, buildCodeLookup } from "@/lib/ai/frame/corpus";
 import { retrieveKnowledge, DEFAULT_RETRIEVAL_BUDGET_CHARS } from "@/lib/ai/frame/retrieval";
 import { detectNoAnswer } from "@/lib/ai/frame/no-answer";
 import { frameRateLimiter, frameRateKey } from "@/lib/ai/frame/rate-limit";
-import { isUnnamed, titleFromPrompt } from "@/lib/ai/frame/title";
+import { isUnnamed, titleFromPrompt, NEW_CHAT_TITLE } from "@/lib/ai/frame/title";
 
 const MAX_PROMPT_CHARS = 8_000;
 const HISTORY_WINDOW = 30;
@@ -100,7 +100,13 @@ export async function POST(req: Request) {
     await db.insert(aiChatFrames).values({
       id: frameId,
       userId: user.id,
-      title: parsed.data.prompt.slice(0, 60),
+      // The placeholder, NOT a name derived here. Naming lives in one
+      // place — the `isUnnamed` block below — and this path used to
+      // bypass it entirely with `prompt.slice(0, 60)`, which stored a
+      // raw, newline-bearing, private-60 title that the shared rule
+      // would then refuse to touch (it was not the placeholder, so
+      // nothing ever renamed it).
+      title: NEW_CHAT_TITLE,
       entryPoint: "UNKNOWN",
       knowledgeMode: parseKnowledgeMode(parsed.data.knowledgeMode),
     });
@@ -313,6 +319,16 @@ export async function POST(req: Request) {
           content: `⚠️ ${message} (${kind})`,
           metadata: { error: true, kind },
         });
+        // A frame whose only turn failed is an empty frame. Keep the
+        // error row (the client is streaming it) but drop the frame
+        // from the list — the sidebar would otherwise fill with
+        // "New chat" rows that can never be reopened to anything.
+        // `historyRows` is this frame's full history INCLUDING the
+        // just-inserted user message, so length <= 1 means this turn
+        // was the frame's first.
+        if (historyRows.length <= 1) {
+          await db.delete(aiChatFrames).where(eq(aiChatFrames.id, frameId));
+        }
         send({ type: "error", kind, message });
       } finally {
         ctrlStream.close();

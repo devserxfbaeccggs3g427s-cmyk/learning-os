@@ -72,19 +72,29 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
     const finalText = stream.error
       ? `⚠️ ${stream.error.message} (${stream.error.kind})`
       : stream.text;
+    // A failed turn is this conversation's ONLY turn when no assistant
+    // message came before it — the server deleted that row rather than
+    // keep an empty conversation. Take the orphaned question back out
+    // so it isn't replayed into whatever the next message mints; the
+    // error itself stays on screen.
+    const orphan = !!stream.error && !messages.some((m) => m.role === "assistant");
+
     if (finalText) {
+      const text = finalText;
       setMessages((cur) => {
-        const copy = [...cur];
+        const copy = orphan ? cur.slice(0, -1) : [...cur];
         const last = copy[copy.length - 1];
         if (last?.role === "assistant" && last.streaming) {
-          copy[copy.length - 1] = { role: "assistant", content: finalText };
-        } else if (last?.role !== "assistant" || last.content !== finalText) {
-          copy.push({ role: "assistant", content: finalText });
+          copy[copy.length - 1] = { role: "assistant", content: text };
+        } else if (last?.role !== "assistant" || last.content !== text) {
+          copy.push({ role: "assistant", content: text });
         }
         return copy;
       });
     }
-    if (stream.conversationId && stream.conversationId !== conversationId) {
+    if (orphan) {
+      setConversationId(null);
+    } else if (stream.conversationId && stream.conversationId !== conversationId) {
       setConversationId(stream.conversationId);
       refresh();
     }

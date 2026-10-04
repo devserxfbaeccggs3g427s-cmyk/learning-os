@@ -40,8 +40,16 @@ export async function GET(req: Request) {
       taskId: aiConversations.taskId,
       createdAt: aiConversations.createdAt,
       updatedAt: aiConversations.updatedAt,
+      // Same fix as the frame list route: an interpolated column
+      // renders inside the subquery as the bare, unqualified `"id"`,
+      // which Postgres resolves against the INNER scope —
+      // ai_messages.id. The predicate compared a message id to itself
+      // and was never true, so every conversation read "0 messages".
+      // `sql.raw` keeps the reference qualified to the outer table.
+      // Cast to int as well: COUNT(*) is bigint, which postgres-js
+      // hands back as a JSON *string*.
       messageCount: sql<number>`(
-        SELECT COUNT(*) FROM ai_messages m WHERE m.conversation_id = ${aiConversations.id}
+        SELECT CAST(COUNT(*) AS int) FROM ai_messages m WHERE m.conversation_id = ${sql.raw("ai_conversations.id")}
       )`,
     })
     .from(aiConversations)
