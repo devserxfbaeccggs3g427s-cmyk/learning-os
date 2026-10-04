@@ -240,10 +240,36 @@ Coming soon — the schema is designed for full snapshot export via `Application
 | `npm run build` | Production build |
 | `npm start` | Run production build |
 | `npm run typecheck` | TypeScript strict check |
-| `npm run db:migrate` | Apply Drizzle migrations |
+| `npm run db:migrate` | Apply Drizzle migrations — **currently broken**, see below |
+| `npm run db:apply -- <file.sql>` | Apply one hand-written migration (use this one) |
 | `npm run db:seed` | Seed sample roadmap + today |
 | `npm run db:studio` | Open Drizzle Studio |
 | `npm run test` | Run Vitest |
+
+### Migrations
+
+`npm run db:migrate` **does not work in this repo.** Drizzle's migrator
+reads `drizzle/meta/_journal.json`, and `drizzle/meta/` is gitignored
+(see `.gitignore`) and absent from disk and from git history — so the
+command fails immediately with `Can't find meta/_journal.json file`.
+The existing tables were applied by hand; there is no
+`drizzle.__drizzle_migrations` table in the database either.
+
+Apply new migrations by hand instead:
+
+```bash
+npm run db:apply -- drizzle/0002_ai_chat_frames.sql
+```
+
+`db:apply` splits on `--> statement-breakpoint` and runs the statements
+in one transaction, exactly as the Drizzle migrator would. Every
+hand-written migration should therefore be **idempotent** —
+`CREATE TABLE IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`, and
+`ADD CONSTRAINT` wrapped in `EXCEPTION WHEN duplicate_object THEN NULL` —
+so that re-running one is a no-op rather than a failure.
+
+If you ever restore `drizzle/meta/`, `db:migrate` can take over again
+and `db:apply` becomes redundant.
 
 ## License
 

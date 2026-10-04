@@ -36,6 +36,10 @@ const TABLES_IN_DELETE_ORDER: Array<[string, string]> = [
   ["aiArtifactRecords", "ai_artifact_records"],
   ["aiMessages", "ai_messages"],
   ["aiConversations", "ai_conversations"],
+  // AI chat frames — children before the frame row.
+  ["aiChatMessages", "ai_chat_messages"],
+  ["aiChatFrameSnippets", "ai_chat_frame_snippets"],
+  ["aiChatFrames", "ai_chat_frames"],
   ["quizAnswers", "quiz_answers"],
   ["quizAttempts", "quiz_attempts"],
   ["quizQuestions", "quiz_questions"],

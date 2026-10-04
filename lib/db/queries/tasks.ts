@@ -170,6 +170,100 @@ export function listTaskCodeIndex(userId: string, limit = 400) {
     { revalidate: 300, tags: [`tasks:${userId}`] },
   )();
 }
+
+/**
+ * A task WITH its study content — the projection the AI chat frame's
+ * retrieval corpus needs.
+ *
+ * Distinct from `TaskCodeIndexRow` on purpose: that one feeds the Tasks
+ * page card list, where shipping every description, deep-dive subtopic
+ * and interview question would be pure waste. Retrieval is the opposite
+ * case — a doc carrying only `code / title / status / priority` gives
+ * BM25 a token to match on but no text for the model to ground an
+ * answer on, which is what made the frame answer "no information" even
+ * with a task in scope.
+ */
+export type TaskContentRow = {
+  code: string | null;
+  title: string;
+  status: string;
+  priority: string;
+  difficulty: string | null;
+  estimatedMinutes: number;
+  moduleTitle: string;
+  trackTitle: string;
+  description: string | null;
+  whyThisMatters: string | null;
+  concepts: string[];
+  deepDiveSubtopics: string[];
+  internalsToUnderstand: string[];
+  failureScenarios: unknown[];
+  interviewQuestions: string[];
+  prerequisites: string[];
+  handsOnLab: string | null;
+  expectedOutput: string | null;
+  definitionOfDone: string | null;
+};
+
+const TASK_CONTENT_PROJECTION = {
+  code: tasks.code,
+  title: tasks.title,
+  status: tasks.status,
+  priority: tasks.priority,
+  difficulty: tasks.difficulty,
+  estimatedMinutes: tasks.estimatedMinutes,
+  moduleTitle: modules.title,
+  trackTitle: tracks.title,
+  description: tasks.description,
+  whyThisMatters: tasks.whyThisMatters,
+  concepts: tasks.concepts,
+  deepDiveSubtopics: tasks.deepDiveSubtopics,
+  internalsToUnderstand: tasks.internalsToUnderstand,
+  failureScenarios: tasks.failureScenarios,
+  interviewQuestions: tasks.interviewQuestions,
+  prerequisites: tasks.prerequisites,
+  handsOnLab: tasks.handsOnLab,
+  expectedOutput: tasks.expectedOutput,
+  definitionOfDone: tasks.definitionOfDone,
+} as const;
+
+async function _listTaskContentIndex(
+  userId: string,
+  limit: number,
+): Promise<TaskContentRow[]> {
+  return db
+    .select(TASK_CONTENT_PROJECTION)
+    .from(tasks)
+    .innerJoin(modules, eq(modules.id, tasks.moduleId))
+    .innerJoin(tracks, eq(tracks.id, modules.trackId))
+    .innerJoin(roadmaps, eq(roadmaps.id, tracks.roadmapId))
+    .where(
+      sql`${roadmaps.userId} = ${userId} and ${tasks.status} not in ('MASTERED','LEARNED')`,
+    )
+    .orderBy(asc(tasks.orderIndex))
+    .limit(limit);
+}
+
+/**
+ * Content-rich task index for AI retrieval. Same scope and ordering as
+ * {@link listTaskCodeIndex}, different columns.
+ *
+ * Tagged `tasks:${userId}` like every other task read: the entry is
+ * cached but NOT stale — writes already cover the shared
+ * `revalidateTag(`tasks:${userId}`)` convention, and a frame that
+ * quoted a task the user just finished would answer from a state that
+ * no longer exists. The separate cache key means the payload is
+ * fetched independently of the code index, not that it is exempt from
+ * invalidation.
+ */
+export function listTaskContentIndex(userId: string, limit = 400) {
+  return unstable_cache(
+    () => _listTaskContentIndex(userId, limit),
+    ["task-content-index", userId, String(limit)],
+    { revalidate: 300, tags: [`tasks:${userId}`] },
+  )();
+}
+
 async function _listHierarchy(userId: string) {
   const rms = await db
     .select({ id: roadmaps.id, title: roadmaps.title })

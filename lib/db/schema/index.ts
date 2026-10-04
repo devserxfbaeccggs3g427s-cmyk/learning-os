@@ -11,6 +11,7 @@ export * from "./schedule";
 export * from "./sessions";
 export * from "./notes";
 export * from "./ai";
+export * from "./aiFrames";
 export * from "./flashcards";
 export * from "./quizzes";
 export * from "./reviews";

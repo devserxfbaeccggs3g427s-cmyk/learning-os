@@ -2,7 +2,8 @@
 import { useEffect, useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Textarea, Badge } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
-import { Play, Pause, Square, ArrowLeft, Timer, Save, Loader2 } from "lucide-react";
+import { FrameChatDialog } from "@/components/ai/FrameChatDialog";
+import { Play, Pause, Square, ArrowLeft, Timer, Save, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 interface SessionRunnerProps {
@@ -20,6 +21,7 @@ export function SessionRunner({ session, task, initialNote, userId, blockId }: S
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState({ difficulty: 3, confidence: 3 });
   const [finishing, setFinishing] = useState(false);
+  const [frameChatOpen, setFrameChatOpen] = useState(false);
   const interval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -89,6 +91,15 @@ export function SessionRunner({ session, task, initialNote, userId, blockId }: S
             {session.objective && (
               <p className="mt-1 text-sm text-muted-foreground">Objective: {session.objective}</p>
             )}
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setFrameChatOpen(true)}
+              className="mt-2 gap-1"
+              title="Open an AI chat frame bound to this task — it can answer questions about what you're working on"
+            >
+              <Sparkles className="h-4 w-4" /> Ask AI
+            </Button>
           </div>
           <div className="text-right">
             <div className="font-mono text-3xl font-bold tabular-nums">{fmt(elapsed)}</div>
@@ -163,6 +174,19 @@ export function SessionRunner({ session, task, initialNote, userId, blockId }: S
           </div>
         </CardContent>
       </Card>
+
+      {/* The frame is BOUND to this task: the task id is stored on the
+          frame row, so the AI knows what "this task" means. It still
+          carries no schedule or cross-task context — the user picks
+          any wider knowledge scope inside the dialog. */}
+      <FrameChatDialog
+        userId={userId}
+        open={frameChatOpen}
+        onClose={() => setFrameChatOpen(false)}
+        entryPoint="START_TASK"
+        taskId={task.id}
+        taskCode={task.code}
+      />
     </div>
   );
 }

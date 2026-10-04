@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Card, CardContent, Button, Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
-import { Save, Check, Eye, Pencil, Columns2, Maximize2, Minimize2, History } from "lucide-react";
+import { FrameChatDialog } from "@/components/ai/FrameChatDialog";
+import { Save, Check, Eye, Pencil, Columns2, Maximize2, Minimize2, History, Sparkles } from "lucide-react";
 
 interface NoteEditorProps {
   userId: string;
@@ -18,6 +19,7 @@ export function NoteEditor({ userId, taskId, initialContent, initialRevision }: 
   const [savedRevision, setSavedRevision] = useState(initialRevision);
   const [saving, setSaving] = useState(false);
   const [mode, setMode] = useState<Mode>("split");
+  const [frameChatOpen, setFrameChatOpen] = useState(false);
   const [_, startTx] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -85,11 +87,26 @@ export function NoteEditor({ userId, taskId, initialContent, initialRevision }: 
             <ModeButton active={mode === "preview"} onClick={() => setMode("preview")}><Eye className="h-3 w-3" /> Preview</ModeButton>
             <ModeButton active={mode === "reading"} onClick={() => setMode("reading")}><Maximize2 className="h-3 w-3" /> Reading</ModeButton>
           </div>
+          <Button size="sm" variant="outline" onClick={() => setFrameChatOpen(true)}>
+            <Sparkles className="mr-1 h-3 w-3" /> Ask AI
+          </Button>
           <Button size="sm" variant="outline" onClick={manualSave} disabled={!isDirty || saving}>
             <Save className="mr-1 h-3 w-3" /> Save
           </Button>
         </div>
       </div>
+
+      {/* Bound to THIS task: the task id is stored on the frame row,
+          so the AI knows which task is meant. Everything wider — the
+          task index, the roadmap, other notes — still needs an
+          explicit scope choice inside the dialog. */}
+      <FrameChatDialog
+        userId={userId}
+        open={frameChatOpen}
+        onClose={() => setFrameChatOpen(false)}
+        entryPoint="NOTE_SCREEN"
+        taskId={taskId}
+      />
 
       {mode === "split" && (
         <div className="grid grid-cols-1 lg:grid-cols-2">

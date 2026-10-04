@@ -77,6 +77,10 @@ export async function POST(req: Request) {
       );
       exec(tx, "aiConversations", deleted, sql`delete from ai_conversations where user_id = ${uid}`);
       exec(tx, "aiArtifactRecords", deleted, sql`delete from ai_artifact_records where user_id = ${uid}`);
+      // AI chat frames: snippets and messages cascade from the frame
+      // row, so deleting the frames is enough. Frames are conversation
+      // content, so they clear with `content`, not with `progress`.
+      exec(tx, "aiChatFrames", deleted, sql`delete from ai_chat_frames where user_id = ${uid}`);
       exec(tx, "noteRevisions", deleted, sql`delete from note_revisions`);
       exec(tx, "taskNotes", deleted, sql`delete from task_notes where user_id = ${uid}`);
       exec(tx, "masteryRecords", deleted, sql`delete from mastery_records where user_id = ${uid}`);
@@ -97,6 +101,10 @@ export async function POST(req: Request) {
         ["aiArtifactRecords", "ai_artifact_records"],
         ["aiMessages", "ai_messages"],
         ["aiConversations", "ai_conversations"],
+        // Children first — these cascade from ai_chat_frames.
+        ["aiChatMessages", "ai_chat_messages"],
+        ["aiChatFrameSnippets", "ai_chat_frame_snippets"],
+        ["aiChatFrames", "ai_chat_frames"],
         ["quizAnswers", "quiz_answers"],
         ["quizAttempts", "quiz_attempts"],
         ["quizQuestions", "quiz_questions"],

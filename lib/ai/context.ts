@@ -14,6 +14,7 @@ import { tasks, taskNotes, taskDependencies, modules, tracks } from "@/lib/db/sc
 import { getTodayView } from "@/lib/db/queries/schedule";
 import { listTaskCodeIndex } from "@/lib/db/queries/tasks";
 import { listRoadmaps, getRoadmapTree } from "@/lib/db/queries/roadmap";
+import { clamp } from "@/lib/ai/text-budget";
 
 export interface ContextSection {
   label:
@@ -51,10 +52,13 @@ export const defaultContextOptions: ContextOptions = {
   budgetChars: 12_000,
 };
 
-export function clamp(s: string, max: number): string {
-  if (!max || s.length <= max) return s;
-  return `${s.slice(0, max)}\n\n[... truncated at ${max} characters ...]`;
-}
+/**
+ * Text clamp lives in `lib/ai/text-budget` (a leaf module) so the
+ * AI chat frame feature can reuse it without importing this file's
+ * task/roadmap query builders. Re-exported here so every existing
+ * call site keeps working.
+ */
+export { clamp } from "@/lib/ai/text-budget";
 
 /** Render context sections into a single source-aware Markdown block. */
 export function renderContext(sections: ContextSection[]): string {
