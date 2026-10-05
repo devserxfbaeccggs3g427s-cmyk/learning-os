@@ -7,10 +7,10 @@
  * listTasks() now JOINs the hierarchy in a single query so the page does
  * NOT need a separate listHierarchy() round-trip.
  */
-import { and, asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db/client";
-import { tasks, modules, tracks, roadmaps } from "@/lib/db/schema";
+import { tasks, modules, tracks, roadmaps, studyBlocks, schedules } from "@/lib/db/schema";
 
 const TASK_CARD_PROJECTION = {
   id: tasks.id,
@@ -122,6 +122,127 @@ export function listTasks(input: ListTasksInput) {
  * tracks / modules (e.g. task-creation forms). The /tasks list view no
  * longer needs this — listTasks() now JOINs the breadcrumb in.
  */
+
+// ----------------------------------------------------------------------------
+// Scheduled tasks — the /tasks page's date-grouped view
+// ----------------------------------------------------------------------------
+
+/**
+ * One study block, the way the Today screen shows it: a timed unit of work
+ * (`09:00–10:30 LEARN`) that hangs off a task. `taskId` is nullable — a
+ * block can exist without a task, and the UI flags those as "No task".
+ */
+export type ScheduledBlock = {
+  id: string;
+  date: string;
+  type: string;
+  title: string;
+  objective: string | null;
+  deliverable: string | null;
+  startMinute: number;
+  durationMinutes: number;
+  status: string;
+  taskId: string | null;
+  taskCode: string | null;
+  taskTitle: string | null;
+  taskStatus: string | null;
+  taskPriority: string | null;
+};
+
+export type ScheduledDay = {
+  date: string;
+  objective: string | null;
+  blocks: ScheduledBlock[];
+};
+
+export type ListScheduledBlocksInput = {
+  userId: string;
+  /** Inclusive ISO start of the window. */
+  from: string;
+  to: string;
+  /** TASK_STATUSES value — keeps only blocks whose task has this status. */
+  status?: string;
+};
+
+async function _listScheduledBlocks(input: ListScheduledBlocksInput): Promise<ScheduledDay[]> {
+  const conds = [sql`${schedules.userId} = ${input.userId}`];
+  // Status filtering goes through the task, not the block: `tasks` is LEFT
+  // JOINed (so task-less blocks still show up), so a `where tasks.status = …`
+  // would silently drop them. NULL never equals a status, which is what we
+  // want — a filtered view should only show real tasks in that state.
+  if (input.status) conds.push(eq(tasks.status, input.status));
+
+  const rows = await db
+    .select({
+      date: schedules.date,
+      objective: schedules.objective,
+      blockId: studyBlocks.id,
+      type: studyBlocks.type,
+      blockTitle: studyBlocks.title,
+      blockObjective: studyBlocks.objective,
+      deliverable: studyBlocks.deliverable,
+      startMinute: studyBlocks.startMinute,
+      durationMinutes: studyBlocks.durationMinutes,
+      blockStatus: studyBlocks.status,
+      taskId: studyBlocks.taskId,
+      taskCode: tasks.code,
+      taskTitle: tasks.title,
+      taskStatus: tasks.status,
+      taskPriority: tasks.priority,
+    })
+    .from(schedules)
+    .innerJoin(studyBlocks, eq(studyBlocks.scheduleId, schedules.id))
+    .leftJoin(tasks, eq(tasks.id, studyBlocks.taskId))
+    .where(and(gte(schedules.date, input.from), lte(schedules.date, input.to), ...conds))
+    .orderBy(asc(schedules.date), asc(studyBlocks.startMinute));
+
+  // One schedule row per (user, date) by design, so grouping by date is
+  // safe — but the objective rides on every block row, so take it from the
+  // first row of each group rather than a separate lookup.
+  const byDate = new Map<string, ScheduledDay>();
+  for (const r of rows) {
+    const day = byDate.get(r.date) ?? { date: r.date, objective: r.objective, blocks: [] };
+    day.blocks.push({
+      id: r.blockId,
+      date: r.date,
+      type: r.type,
+      title: r.blockTitle,
+      objective: r.blockObjective,
+      deliverable: r.deliverable,
+      startMinute: r.startMinute,
+      durationMinutes: r.durationMinutes,
+      status: r.blockStatus,
+      taskId: r.taskId,
+      taskCode: r.taskCode,
+      taskTitle: r.taskTitle,
+      taskStatus: r.taskStatus,
+      taskPriority: r.taskPriority,
+    });
+    byDate.set(r.date, day);
+  }
+  return [...byDate.values()];
+}
+
+/**
+ * Every study block in [from, to], grouped by calendar day and ordered by
+ * start time — the same shape the Today screen renders for a single date,
+ * widened to a window.
+ *
+ * Distinct from `listTasks`, which answers "every task in the roadmap".
+ * This one answers "what am I supposed to do, and when" — driven by
+ * `study_blocks`/`schedules`, so a task with no blocks is invisible here by
+ * design; that view lives on /roadmap.
+ *
+ * No EXISTS scope: the schedule rows already carry `user_id`, so filtering
+ * by that is both cheaper and sufficient.
+ */
+export function listScheduledBlocks(input: ListScheduledBlocksInput) {
+  return unstable_cache(
+    () => _listScheduledBlocks(input),
+    ["tasks-scheduled-blocks", input.userId, input.from, input.to, input.status ?? "ALL"],
+    { revalidate: 60, tags: [`schedule:${input.userId}`] },
+  )();
+}
 
 /**
  * Compact code → title index for the AI global chat.

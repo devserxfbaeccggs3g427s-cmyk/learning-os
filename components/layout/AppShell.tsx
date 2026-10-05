@@ -22,7 +22,6 @@ const NAV: NavItem[] = [
 ];
 
 const SECONDARY: NavItem[] = [
-  { href: "/tasks", label: "All Tasks", icon: ListTree },
   { href: "/search", label: "Search", icon: Search },
 ];
 

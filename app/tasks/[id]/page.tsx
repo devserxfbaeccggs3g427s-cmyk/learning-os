@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { eq, and, inArray } from "drizzle-orm";
+import { eq, and, inArray, asc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { tasks, taskNotes, modules, tracks, taskDependencies, flashcardDecks, quizzes } from "@/lib/db/schema";
+import { tasks, taskNotes, modules, tracks, taskDependencies, flashcardDecks, quizzes, schedules, studyBlocks, blockNotes } from "@/lib/db/schema";
 import { AppShell } from "@/components/layout/AppShell";
 import { TaskWorkspace } from "@/components/tasks/TaskWorkspace";
 import { getDefaultUser } from "@/lib/ai/service";
@@ -21,7 +21,7 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
     await db.select().from(modules).where(eq(modules.id, taskRow.moduleId)).limit(1)
   )[0];
 
-  const [noteRow, deps, decks, taskQuizzes, trackRow] = await Promise.all([
+  const [noteRow, deps, decks, taskQuizzes, trackRow, blockNoteRows] = await Promise.all([
     db
       .select()
       .from(taskNotes)
@@ -34,6 +34,27 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
     moduleRow
       ? db.select().from(tracks).where(eq(tracks.id, moduleRow.trackId)).limit(1).then((r) => r[0])
       : Promise.resolve(undefined),
+    // Every study block ever scheduled for this task, with the note written
+    // during it. Notes are per-block now, so this is the task's real study
+    // history — the Notes tab is a list of these, not one shared editor.
+    db
+      .select({
+        blockId: studyBlocks.id,
+        date: schedules.date,
+        type: studyBlocks.type,
+        title: studyBlocks.title,
+        startMinute: studyBlocks.startMinute,
+        status: studyBlocks.status,
+        note: blockNotes.content,
+      })
+      .from(studyBlocks)
+      .innerJoin(schedules, eq(schedules.id, studyBlocks.scheduleId))
+      .leftJoin(
+        blockNotes,
+        and(eq(blockNotes.blockId, studyBlocks.id), eq(blockNotes.userId, user.id)),
+      )
+      .where(eq(studyBlocks.taskId, id))
+      .orderBy(asc(schedules.date), asc(studyBlocks.startMinute)),
   ]);
 
   // Round 2: dep task titles — only if we have deps.
@@ -80,6 +101,15 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
         })}
         initialNote={noteRow?.content ?? ""}
         noteRevision={noteRow?.revision ?? 0}
+        blocks={blockNoteRows.map((b) => ({
+          id: b.blockId,
+          date: b.date,
+          type: b.type,
+          title: b.title,
+          startMinute: b.startMinute,
+          status: b.status,
+          note: b.note ?? null,
+        }))}
         decks={decks.map((d) => ({
           id: d.id,
           title: d.title,

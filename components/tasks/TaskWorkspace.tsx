@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Input, Textarea } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
-import { NoteEditor } from "./NoteEditor";
-import { Save, BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft, Plus, MessageSquare } from "lucide-react";
+import { BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft, Plus, MessageSquare, Clock, FileText, CalendarDays } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
@@ -63,6 +62,17 @@ interface TaskWorkspaceProps {
   dependencies: Array<{ id: string; dependsOnTaskId: string; title: string; code: string | null }>;
   initialNote: string;
   noteRevision: number;
+  /** Every study block scheduled for this task, oldest first, each with the
+   *  note written during it (null when the block has none). */
+  blocks: Array<{
+    id: string;
+    date: string;
+    type: string;
+    title: string;
+    startMinute: number;
+    status: string;
+    note: string | null;
+  }>;
   decks: Array<{ id: string; title: string; cardCount: number; difficulty: string; focus: string; generatedBy: string | null }>;
   quizzes: Array<{ id: string; title: string; questionCount: number; difficulty: string; focus: string; generatedBy: string | null }>;
 }
@@ -175,16 +185,31 @@ export function TaskWorkspace(props: TaskWorkspaceProps) {
         </TabsContent>
 
         <TabsContent value="notes">
-          <NoteEditor
+          {/* One note per study block, not one per task — a task
+              scheduled six times in a day has six distinct notes.
+              Each block links to the calendar day where it can be
+              edited (the calendar is the note editor). */}
+          <BlockNoteList
             userId={props.userId}
-            taskId={t.id}
-            initialContent={props.initialNote}
-            initialRevision={props.noteRevision}
+            blocks={props.blocks}
+            track={props.track?.title ?? null}
+            module={props.module?.title ?? null}
           />
         </TabsContent>
 
         <TabsContent value="ai">
-          <AITutor userId={props.userId} taskId={t.id} taskTitle={t.title} note={props.initialNote} />
+          {/* AI context now includes every block note, so the
+              hint counts the real total the AI sees. */}
+          <AITutor
+            userId={props.userId}
+            taskId={t.id}
+            taskTitle={t.title}
+            note={props.initialNote}
+            noteCharCount={
+              props.initialNote.length +
+              props.blocks.reduce((s, b) => s + (b.note?.length ?? 0), 0)
+            }
+          />
         </TabsContent>
 
         <TabsContent value="flashcards">
@@ -208,6 +233,152 @@ export function TaskWorkspace(props: TaskWorkspaceProps) {
           <InterviewMode userId={props.userId} taskId={t.id} taskTitle={t.title} />
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+const TYPE_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
+  LEARN: BookOpen,
+  DEEP_DIVE: Microscope,
+  LAB: FlaskConical,
+  FAILURE_DRILL: ShieldAlert,
+  DEBUG_DRILL: ShieldAlert,
+  INTERVIEW: MessageCircleQuestion,
+  REVIEW: BrainCircuit,
+  SYSTEM_DESIGN: BrainCircuit,
+  RECALL: BrainCircuit,
+};
+
+function fmtMinute(min: number): string {
+  return `${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`;
+}
+
+/**
+ * The task's study history: one row per study block, expandable to its note.
+ * Grouped by date so a week of Tuesday/Thursday sessions reads as weeks, not
+ * a flat pile.
+ */
+function BlockNoteList({
+  userId,
+  blocks,
+  track,
+  module,
+}: {
+  userId: string;
+  blocks: TaskWorkspaceProps["blocks"];
+  track: string | null;
+  module: string | null;
+}) {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const byDate = useMemo(() => {
+    const m = new Map<string, TaskWorkspaceProps["blocks"]>();
+    for (const b of blocks) {
+      const arr = m.get(b.date) ?? [];
+      arr.push(b);
+      m.set(b.date, arr);
+    }
+    return Array.from(m.entries());
+  }, [blocks]);
+
+  if (blocks.length === 0) {
+    return (
+      <Card>
+        <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
+          <Clock className="h-8 w-8 text-muted-foreground" />
+          <h3 className="font-semibold">Chưa có study block nào cho task này</h3>
+          <p className="max-w-md text-sm text-muted-foreground">
+            Notes được gắn vào từng study block. Hãy{" "}
+            <Link href="/calendar" className="underline">
+              lên lịch task này
+            </Link>{" "}
+            trên calendar, rồi Start session — note sẽ hiện ở đây.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <FileText className="h-4 w-4" />
+        <span>
+          <span className="font-semibold text-foreground">{blocks.length}</span> study block
+          {blocks.length > 1 ? "s" : ""} ·{" "}
+          <span className="font-semibold text-foreground">
+            {blocks.filter((b) => b.note?.trim()).length}
+          </span>{" "}
+          có note
+          {track && module && (
+            <span className="ml-2 text-xs">
+              · {track} › {module}
+            </span>
+          )}
+        </span>
+      </div>
+
+      {byDate.map(([date, dayBlocks]) => (
+        <Card key={date} className="overflow-hidden">
+          <CardHeader className="border-b border-border bg-muted/20 py-2">
+            <div className="flex items-center gap-2 text-sm">
+              <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="font-semibold">{date}</span>
+              <span className="text-xs text-muted-foreground">
+                · {dayBlocks.length} block{dayBlocks.length > 1 ? "s" : ""}
+              </span>
+              <Link
+                href="/calendar"
+                className="ml-auto text-xs text-primary hover:underline"
+                title="Open the calendar to edit this block's note"
+              >
+                Open in calendar
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-1 p-2">
+            {dayBlocks.map((b) => {
+              const Icon = TYPE_ICON[b.type] ?? BookOpen;
+              const isOpen = openId === b.id;
+              const hasNote = !!b.note?.trim();
+              return (
+                <div key={b.id} className="rounded-md border border-border">
+                  <button
+                    onClick={() => setOpenId(isOpen ? null : b.id)}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent"
+                  >
+                    <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {fmtMinute(b.startMinute)}
+                    </span>
+                    <span className="flex-1 truncate">{b.title}</span>
+                    <Badge className="text-[9px] uppercase">{b.status}</Badge>
+                    {hasNote ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-primary">
+                        <FileText className="h-3 w-3" /> note
+                      </span>
+                    ) : (
+                      <span className="text-[10px] italic text-muted-foreground">no note</span>
+                    )}
+                  </button>
+                  {isOpen && (
+                    <div className="border-t border-border bg-muted/10 p-3">
+                      {hasNote ? (
+                        <div className="text-sm leading-6">
+                          <MarkdownRenderer source={b.note as string} />
+                        </div>
+                      ) : (
+                        <p className="text-xs italic text-muted-foreground">
+                          Block này chưa có note. Mở calendar và Start session để ghi.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

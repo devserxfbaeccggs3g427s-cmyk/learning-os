@@ -10,7 +10,7 @@
 import { and, eq, asc, gte, lte, inArray } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db/client";
-import { schedules, studyBlocks, tasks } from "@/lib/db/schema";
+import { schedules, studyBlocks, tasks, blockNotes } from "@/lib/db/schema";
 
 const TASK_REF_PROJECTION = {
   id: tasks.id,
@@ -27,8 +27,23 @@ const BLOCK_LIST_PROJECTION = {
   startMinute: studyBlocks.startMinute,
   durationMinutes: studyBlocks.durationMinutes,
   status: studyBlocks.status,
-  // objective + deliverable intentionally excluded — calendar/today list
-  // don't render them. Detail view can fetch the full block separately.
+  // objective + deliverable intentionally excluded — the Today list doesn't
+  // render them. The calendar detail panel does, and it reads these from
+  // CALENDAR_BLOCK_PROJECTION instead.
+} as const;
+
+/**
+ * The calendar's block shape. Carries objective/deliverable plus the joined
+ * task reference and a note flag so the grid can render a complete detail
+ * panel without a second round-trip per click.
+ *
+ * A 28-day window is ~170 blocks, so pulling two short text columns costs
+ * nothing measurable next to the per-click fetch it replaces.
+ */
+const CALENDAR_BLOCK_PROJECTION = {
+  ...BLOCK_LIST_PROJECTION,
+  objective: studyBlocks.objective,
+  deliverable: studyBlocks.deliverable,
 } as const;
 
 export type CalendarBlock = {
@@ -42,9 +57,17 @@ export type CalendarBlock = {
   status: string;
 };
 
+export type CalendarBlockDetail = CalendarBlock & {
+  objective: string | null;
+  deliverable: string | null;
+  taskCode: string | null;
+  taskTitle: string | null;
+  hasNote: boolean;
+};
+
 export type CalendarEntry = {
   schedule: { id: string; date: string; objective: string | null };
-  blocks: CalendarBlock[];
+  blocks: CalendarBlockDetail[];
 };
 
 async function _getCalendarRange(userId: string, start: string, end: string): Promise<CalendarEntry[]> {
@@ -66,15 +89,40 @@ async function _getCalendarRange(userId: string, start: string, end: string): Pr
 
   const scheduleIds = rows.map((r) => r.id);
   const blocks = await db
-    .select(BLOCK_LIST_PROJECTION)
+    .select(CALENDAR_BLOCK_PROJECTION)
     .from(studyBlocks)
     .where(inArray(studyBlocks.scheduleId, scheduleIds))
     .orderBy(asc(studyBlocks.startMinute));
 
-  const blocksBySchedule = new Map<string, CalendarBlock[]>();
+  // Two batched follow-ups instead of per-block lookups: task titles for the
+  // detail panel, and which blocks already have a note (the FileText dot).
+  const taskIds = Array.from(new Set(blocks.map((b) => b.taskId).filter(Boolean) as string[]));
+  const taskMap = new Map<string, { id: string; title: string; code: string | null }>();
+  if (taskIds.length > 0) {
+    const taskRows = await db.select(TASK_REF_PROJECTION).from(tasks).where(inArray(tasks.id, taskIds));
+    for (const t of taskRows) taskMap.set(t.id, t);
+  }
+
+  const blockIds = blocks.map((b) => b.id);
+  const notedBlockIds = new Set<string>();
+  if (blockIds.length > 0) {
+    const noteRows = await db
+      .select({ blockId: blockNotes.blockId })
+      .from(blockNotes)
+      .where(and(inArray(blockNotes.blockId, blockIds), eq(blockNotes.userId, userId)));
+    for (const n of noteRows) notedBlockIds.add(n.blockId);
+  }
+
+  const blocksBySchedule = new Map<string, CalendarBlockDetail[]>();
   for (const b of blocks) {
+    const detail: CalendarBlockDetail = {
+      ...b,
+      taskCode: b.taskId ? (taskMap.get(b.taskId)?.code ?? null) : null,
+      taskTitle: b.taskId ? (taskMap.get(b.taskId)?.title ?? null) : null,
+      hasNote: notedBlockIds.has(b.id),
+    };
     const arr = blocksBySchedule.get(b.scheduleId) ?? [];
-    arr.push(b);
+    arr.push(detail);
     blocksBySchedule.set(b.scheduleId, arr);
   }
 

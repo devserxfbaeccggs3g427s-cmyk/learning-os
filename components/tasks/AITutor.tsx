@@ -17,6 +17,10 @@ interface AITutorProps {
   taskId: string;
   taskTitle: string;
   note: string;
+  /** Total note characters the AI actually sees. Notes now live on study
+   *  blocks, so this counts block notes too — reading `note.length` alone
+   *  would report 0 for a user who only ever writes in sessions. */
+  noteCharCount?: number;
 }
 
 interface ChatMsg {
@@ -38,7 +42,7 @@ function buildChatContext(messages: ChatMsg[]): string {
   return `…${joined.slice(-MAX_TRANSCRIPT_CHARS)}`;
 }
 
-export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
+export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITutorProps) {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<string | null>(null);
@@ -181,7 +185,7 @@ export function AITutor({ userId, taskId, taskTitle, note }: AITutorProps) {
         {/* Notes context hint */}
         <div className="shrink-0 border-t border-border bg-muted/20 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
           <p>
-            <span className="font-semibold text-foreground">{note.length}</span> chars of notes available as context. Conversations auto-save per task.
+            <span className="font-semibold text-foreground">{noteCharCount ?? note.length}</span> chars of notes available as context. Conversations auto-save per task.
           </p>
         </div>
       </Card>

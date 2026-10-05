@@ -28,7 +28,7 @@
  */
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { tasks, roadmaps, taskNotes, aiChatFrameSnippets } from "@/lib/db/schema";
+import { tasks, roadmaps, taskNotes, blockNotes, studyBlocks, schedules, aiChatFrameSnippets } from "@/lib/db/schema";
 import { listTaskContentIndex } from "@/lib/db/queries/tasks";
 import { getRoadmapTree } from "@/lib/db/queries/roadmap";
 import { buildTaskContext } from "@/lib/ai/context";
@@ -191,7 +191,38 @@ async function buildNoteDocs(userId: string, query: string): Promise<KnowledgeDo
     .where(where)
     .limit(MAX_NOTE_DOCS);
 
-  return rows.map((r) => ({
+  // Block notes are the primary store now (one note per study block), so the
+  // corpus must read them too — otherwise searching for something the user
+  // wrote during a session finds nothing. Each becomes its own document
+  // labelled with when it was written, because six blocks on one day are six
+  // distinct notes, not one.
+  const blockBase = and(
+    eq(blockNotes.userId, userId),
+    sql`length(${blockNotes.content}) > 0`,
+  );
+  const blockWhere =
+    terms.length > 0
+      ? and(blockBase, sql`${blockNotes.content} ILIKE ${"%".concat(escapeLike(terms[0]!), "%")}`)
+      : blockBase;
+
+  const blockRows = await db
+    .select({
+      id: blockNotes.id,
+      content: blockNotes.content,
+      code: tasks.code,
+      title: tasks.title,
+      date: schedules.date,
+      startMinute: studyBlocks.startMinute,
+      blockTitle: studyBlocks.title,
+    })
+    .from(blockNotes)
+    .innerJoin(studyBlocks, eq(studyBlocks.id, blockNotes.blockId))
+    .innerJoin(schedules, eq(schedules.id, studyBlocks.scheduleId))
+    .leftJoin(tasks, eq(tasks.id, studyBlocks.taskId))
+    .where(blockWhere)
+    .limit(MAX_NOTE_DOCS);
+
+  const taskDocs: KnowledgeDoc[] = rows.map((r) => ({
     id: `note:${r.id}`,
     label: `NOTE · ${r.code ?? r.title ?? "untitled"}`,
     kind: "NOTE" as const,
@@ -199,6 +230,35 @@ async function buildNoteDocs(userId: string, query: string): Promise<KnowledgeDo
     title: r.title ?? undefined,
     body: clamp(r.content, MAX_NOTE_CHARS),
   }));
+
+  const blockDocs: KnowledgeDoc[] = blockRows.map((r) => {
+    const hhmm = `${String(Math.floor(r.startMinute / 60)).padStart(2, "0")}:${String(r.startMinute % 60).padStart(2, "0")}`;
+    return {
+      id: `block-note:${r.id}`,
+      label: `BLOCK NOTE · ${r.date} ${hhmm} · ${r.code ?? r.title ?? "untitled"}`,
+      kind: "NOTE" as const,
+      code: r.code,
+      title: r.title ?? undefined,
+      // Date + time in the body, not just the label: BM25 matches on the
+      // body, and "what did I write on Tuesday" is a date question.
+      body: clamp(`(${r.date} ${hhmm} — ${r.blockTitle})\n${r.content}`, MAX_NOTE_CHARS),
+    };
+  });
+
+  // Interleave rather than append: task notes are legacy and mostly empty
+  // now, so appending would let them crowd out real block notes under
+  // MAX_NOTE_DOCS.
+  return interleave(taskDocs, blockDocs);
+}
+
+/** Round-robin merge, capped at MAX_NOTE_DOCS, so neither source is starved. */
+function interleave(a: KnowledgeDoc[], b: KnowledgeDoc[]): KnowledgeDoc[] {
+  const out: KnowledgeDoc[] = [];
+  for (let i = 0; out.length < MAX_NOTE_DOCS && (i < a.length || i < b.length); i++) {
+    if (i < a.length) out.push(a[i]!);
+    if (out.length < MAX_NOTE_DOCS && i < b.length) out.push(b[i]!);
+  }
+  return out;
 }
 
 /**

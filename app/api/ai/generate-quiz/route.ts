@@ -48,7 +48,7 @@ export async function POST(req: Request) {
   // Build the source-aware context. We always fetch task + roadmap data so
   // the AI knows the topic even when notes are empty (the previous behavior
   // was: notes empty → "(no source provided)" → generic, off-topic quiz).
-  const { taskRow, noteRow, contextMd } = await buildTaskContext({
+  const { taskRow, noteSource, contextMd } = await buildTaskContext({
     userId: user.id,
     taskId: parsed.data.taskId,
     budgetChars: AI_GENERATION.contextBudget.notesChars,
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
   } else if (parsed.data.source === "NOTE_ONLY" || parsed.data.source === "NOTES_AND_AI") {
     // Prefer the user's notes; fall back to the assembled task+roadmap
     // context when notes are empty so the AI still stays on-topic.
-    source = noteRow?.content?.trim() ? noteRow.content : contextMd;
+    source = noteSource ? noteSource : contextMd;
   }
   source = clamp(source, AI_GENERATION.contextBudget.notesChars);
 

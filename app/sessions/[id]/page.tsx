@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { studySessions, tasks, taskNotes } from "@/lib/db/schema";
+import { studySessions, tasks, blockNotes, taskNotes } from "@/lib/db/schema";
 import { AppShell } from "@/components/layout/AppShell";
 import { SessionRunner } from "@/components/sessions/SessionRunner";
 import { getDefaultUser } from "@/lib/ai/service";
@@ -14,10 +14,24 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   const session = (await db.select().from(studySessions).where(eq(studySessions.id, id)).limit(1))[0];
   if (!session) notFound();
 
-  // Task + note both depend only on session.taskId → run in parallel.
-  const [task, note] = await Promise.all([
+  // Task, block note, and (for block-less sessions) the task note all hang
+  // off the session row alone → one parallel round-trip. Block notes are
+  // the primary store: the session was started from a block, so its notes
+  // belong to that block, not to the task as a whole.
+  const [task, blockNote, taskNote] = await Promise.all([
     db.select().from(tasks).where(eq(tasks.id, session.taskId)).limit(1).then((r) => r[0]),
-    db.select().from(taskNotes).where(eq(taskNotes.taskId, session.taskId)).limit(1).then((r) => r[0]),
+    session.blockId
+      ? db
+          .select()
+          .from(blockNotes)
+          .where(eq(blockNotes.blockId, session.blockId))
+          .limit(1)
+          .then((r) => r[0])
+      : Promise.resolve(undefined),
+    // Only loaded when there's no block to attach to; otherwise unused.
+    session.blockId
+      ? Promise.resolve(undefined)
+      : db.select().from(taskNotes).where(eq(taskNotes.taskId, session.taskId)).limit(1).then((r) => r[0]),
   ]);
   if (!task) notFound();
 
@@ -41,7 +55,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
           title: task.title,
           description: task.description,
         }}
-        initialNote={note?.content ?? ""}
+        initialNote={blockNote?.content ?? taskNote?.content ?? ""}
       />
     </AppShell>
   );

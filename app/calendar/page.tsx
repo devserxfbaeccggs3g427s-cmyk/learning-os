@@ -1,10 +1,10 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import { getDefaultUser } from "@/lib/ai/service";
 import { CalendarDays } from "lucide-react";
 import { getStudyDate, getRealToday, isStudyDateOverridden } from "@/lib/utils/study-date";
-import { cn } from "@/lib/utils/cn";
 import { getCalendarRange } from "@/lib/db/queries/schedule";
+import { CalendarGrid, type CalendarDay } from "@/components/calendar/CalendarGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,8 @@ function fmtDate(d: Date) {
 
 export default async function CalendarPage() {
   const user = await getDefaultUser();
-  const today = new Date((await getStudyDate()) + "T00:00:00Z");
+  const studyDate = await getStudyDate();
+  const today = new Date(studyDate + "T00:00:00Z");
   const start = new Date(today);
   start.setUTCDate(start.getUTCDate() - 7);
   const end = new Date(today);
@@ -23,71 +24,50 @@ export default async function CalendarPage() {
   const startStr = fmtDate(start);
   const endStr = fmtDate(end);
 
-  // One round-trip per shape (schedules + filtered blocks). No 2000-row
-  // studyBlocks scan, no N+1.
+  // One round-trip per shape (schedules + filtered blocks + tasks + note
+  // flags). No 2000-row studyBlocks scan, no N+1.
   const entries = await getCalendarRange(user.id, startStr, endStr);
 
-  const blocksByDate = new Map<string, typeof entries[number]["blocks"]>();
+  // Days are generated for the whole window, not just days that have a
+  // schedule row — an empty column is a valid drop target, and hiding it
+  // would make "move this to Tuesday" impossible for an unscheduled day.
+  const blocksByDate = new Map<string, CalendarDay["blocks"]>();
+  const objectiveByDate = new Map<string, string | null>();
   for (const e of entries) {
     blocksByDate.set(e.schedule.date, e.blocks);
+    objectiveByDate.set(e.schedule.date, e.schedule.objective);
   }
 
-  const days: Date[] = [];
+  const days: CalendarDay[] = [];
   for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
-    days.push(new Date(d));
+    const key = fmtDate(d);
+    days.push({
+      date: key,
+      objective: objectiveByDate.get(key) ?? null,
+      blocks: blocksByDate.get(key) ?? [],
+    });
   }
   const overridden = await isStudyDateOverridden();
   const realToday = getRealToday();
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-6xl space-y-6 p-4 lg:p-8">
+      <div className="mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
         <header>
           <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
             <CalendarDays className="h-6 w-6 text-primary" /> Calendar
           </h1>
           <p className="text-sm text-muted-foreground">
-            4 weeks view {overridden ? `(đang highlight ${fmtDate(today)}; real hôm nay ${realToday})` : ""}.
-            Use Today page&apos;s &quot;Đổi ngày&quot; để xem lịch ngày khác.
+            Click một block để xem chi tiết và ghi note · kéo block sang ngày/giờ khác để dời lịch.
+            {overridden && (
+              <Badge className="ml-2 bg-amber-500/10 text-amber-700">
+                đang highlight {studyDate} · real hôm nay {realToday}
+              </Badge>
+            )}
           </p>
         </header>
-        <div className="grid gap-2 sm:grid-cols-7">
-          {days.map((d) => {
-            const key = fmtDate(d);
-            const dayBlocks = blocksByDate.get(key) ?? [];
-            const isStudyDate = fmtDate(today) === key;
-            const isRealToday = realToday === key;
-            return (
-              <Card key={key} className={cn(isStudyDate ? "border-primary/60 ring-2 ring-primary/20" : "")}>
-                <CardHeader className="px-3 py-2">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{d.toLocaleDateString(undefined, { weekday: "short" })}</span>
-                    <span className="flex items-center gap-1">
-                      {isRealToday && !isStudyDate && (
-                        <span className="rounded-full bg-muted px-1.5 text-[9px]">today</span>
-                      )}
-                      <span className="font-mono">{d.getUTCDate()}</span>
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-1 px-3 py-1">
-                  {dayBlocks.length === 0 && (
-                    <p className="text-[10px] italic text-muted-foreground">no blocks</p>
-                  )}
-                  {dayBlocks.slice(0, 4).map((b) => (
-                    <div key={b.id} className="truncate rounded bg-muted/50 px-1.5 py-1 text-[10px]">
-                      <span className="font-mono">{Math.floor(b.startMinute / 60)}:00</span>{" "}
-                      {b.title}
-                    </div>
-                  ))}
-                  {dayBlocks.length > 4 && (
-                    <Badge>+{dayBlocks.length - 4} more</Badge>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+
+        <CalendarGrid userId={user.id} days={days} today={studyDate} realToday={realToday} />
       </div>
     </AppShell>
   );

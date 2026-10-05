@@ -97,13 +97,13 @@ export async function POST(req: Request) {
   if (isTutor && parsed.data.taskId) {
     // Task source is ALWAYS included for TUTOR so follow-ups stay anchored
     // to the focused task even when chatContext is present.
-    const { taskRow, noteRow, contextMd } = await buildTaskContext({
+    const { taskRow, noteSource, contextMd } = await buildTaskContext({
       userId: user.id,
       taskId: parsed.data.taskId,
       budgetChars: 1_200,
     });
     focusedTaskTitle = taskRow?.title;
-    source = noteRow?.content?.trim() ? noteRow.content : contextMd;
+    source = noteSource ? noteSource : contextMd;
     if (!source) source = contextMd;
   } else if (!hasChat) {
     // GLOBAL + empty: include a SLIM global context (skip the full roadmap

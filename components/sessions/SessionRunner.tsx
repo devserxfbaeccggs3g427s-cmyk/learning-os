@@ -17,7 +17,10 @@ interface SessionRunnerProps {
 export function SessionRunner({ session, task, initialNote, userId, blockId }: SessionRunnerProps) {
   const [elapsed, setElapsed] = useState(session.durationSeconds);
   const [paused, setPaused] = useState(session.status === "PAUSED");
-  const [note, setNote] = useState("");
+  // Seeded from initialNote. This used to be useState("") — the prop was
+  // accepted and then ignored, so every session opened with a blank editor
+  // and finishing overwrote the stored note with whatever was typed (or "").
+  const [note, setNote] = useState(initialNote);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState({ difficulty: 3, confidence: 3 });
   const [finishing, setFinishing] = useState(false);
@@ -34,10 +37,18 @@ export function SessionRunner({ session, task, initialNote, userId, blockId }: S
 
   async function persistNote() {
     setSaving(true);
-    const r = await fetch("/api/notes/save", {
+    // A session started from a study block writes to that block's note —
+    // one note per block, so six blocks on one task no longer overwrite
+    // each other. Block-less sessions (started straight from the task
+    // page, say) still fall back to the task-level note.
+    const url = blockId ? "/api/notes/block/save" : "/api/notes/save";
+    const body = blockId
+      ? { blockId, userId, content: note }
+      : { taskId: task.id, userId, content: note };
+    const r = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ taskId: task.id, userId, content: note }),
+      body: JSON.stringify(body),
     });
     setSaving(false);
     return r.ok;
@@ -126,8 +137,14 @@ export function SessionRunner({ session, task, initialNote, userId, blockId }: S
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">Session notes</CardTitle>
-          <p className="text-xs text-muted-foreground">Saved automatically when you finish.</p>
+          <CardTitle className="text-sm">
+            {blockId ? "Block notes" : "Session notes"}
+          </CardTitle>
+          <p className="text-xs text-muted-foreground">
+            {blockId
+              ? "Attached to this study block — reopening the block later shows the same note. Saved automatically when you finish."
+              : "Saved automatically when you finish."}
+          </p>
         </CardHeader>
         <CardContent>
           <Textarea

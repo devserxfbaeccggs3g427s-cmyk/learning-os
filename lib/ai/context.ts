@@ -6,11 +6,11 @@
  * section clearly tagged so the model can keep TASK NOTE vs AI GENERAL
  * KNOWLEDGE separate.
  */
-import { eq, inArray } from "drizzle-orm";
+import { eq, and, inArray, asc } from "drizzle-orm";
 import type { TaskRow } from "@/lib/db/schema/tasks";
 import type { TaskNoteRow } from "@/lib/db/schema/notes";
 import { db } from "@/lib/db/client";
-import { tasks, taskNotes, taskDependencies, modules, tracks } from "@/lib/db/schema";
+import { tasks, taskNotes, taskDependencies, modules, tracks, schedules, studyBlocks, blockNotes } from "@/lib/db/schema";
 import { getTodayView } from "@/lib/db/queries/schedule";
 import { listTaskCodeIndex } from "@/lib/db/queries/tasks";
 import { listRoadmaps, getRoadmapTree } from "@/lib/db/queries/roadmap";
@@ -86,6 +86,15 @@ export interface AssembleContextArgs {
   /** Tasks that depend on this task (downstream). */
   dependentTasks?: Array<{ code?: string | null; title: string; status: string }>;
   note?: Pick<TaskNoteRow, "content"> | null;
+  /**
+   * Every block note written for this task, newest study date last.
+   *
+   * Block notes are the primary note store now — a task can be split into
+   * six blocks in one day, and one note per task means the sixth session
+   * overwrites the first five. Merging them into one TASK NOTE section
+   * keeps the AI grounded in what the user actually wrote today.
+   */
+  blockNotes?: Array<{ date: string; type: string; title: string; startMinute: number; status: string; content: string }>;
   flashcards?: Array<{ front: string; back: string }>;
   quizHistory?: string;
   relatedTasks?: Array<{ code?: string; title: string; status: string }>;
@@ -128,11 +137,14 @@ export function assembleContext(args: AssembleContextArgs): ContextSection[] {
       ),
     });
   }
-  if (opt.includeNotes && args.note?.content) {
-    sections.push({
-      label: "TASK NOTE",
-      content: clamp(args.note.content, opt.budgetChars),
-    });
+  if (opt.includeNotes) {
+    const noteMd = renderTaskNotes(args.note?.content ?? null, args.blockNotes ?? []);
+    if (noteMd) {
+      sections.push({
+        label: "TASK NOTE",
+        content: clamp(noteMd, opt.budgetChars),
+      });
+    }
   }
   if (opt.includeFlashcards && args.flashcards?.length) {
     sections.push({
@@ -161,6 +173,43 @@ export function assembleContext(args: AssembleContextArgs): ContextSection[] {
     sections.push({ label: "USER", content: args.userInstructions });
   }
   return sections;
+}
+
+/**
+ * Render the task's notes into one Markdown block.
+ *
+ * Block notes lead, each under its own `##` heading carrying the date, time,
+ * type and title — so the model can tell "what I wrote during the 20:05
+ * DEEP_DIVE" apart from "what I wrote during the 21:15 REVIEW" instead of
+ * reading two anonymous walls of text. The legacy task-level note (written by
+ * sessions started straight from the task page, or by the pre-block editor)
+ * is appended last under its own heading rather than dropped.
+ */
+function renderTaskNotes(
+  legacyContent: string | null,
+  blockNoteList: NonNullable<AssembleContextArgs["blockNotes"]>,
+): string {
+  const parts: string[] = [];
+
+  for (const b of blockNoteList) {
+    const content = b.content?.trim();
+    if (!content) continue; // a block that was started but never written in
+    const hhmm = `${String(Math.floor(b.startMinute / 60)).padStart(2, "0")}:${String(b.startMinute % 60).padStart(2, "0")}`;
+    parts.push(
+      `## ${b.date} ${hhmm} ${b.type} — ${b.title}${b.status && b.status !== "PLANNED" ? ` [${b.status}]` : ""}`,
+      "",
+      content,
+      "",
+    );
+  }
+
+  const legacy = legacyContent?.trim();
+  if (legacy) {
+    if (parts.length > 0) parts.push("## Task-level note (earlier)", "");
+    parts.push(legacy, "");
+  }
+
+  return parts.join("\n").trim();
 }
 
 /**
@@ -251,6 +300,9 @@ export async function buildTaskContext(args: {
 }): Promise<{
   taskRow: TaskRow | undefined;
   noteRow: Pick<TaskNoteRow, "content"> | undefined;
+  /** All note content merged (block notes + legacy task note) —
+   *  what callers want when they need "the notes" as one string. */
+  noteSource: string;
   sections: ContextSection[];
   contextMd: string;
 }> {
@@ -258,9 +310,24 @@ export async function buildTaskContext(args: {
   const budgetChars = args.budgetChars ?? 8_000;
 
   // Parallel: task row + note row + breadcrumb + dependency edges + roadmaps.
-  const [task, noteRow] = await Promise.all([
+  const [task, noteRow, blockNoteRows] = await Promise.all([
     db.select().from(tasks).where(eq(tasks.id, taskId)).limit(1).then((r) => r[0]),
     db.select().from(taskNotes).where(eq(taskNotes.taskId, taskId)).limit(1).then((r) => r[0]),
+    // Block notes via the task's blocks, ordered by when they ran.
+    db
+      .select({
+        date: schedules.date,
+        type: studyBlocks.type,
+        title: studyBlocks.title,
+        startMinute: studyBlocks.startMinute,
+        status: studyBlocks.status,
+        content: blockNotes.content,
+      })
+      .from(blockNotes)
+      .innerJoin(studyBlocks, eq(studyBlocks.id, blockNotes.blockId))
+      .innerJoin(schedules, eq(schedules.id, studyBlocks.scheduleId))
+      .where(and(eq(studyBlocks.taskId, taskId), eq(blockNotes.userId, userId)))
+      .orderBy(asc(schedules.date), asc(studyBlocks.startMinute)),
   ]);
 
   let breadcrumb: { trackTitle?: string; moduleTitle?: string } | undefined;
@@ -318,19 +385,25 @@ export async function buildTaskContext(args: {
     }
   }
 
+  const legacyNote = noteRow ? { content: noteRow.content } : null;
   const sections = assembleContext({
     taskFull: task ?? null,
     breadcrumb,
     roadmapTree,
     prereqTasks,
     dependentTasks,
-    note: noteRow ? { content: noteRow.content } : null,
+    note: legacyNote,
+    blockNotes: blockNoteRows,
     options: { budgetChars },
   });
   const contextMd = renderContext(sections);
   return {
     taskRow: task,
-    noteRow: noteRow ? { content: noteRow.content } : undefined,
+    noteRow: legacyNote ?? undefined,
+    // Same merged text, without the section wrapper — generation routes use
+    // this as the source when a task HAS notes, because it's cheaper than
+    // feeding the model the whole roadmap context.
+    noteSource: renderTaskNotes(legacyNote?.content ?? null, blockNoteRows),
     sections,
     contextMd,
   };

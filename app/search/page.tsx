@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { eq, like, or, desc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { tasks, taskNotes, flashcardDecks, quizzes, aiConversations } from "@/lib/db/schema";
+import { tasks, taskNotes, blockNotes, studyBlocks, schedules, flashcardDecks, quizzes, aiConversations } from "@/lib/db/schema";
 import { AppShell } from "@/components/layout/AppShell";
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { Search as SearchIcon, ListTree, BookOpen, ListChecks, BrainCircuit, MessageCircleQuestion } from "lucide-react";
@@ -43,7 +43,26 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     .where(or(like(tasks.title, `%${query}%`), like(tasks.code, `%${query}%`), like(tasks.description, `%${query}%`)))
     .limit(20);
 
-  const noteResults = await db.select().from(taskNotes).where(like(taskNotes.content, `%${query}%`)).limit(10);
+  // Notes come from two tables: block notes (the primary store — written
+  // during a study session on a specific day) and the older task-level note.
+  // Searching only task_notes would miss everything the user has written
+  // since notes moved onto blocks.
+  const [noteResults, blockNoteResults] = await Promise.all([
+    db.select().from(taskNotes).where(like(taskNotes.content, `%${query}%`)).limit(10),
+    db
+      .select({
+        id: blockNotes.id,
+        content: blockNotes.content,
+        date: schedules.date,
+        taskId: studyBlocks.taskId,
+        blockTitle: studyBlocks.title,
+      })
+      .from(blockNotes)
+      .innerJoin(studyBlocks, eq(studyBlocks.id, blockNotes.blockId))
+      .innerJoin(schedules, eq(schedules.id, studyBlocks.scheduleId))
+      .where(like(blockNotes.content, `%${query}%`))
+      .limit(10),
+  ]);
   const deckResults = await db.select().from(flashcardDecks).where(like(flashcardDecks.title, `%${query}%`)).limit(10);
   const quizResults = await db.select().from(quizzes).where(like(quizzes.title, `%${query}%`)).limit(10);
 
@@ -70,8 +89,24 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </ResultGroup>
 
         <ResultGroup title="Notes" icon={<BookOpen className="h-4 w-4" />} empty="No notes.">
+          {blockNoteResults.map((n) => (
+            <Link
+              key={n.id}
+              href={n.taskId ? `/tasks/${n.taskId}` : "/calendar"}
+              className="block rounded-md border border-border bg-card p-3 text-sm hover:bg-accent"
+            >
+              <span className="font-mono text-[10px] text-muted-foreground">
+                {n.date} · {n.blockTitle}
+              </span>
+              <span className="line-clamp-2 mt-0.5 whitespace-pre-wrap text-muted-foreground">{n.content.slice(0, 200)}…</span>
+              <span className="mt-1 inline-block text-xs text-primary">
+                {n.taskId ? "Open task →" : "Open calendar →"}
+              </span>
+            </Link>
+          ))}
           {noteResults.map((n) => (
             <Link key={n.id} href={`/tasks/${n.taskId}`} className="block rounded-md border border-border bg-card p-3 text-sm hover:bg-accent">
+              <span className="text-[10px] text-muted-foreground">task note</span>
               <span className="line-clamp-2 whitespace-pre-wrap text-muted-foreground">{n.content.slice(0, 200)}…</span>
               <span className="mt-1 inline-block text-xs text-primary">Open task →</span>
             </Link>
