@@ -87,7 +87,14 @@ body {
 .prose-block li { @apply my-1; }
 .prose-block blockquote { @apply border-l-4 border-border pl-3 italic my-3 text-muted-foreground; }
 .prose-block code { @apply font-mono text-xs bg-muted px-1.5 py-0.5 rounded; }
-.prose-block pre { @apply font-mono text-xs bg-muted p-3 rounded-md overflow-x-auto my-3; }
+.prose-block pre {
+  @apply font-mono text-xs p-3 rounded-md my-3;
+  max-height: min(65vh, 36rem);
+  overflow: auto;
+  color: #c9d1d9;
+  background-color: #0d1117;
+  color-scheme: dark;
+}
 .prose-block pre code { @apply bg-transparent p-0; }
 .prose-block table { @apply text-xs border-collapse my-3; }
 .prose-block th, .prose-block td { @apply border border-border px-2 py-1.5 text-left; }
