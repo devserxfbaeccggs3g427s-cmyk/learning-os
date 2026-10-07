@@ -24,7 +24,7 @@ const CreateBody = z
     // question IS the title (see the chat route). A caller may
     // pass one, but it must be non-empty and bounded.
     title: z.string().trim().min(1).max(MAX_TITLE_CHARS).optional(),
-    entryPoint: z.enum(["NOTE_SCREEN", "START_TASK", "UNKNOWN"]).default("UNKNOWN"),
+    entryPoint: z.enum(["NOTE_SCREEN", "START_TASK", "BLOCK_DETAIL", "UNKNOWN"]).default("UNKNOWN"),
     knowledgeMode: z.string().optional(),
     // The ONE task a frame is bound to. This is the only place in the
     // whole API where a task id may enter a frame — the chat and

@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { BookOpen, Clock, ExternalLink, Microscope, X } from "lucide-react";
+import { BookOpen, Clock, ExternalLink, Microscope, Sparkles, X } from "lucide-react";
 import { Badge, Button } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
+import { FrameChatDialog } from "@/components/ai/FrameChatDialog";
 import type { ScheduledBlock } from "@/lib/db/queries/tasks";
 
 function formatTime(minute: number) {
@@ -17,6 +18,7 @@ export function BlockDetailDialog({ userId, block }: { userId: string; block: Sc
   const requestRef = useRef<AbortController | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const [noteState, setNoteState] = useState<"loading" | "ready" | "error">("loading");
+  const [frameOpen, setFrameOpen] = useState(false);
   const Icon = block.type === "LEARN" ? BookOpen : Microscope;
 
   useEffect(() => () => requestRef.current?.abort(), []);
@@ -61,7 +63,15 @@ export function BlockDetailDialog({ userId, block }: { userId: string; block: Sc
         aria-labelledby={`block-detail-${block.id}`}
         onClose={() => {
           requestRef.current?.abort();
+          setFrameOpen(false);
           triggerRef.current?.focus();
+        }}
+        onCancel={(event) => {
+          // Escape khi drawer AI đang mở: đóng drawer trước, giữ popup block.
+          if (frameOpen) {
+            event.preventDefault();
+            setFrameOpen(false);
+          }
         }}
         onClick={(event) => {
           if (event.target === event.currentTarget) event.currentTarget.close();
@@ -91,14 +101,23 @@ export function BlockDetailDialog({ userId, block }: { userId: string; block: Sc
           </Button>
         </div>
         <div className="max-h-[60vh] space-y-4 overflow-y-auto p-4">
-          {block.taskId && (
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => setFrameOpen(true)}
+              title="Mở AI chat frame cho block này"
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Ask AI
+            </Button>
+            {block.taskId && (
               <Button asChild size="sm" variant="outline">
                 <Link href={`/tasks/${block.taskId}`}><ExternalLink className="h-3.5 w-3.5" /> Open task</Link>
               </Button>
-              {block.taskCode && <span className="text-xs text-muted-foreground">{block.taskCode} · {block.taskTitle}</span>}
-            </div>
-          )}
+            )}
+            {block.taskCode && <span className="text-xs text-muted-foreground">{block.taskCode} · {block.taskTitle}</span>}
+          </div>
           {block.objective && (
             <div>
               <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Objective</h3>
@@ -119,6 +138,17 @@ export function BlockDetailDialog({ userId, block }: { userId: string; block: Sc
             )}
           </div>
         </div>
+        {/* Nằm trong <dialog> để drawer AI không bị top-layer của dialog che.
+            Cả hai mở cùng lúc: đọc objective/note bên trái, hỏi AI bên phải. */}
+        <FrameChatDialog
+          userId={userId}
+          open={frameOpen}
+          onClose={() => setFrameOpen(false)}
+          entryPoint="BLOCK_DETAIL"
+          taskId={block.taskId ?? undefined}
+          taskCode={block.taskCode}
+          seedPrompt={`Giải thích block "${block.title}" (${block.type}, ${block.date})`}
+        />
       </dialog>
     </>
   );

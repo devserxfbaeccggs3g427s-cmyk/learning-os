@@ -57,6 +57,23 @@ describe("daily roadmap", () => {
     expect(page).toContain("types={types}");
   });
 
+  it("opens an AI frame from the block detail dialog without writing from that file", () => {
+    const dialog = readFileSync(join(process.cwd(), "components/roadmap/BlockDetailDialog.tsx"), "utf8");
+    const schema = readFileSync(join(process.cwd(), "lib/db/schema/aiFrames.ts"), "utf8");
+    const route = readFileSync(join(process.cwd(), "app/api/ai/frames/route.ts"), "utf8");
+
+    // Button chỉ bật state; việc tạo frame nằm hết trong FrameChatDialog.
+    expect(dialog).toContain("<FrameChatDialog");
+    expect(dialog).toContain('entryPoint="BLOCK_DETAIL"');
+    expect(dialog).toContain("<Sparkles");
+    expect(dialog).toContain("Ask AI");
+    expect(dialog).toContain("onCancel");
+    expect(dialog).not.toMatch(/method:\s*["'](?:POST|PATCH|DELETE)["']/);
+
+    expect(schema).toContain('"BLOCK_DETAIL"');
+    expect(route).toContain('"BLOCK_DETAIL"');
+  });
+
   it("groups main blocks by day and task, omitting review-only tasks, unlinked blocks and empty days", () => {
     expect(groupDailyRoadmap(days()).map((day) => ({
       date: day.date,

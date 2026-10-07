@@ -38,6 +38,13 @@ interface FrameMessage {
   content: string;
 }
 
+/** Display-only provenance label. Never used to build context. */
+const ENTRY_POINT_LABELS = {
+  NOTE_SCREEN: "opened from a note",
+  START_TASK: "opened from Start Task",
+  BLOCK_DETAIL: "opened from a block detail",
+} as const;
+
 interface FrameChatDialogProps {
   userId: string;
   open: boolean;
@@ -46,7 +53,7 @@ interface FrameChatDialogProps {
    *  reason `taskId` is expected to be set: a frame opened from a
    *  task-aware screen is bound to that task, which then joins the
    *  retrieval pool regardless of `knowledgeMode`. */
-  entryPoint: "NOTE_SCREEN" | "START_TASK";
+  entryPoint: "NOTE_SCREEN" | "START_TASK" | "BLOCK_DETAIL";
   /** The task this frame belongs to. Stored on the frame row at
    *  creation; the server validates ownership. Leave undefined for a
    *  frame that is not about any particular task. */
@@ -149,7 +156,7 @@ export function FrameChatDialog({
   // without the user choosing a scope.
   useEffect(() => {
     setPendingSeed(seedPrompt ?? null);
-  }, [seedPrompt]);
+  }, [open, seedPrompt]);
 
   useEffect(() => {
     if (!open) return;
@@ -490,7 +497,7 @@ export function FrameChatDialog({
               <div className="px-1 text-[10px] uppercase tracking-wide text-muted-foreground">
                 {taskCode
                   ? `Task ${taskCode} · this chat is about it`
-                  : `Independent context · ${entryPoint === "NOTE_SCREEN" ? "opened from a note" : "opened from Start Task"}`}
+                  : `Independent context · ${ENTRY_POINT_LABELS[entryPoint]}`}
               </div>
             </div>
           </div>

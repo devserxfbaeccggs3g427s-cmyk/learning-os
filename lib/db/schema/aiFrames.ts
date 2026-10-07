@@ -54,7 +54,7 @@ export const aiChatFrames = pgTable(
     title: text("title").notNull().default("Chat"),
     /** Where the user opened the frame from. Display-only label —
      *  NEVER used to build context. */
-    entryPoint: text("entry_point").notNull().default("UNKNOWN"), // NOTE_SCREEN | START_TASK | UNKNOWN
+    entryPoint: text("entry_point").notNull().default("UNKNOWN"), // NOTE_SCREEN | START_TASK | BLOCK_DETAIL | UNKNOWN
     knowledgeMode: text("knowledge_mode").notNull().default("NONE"),
     /** The task this frame belongs to, set only at creation by a
      *  task-aware screen. NULL for a frame opened anywhere else.
@@ -135,6 +135,7 @@ export type AIChatFrameSnippetRow = typeof aiChatFrameSnippets.$inferSelect;
 export const FRAME_ENTRY_POINTS = [
   "NOTE_SCREEN",
   "START_TASK",
+  "BLOCK_DETAIL",
   "UNKNOWN",
 ] as const;
 export type FrameEntryPoint = (typeof FRAME_ENTRY_POINTS)[number];
