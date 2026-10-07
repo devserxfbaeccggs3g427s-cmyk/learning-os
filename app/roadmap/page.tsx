@@ -4,28 +4,55 @@ import { AppShell } from "@/components/layout/AppShell";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from "@/components/ui";
 import { CardSkeleton } from "@/components/ui";
 import { getDefaultUser } from "@/lib/ai/service";
-import { TASK_STATUSES } from "@/config/domain";
+import { TASK_STATUSES, type StudyBlockType } from "@/config/domain";
 import { getRoadmapTree, listRoadmaps } from "@/lib/db/queries/roadmap";
+import { getStudyDate } from "@/lib/utils/study-date";
+import { parseDailyBlockTypes, serializeDailyBlockTypes } from "@/lib/roadmap/daily";
+import { DailyView } from "@/components/roadmap/DailyView";
 
 export const dynamic = "force-dynamic";
 
-export default async function RoadmapPage() {
-  // Both are cached → effectively instant on warm cache.
+export default async function RoadmapPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ view?: string; types?: string | string[] }>;
+}) {
   const user = await getDefaultUser();
-  const rms = await listRoadmaps(user.id);
+  const params = await searchParams;
+  const view = params.view;
 
-  if (rms.length === 0) {
+  if (view === "day") {
+    const types = parseDailyBlockTypes(params.types);
+    const studyDate = await getStudyDate();
+    const from = new Date(`${studyDate}T00:00:00Z`);
+    const to = new Date(from);
+    from.setUTCDate(from.getUTCDate() - 7);
+    to.setUTCDate(to.getUTCDate() + 21);
     return (
       <AppShell>
-        <EmptyState />
+        <div className="mx-auto max-w-4xl space-y-6 p-4 lg:p-8">
+          <RoadmapNavigation view="day" types={types} />
+          <Suspense fallback={<CardSkeleton lines={4} />}>
+            <DailyView
+              userId={user.id}
+              from={from.toISOString().slice(0, 10)}
+              to={to.toISOString().slice(0, 10)}
+              types={types}
+            />
+          </Suspense>
+        </div>
       </AppShell>
     );
   }
 
+  // Both are cached → effectively instant on warm cache.
+  const rms = await listRoadmaps(user.id);
+
   return (
     <AppShell>
       <div className="mx-auto max-w-4xl space-y-6 p-4 lg:p-8">
-        {rms.map((rm) => (
+        <RoadmapNavigation view="tree" />
+        {rms.length === 0 ? <EmptyState /> : rms.map((rm) => (
           // Each roadmap streams in independently — the first renders
           // immediately while later ones are still loading. Without the
           // boundary, one bad query would gate the whole page.
@@ -48,6 +75,20 @@ export default async function RoadmapPage() {
         ))}
       </div>
     </AppShell>
+  );
+}
+
+function RoadmapNavigation({ view, types }: { view: "tree" | "day"; types?: StudyBlockType[] }) {
+  const dayHref = types ? `/roadmap?view=day&types=${serializeDailyBlockTypes(types)}` : "/roadmap?view=day";
+  return (
+    <nav aria-label="Chế độ xem roadmap" className="flex gap-2">
+      <Button asChild size="sm" variant={view === "tree" ? "default" : "outline"}>
+        <Link href="/roadmap" aria-current={view === "tree" ? "page" : undefined}>Cây roadmap</Link>
+      </Button>
+      <Button asChild size="sm" variant={view === "day" ? "default" : "outline"}>
+        <Link href={dayHref} aria-current={view === "day" ? "page" : undefined}>Theo ngày</Link>
+      </Button>
+    </nav>
   );
 }
 
