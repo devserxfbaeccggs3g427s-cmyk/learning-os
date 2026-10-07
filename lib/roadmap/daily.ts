@@ -1,7 +1,7 @@
 import { STUDY_BLOCK_TYPES, type StudyBlockType } from "@/config/domain";
 import type { ScheduledBlock, ScheduledDay } from "@/lib/db/queries/tasks";
 
-export const DEFAULT_DAILY_BLOCK_TYPES: readonly StudyBlockType[] = ["LEARN", "DEEP_DIVE", "LAB"];
+export const DEFAULT_DAILY_BLOCK_TYPES: readonly StudyBlockType[] = ["LEARN", "DEEP_DIVE", "LAB", "FAILURE_DRILL"];
 
 export type DailyTask = {
   id: string;
