@@ -55,3 +55,15 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     messages,
   });
 }
+
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const user = await getDefaultUser();
+  const deleted = await db
+    .delete(aiConversations)
+    .where(and(eq(aiConversations.id, id), eq(aiConversations.userId, user.id)))
+    .returning({ id: aiConversations.id });
+
+  if (deleted.length === 0) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json({ ok: true });
+}

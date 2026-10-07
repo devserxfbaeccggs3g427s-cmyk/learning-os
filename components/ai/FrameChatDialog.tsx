@@ -97,6 +97,8 @@ export function FrameChatDialog({
   const [frameTitle, setFrameTitle] = useState("New chat");
   const [list, setList] = useState<FrameSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [deletingFrameId, setDeletingFrameId] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   // Inline rename: the header title becomes a text input on click.
   // Editing is tracked separately from `frameTitle` so an in-progress
   // keystroke never round-trips to the server — only commit does that.
@@ -123,6 +125,7 @@ export function FrameChatDialog({
     setShowHistory(false);
     setEditingTitle(false);
     setDraftTitle("");
+    setDeleteError(null);
   }, [open]);
 
   // Lazily load the frame list once per open so the history
@@ -331,12 +334,23 @@ export function FrameChatDialog({
     setList((cur) => cur.map((f) => (f.id === frameId ? { ...f, title: next } : f)));
   }
 
-  async function deleteFrame() {
-    if (!frameId) return;
-    const r = await fetch(`/api/ai/frames/${encodeURIComponent(frameId)}`, { method: "DELETE" });
-    if (!r.ok) return;
-    setList((cur) => cur.filter((f) => f.id !== frameId));
-    newFrame();
+  async function deleteFrame(id: string) {
+    if (stream.loading || deletingFrameId || !window.confirm("Delete this frame and all its messages? This cannot be undone.")) return;
+    setDeletingFrameId(id);
+    setDeleteError(null);
+    try {
+      const r = await fetch(`/api/ai/frames/${encodeURIComponent(id)}`, { method: "DELETE" });
+      if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error(j.error ?? `HTTP ${r.status}`);
+      }
+      setList((cur) => cur.filter((f) => f.id !== id));
+      if (frameId === id) newFrame();
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Failed to delete frame");
+    } finally {
+      setDeletingFrameId(null);
+    }
   }
 
   async function changeScope(next: FrameKnowledgeMode) {
@@ -378,23 +392,32 @@ export function FrameChatDialog({
           </p>
         )}
         {list.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => openFrame(f.id)}
-            className={cn(
-              "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition-colors hover:bg-accent",
-              f.id === frameId && "bg-accent",
-            )}
-          >
-            <MessageSquarePlus className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-            <span className="min-w-0 flex-1">
-              <span className="line-clamp-1 leading-snug">{f.title}</span>
-              <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                {KNOWLEDGE_MODE_LABELS[f.knowledgeMode as FrameKnowledgeMode] ?? f.knowledgeMode} ·{" "}
-                {f.messageCount} {f.messageCount === 1 ? "message" : "messages"}
+          <div key={f.id} className={cn("flex items-center rounded-lg hover:bg-accent", f.id === frameId && "bg-accent")}>
+            <button
+              type="button"
+              onClick={() => openFrame(f.id)}
+              className="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-2 py-1.5 text-left text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <MessageSquarePlus className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+              <span className="min-w-0 flex-1">
+                <span className="line-clamp-1 leading-snug">{f.title}</span>
+                <span className="mt-0.5 block text-[10px] text-muted-foreground">
+                  {KNOWLEDGE_MODE_LABELS[f.knowledgeMode as FrameKnowledgeMode] ?? f.knowledgeMode} ·{" "}
+                  {f.messageCount} {f.messageCount === 1 ? "message" : "messages"}
+                </span>
               </span>
-            </span>
-          </button>
+            </button>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+              aria-label={`Delete frame ${f.title}`}
+              disabled={stream.loading || deletingFrameId !== null}
+              onClick={() => void deleteFrame(f.id)}
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         ))}
       </div>
     </div>
@@ -479,7 +502,7 @@ export function FrameChatDialog({
               <Plus className="h-4 w-4" />
             </Button>
             {frameId && (
-              <Button size="icon" variant="ghost" aria-label="Delete this frame" onClick={deleteFrame}>
+              <Button size="icon" variant="ghost" aria-label="Delete this frame" disabled={stream.loading || deletingFrameId !== null} onClick={() => void deleteFrame(frameId)}>
                 <Trash2 className="h-4 w-4" />
               </Button>
             )}
@@ -489,6 +512,7 @@ export function FrameChatDialog({
           </div>
         </div>
 
+        {deleteError && <p role="alert" className="border-b border-border px-4 py-2 text-xs text-destructive">{deleteError}</p>}
         <div className="flex min-h-0 flex-1">
           {history}
           <div className="flex min-h-0 flex-1 flex-col">

@@ -2,9 +2,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "./ChatTranscript";
+import { DeleteChatConfirmation } from "./DeleteChatConfirmation";
 import { ChatModeToggle } from "./ChatModeToggle";
 import { ChatSuggestions } from "./ChatSuggestions";
-import { Send, Loader2, Plus, MessageSquare, History, X, Sparkles, Wand2 } from "lucide-react";
+import { Send, Loader2, Plus, MessageSquare, History, X, Sparkles, Wand2, Trash2 } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
@@ -39,7 +40,8 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [mobileHistoryOpen, setMobileHistoryOpen] = useState(false);
-  const { list, refresh } = useConversationList({ userId, scope: "global", mode: "GLOBAL" });
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const { list, refresh, remove, deletingId, deleteError } = useConversationList({ userId, scope: "global", mode: "GLOBAL" });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -104,7 +106,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   }, [stream.done]);
 
   function send() {
-    if (!input.trim() || stream.loading) return;
+    if (!input.trim() || stream.loading || deletingId) return;
     const prompt = input;
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
@@ -116,7 +118,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
   }
 
   function sendPrompt(prompt: string) {
-    if (!prompt.trim() || stream.loading) return;
+    if (!prompt.trim() || stream.loading || deletingId) return;
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
     setAiResponseTick((t) => t + 1);
@@ -154,6 +156,14 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
     setAiResponseTick((t) => t + 1);
   }
 
+  async function deleteConversation(id: string) {
+    if (stream.loading || !window.confirm("Delete this chat and all its messages? This cannot be undone.")) return;
+    if (await remove(id) && conversationId === id) {
+      stream.reset();
+      startNewChat();
+    }
+  }
+
   // Auto-grow the textarea up to ~5 lines.
   function autosize(el: HTMLTextAreaElement) {
     el.style.height = "auto";
@@ -173,21 +183,31 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
             No conversations yet — send a message to start.
           </p>
         )}
+        {deleteError && <p role="alert" className="px-2 text-xs text-destructive">{deleteError}</p>}
         {list.map((c) => (
-          <button
-            key={c.id}
-            onClick={() => {
-              openConversation(c.id);
-              setMobileHistoryOpen(false);
-            }}
-            className={cn(
-              "flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent",
-              c.id === conversationId && "bg-accent",
-            )}
-          >
-            <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-            <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
-          </button>
+          <div key={c.id} className={cn("flex items-center rounded-lg hover:bg-accent", c.id === conversationId && "bg-accent")}>
+            <button
+              type="button"
+              onClick={() => {
+                openConversation(c.id);
+                setMobileHistoryOpen(false);
+              }}
+              className="flex min-w-0 flex-1 items-start gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
+            </button>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+              aria-label={`Delete chat ${c.title}`}
+              disabled={stream.loading || deletingId !== null}
+              onClick={() => void deleteConversation(c.id)}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         ))}
       </div>
     </div>
@@ -288,7 +308,7 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
               <ChatSuggestions
                 topics={suggestions.topics}
                 onSelect={sendPrompt}
-                disabled={stream.loading}
+                disabled={stream.loading || !!deletingId}
                 loading={suggestions.loading}
                 error={suggestions.error}
                 source={suggestions.source}
@@ -316,14 +336,14 @@ export function GlobalAIChat({ userId }: GlobalAIChatProps) {
                       send();
                     }
                   }}
-                  disabled={stream.loading}
+                  disabled={stream.loading || !!deletingId}
                   className="min-h-[44px] resize-none px-4 py-2.5 text-sm leading-relaxed"
                 />
               </div>
               <Button
                 size="lg"
                 onClick={send}
-                disabled={stream.loading || !input.trim()}
+                disabled={stream.loading || !!deletingId || !input.trim()}
                 className="h-11 px-5"
               >
                 {stream.loading ? (

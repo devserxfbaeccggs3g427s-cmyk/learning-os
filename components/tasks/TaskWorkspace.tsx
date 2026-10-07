@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Input, Textarea } from "@/components/ui";
 import { MarkdownRenderer } from "@/components/markdown/Renderer";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
-import { BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft, Plus, MessageSquare, Clock, FileText, CalendarDays } from "lucide-react";
+import { BookOpen, Sparkles, Layers, ListChecks, FlaskConical, BrainCircuit, Microscope, ShieldAlert, MessageCircleQuestion, ArrowLeft, Plus, MessageSquare, Clock, FileText, CalendarDays, Trash2 } from "lucide-react";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
 import { useChatMode } from "@/lib/ai/useChatMode";
@@ -407,7 +407,7 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const { list, refresh } = useConversationList({ userId, mode: "INTERVIEW", taskId });
+  const { list, refresh, remove, deletingId, deleteError } = useConversationList({ userId, mode: "INTERVIEW", taskId });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
   const thinking = stream.loading && !stream.text;
@@ -447,7 +447,7 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
   }, [stream.done]);
 
   const sendIt = () => {
-    if (!input.trim() || stream.loading) return;
+    if (!input.trim() || stream.loading || deletingId) return;
     const userMsg = { role: "user", content: input };
     setMessages((m) => [...m, userMsg]);
     setInput("");
@@ -481,6 +481,14 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
     setInput("");
   }
 
+  async function deleteConversation(id: string) {
+    if (stream.loading || !window.confirm("Delete this interview and all its messages? This cannot be undone.")) return;
+    if (await remove(id) && conversationId === id) {
+      stream.reset();
+      startNewChat();
+    }
+  }
+
   return (
     <div className="grid gap-3 lg:grid-cols-[240px_1fr]">
       {/* History sidebar */}
@@ -496,18 +504,28 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
               No saved interviews for this task yet.
             </p>
           )}
+          {deleteError && <p role="alert" className="px-2 text-xs text-destructive">{deleteError}</p>}
           {list.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => openConversation(c.id)}
-              className={cn(
-                "flex w-full items-start gap-2 rounded-md px-2 py-2 text-left text-xs hover:bg-accent",
-                c.id === conversationId && "bg-accent",
-              )}
-            >
-              <MessageSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-              <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
-            </button>
+            <div key={c.id} className={cn("flex items-center rounded-md hover:bg-accent", c.id === conversationId && "bg-accent")}>
+              <button
+                type="button"
+                onClick={() => openConversation(c.id)}
+                className="flex min-w-0 flex-1 items-start gap-2 rounded-md px-2 py-2 text-left text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <MessageSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
+              </button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                aria-label={`Delete interview ${c.title}`}
+                disabled={stream.loading || deletingId !== null}
+                onClick={() => void deleteConversation(c.id)}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </Button>
+            </div>
           ))}
         </CardContent>
       </Card>
@@ -543,9 +561,9 @@ function InterviewMode({ userId, taskId, taskTitle }: { userId: string; taskId: 
                   sendIt();
                 }
               }}
-              disabled={stream.loading}
+              disabled={stream.loading || !!deletingId}
             />
-            <Button onClick={sendIt} disabled={stream.loading || !input.trim()}>Send</Button>
+            <Button onClick={sendIt} disabled={stream.loading || !!deletingId || !input.trim()}>Send</Button>
           </div>
         </div>
       </Card>

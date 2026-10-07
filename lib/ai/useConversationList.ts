@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface ConversationSummary {
   id: string;
@@ -33,6 +33,9 @@ export interface UseConversationListReturn {
   error: string | null;
   refresh: () => Promise<void>;
   loadMessages: (id: string) => Promise<ConversationMessage[]>;
+  remove: (id: string) => Promise<boolean>;
+  deletingId: string | null;
+  deleteError: string | null;
 }
 
 /**
@@ -43,6 +46,10 @@ export function useConversationList(args: UseConversationListArgs): UseConversat
   const [list, setList] = useState<ConversationSummary[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const deletingRef = useRef(false);
+  const removedIds = useRef(new Set<string>());
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -59,7 +66,7 @@ export function useConversationList(args: UseConversationListArgs): UseConversat
         throw new Error(j.error ?? `HTTP ${r.status}`);
       }
       const j = await r.json();
-      setList(j.conversations ?? []);
+      setList((j.conversations ?? []).filter((c: ConversationSummary) => !removedIds.current.has(c.id)));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load conversations");
     } finally {
@@ -78,9 +85,32 @@ export function useConversationList(args: UseConversationListArgs): UseConversat
     return j.messages ?? [];
   }, [args.userId]);
 
+  const remove = useCallback(async (id: string): Promise<boolean> => {
+    if (deletingRef.current) return false;
+    deletingRef.current = true;
+    setDeletingId(id);
+    setDeleteError(null);
+    try {
+      const r = await fetch(`/api/ai/conversations/${encodeURIComponent(id)}`, { method: "DELETE" });
+      if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error(j.error ?? `HTTP ${r.status}`);
+      }
+      removedIds.current.add(id);
+      setList((cur) => cur.filter((c) => c.id !== id));
+      return true;
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Failed to delete conversation");
+      return false;
+    } finally {
+      deletingRef.current = false;
+      setDeletingId(null);
+    }
+  }, []);
+
   useEffect(() => {
     refresh();
   }, [refresh]);
 
-  return { list, loading, error, refresh, loadMessages };
+  return { list, loading, error, refresh, loadMessages, remove, deletingId, deleteError };
 }

@@ -4,7 +4,7 @@ import { Card, CardContent, Button, Textarea } from "@/components/ui";
 import { ChatTranscript } from "@/components/ai/ChatTranscript";
 import { ChatModeToggle } from "@/components/ai/ChatModeToggle";
 import { ChatSuggestions } from "@/components/ai/ChatSuggestions";
-import { Send, Loader2, Sparkles, MessageSquare, Plus, Wand2 } from "lucide-react";
+import { Send, Loader2, Sparkles, MessageSquare, Plus, Wand2, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useConversationList, type ConversationMessage } from "@/lib/ai/useConversationList";
 import { useStreamedChat } from "@/lib/ai/useStreamedChat";
@@ -47,7 +47,7 @@ export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITu
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const { list, refresh } = useConversationList({ userId, mode: "TUTOR", taskId });
+  const { list, refresh, remove, deletingId, deleteError } = useConversationList({ userId, mode: "TUTOR", taskId });
   const stream = useStreamedChat();
   const [mode] = useChatMode();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -107,7 +107,7 @@ export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITu
   }, [stream.done]);
 
   function send(prompt: string) {
-    if (!prompt.trim() || stream.loading) return;
+    if (!prompt.trim() || stream.loading || deletingId) return;
     setMessages((m) => [...m, { role: "user", content: prompt }]);
     setInput("");
     // Refresh suggestions so the empty→has transition fetches follow-ups
@@ -147,6 +147,14 @@ export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITu
     setAiResponseTick((t) => t + 1);
   }
 
+  async function deleteConversation(id: string) {
+    if (stream.loading || !window.confirm("Delete this chat and all its messages? This cannot be undone.")) return;
+    if (await remove(id) && conversationId === id) {
+      stream.reset();
+      startNewChat();
+    }
+  }
+
   // Auto-grow the textarea up to ~5 lines.
   function autosize(el: HTMLTextAreaElement) {
     el.style.height = "auto";
@@ -168,18 +176,28 @@ export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITu
               No saved conversations for this task yet.
             </p>
           )}
+          {deleteError && <p role="alert" className="px-2 text-xs text-destructive">{deleteError}</p>}
           {list.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => openConversation(c.id)}
-              className={cn(
-                "flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent",
-                c.id === conversationId && "bg-accent",
-              )}
-            >
-              <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-              <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
-            </button>
+            <div key={c.id} className={cn("flex items-center rounded-lg hover:bg-accent", c.id === conversationId && "bg-accent")}>
+              <button
+                type="button"
+                onClick={() => openConversation(c.id)}
+                className="flex min-w-0 flex-1 items-start gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="line-clamp-2 flex-1 leading-snug">{c.title}</span>
+              </button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                aria-label={`Delete chat ${c.title}`}
+                disabled={stream.loading || deletingId !== null}
+                onClick={() => void deleteConversation(c.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
           ))}
         </div>
         {/* Notes context hint */}
@@ -239,7 +257,7 @@ export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITu
             <ChatSuggestions
               topics={suggestions.topics}
               onSelect={(p) => send(p)}
-              disabled={stream.loading}
+              disabled={stream.loading || !!deletingId}
               loading={suggestions.loading}
               error={suggestions.error}
               source={suggestions.source}
@@ -267,14 +285,14 @@ export function AITutor({ userId, taskId, taskTitle, note, noteCharCount }: AITu
                     send(input);
                   }
                 }}
-                disabled={stream.loading}
+                disabled={stream.loading || !!deletingId}
                 className="min-h-[44px] resize-none px-4 py-2.5 text-sm leading-relaxed"
               />
             </div>
             <Button
               size="lg"
               onClick={() => send(input)}
-              disabled={stream.loading || !input.trim()}
+              disabled={stream.loading || !!deletingId || !input.trim()}
               className="h-11 px-5"
             >
               {stream.loading ? (
