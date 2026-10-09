@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import { STUDY_BLOCK_TYPES, type StudyBlockType } from "@/config/domain";
 import { serializeDailyBlockTypes, toggleDailyBlockType } from "@/lib/roadmap/daily";
 
-export function BlockTypeFilter({ selected }: { selected: StudyBlockType[] }) {
+export function BlockTypeFilter({ selected, href = "/roadmap?view=day" }: { selected: StudyBlockType[]; href?: string }) {
   const router = useRouter();
 
   function apply(next: StudyBlockType[]) {
     // serialize luôn giữ key `types` (kể cả rỗng) để phân biệt "trống" với "không có tham số".
-    router.replace(`/roadmap?view=day&types=${serializeDailyBlockTypes(next)}`, { scroll: false });
+    const url = new URL(href, window.location.origin);
+    url.searchParams.set("types", serializeDailyBlockTypes(next));
+    router.replace(`${url.pathname}${url.search}`, { scroll: false });
   }
 
   return (

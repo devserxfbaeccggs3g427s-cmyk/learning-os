@@ -36,6 +36,11 @@ export function toggleDailyBlockType(
   return types.includes(type) ? types.filter((item) => item !== type) : [...types, type];
 }
 
+export function filterBlocksByType<T extends { type: string }>(blocks: T[], types: readonly StudyBlockType[]): T[] {
+  const selected = new Set<string>(types);
+  return blocks.filter((block) => selected.has(block.type));
+}
+
 export function groupDailyRoadmap(
   days: ScheduledDay[],
   types: readonly StudyBlockType[] = DEFAULT_DAILY_BLOCK_TYPES,

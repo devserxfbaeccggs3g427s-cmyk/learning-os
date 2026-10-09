@@ -5,6 +5,8 @@ import { CalendarDays } from "lucide-react";
 import { getStudyDate, getRealToday, isStudyDateOverridden } from "@/lib/utils/study-date";
 import { getCalendarRange } from "@/lib/db/queries/schedule";
 import { CalendarGrid, type CalendarDay } from "@/components/calendar/CalendarGrid";
+import { BlockTypeFilter } from "@/components/roadmap/BlockTypeFilter";
+import { filterBlocksByType, parseDailyBlockTypes } from "@/lib/roadmap/daily";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +14,12 @@ function fmtDate(d: Date) {
   return d.toISOString().slice(0, 10);
 }
 
-export default async function CalendarPage() {
+export default async function CalendarPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ types?: string | string[] }>;
+}) {
+  const types = parseDailyBlockTypes((await searchParams).types);
   const user = await getDefaultUser();
   const studyDate = await getStudyDate();
   const today = new Date(studyDate + "T00:00:00Z");
@@ -34,7 +41,7 @@ export default async function CalendarPage() {
   const blocksByDate = new Map<string, CalendarDay["blocks"]>();
   const objectiveByDate = new Map<string, string | null>();
   for (const e of entries) {
-    blocksByDate.set(e.schedule.date, e.blocks);
+    blocksByDate.set(e.schedule.date, filterBlocksByType(e.blocks, types));
     objectiveByDate.set(e.schedule.date, e.schedule.objective);
   }
 
@@ -67,6 +74,7 @@ export default async function CalendarPage() {
           </p>
         </header>
 
+        <BlockTypeFilter selected={types} href="/calendar" />
         <CalendarGrid userId={user.id} days={days} today={studyDate} realToday={realToday} />
       </div>
     </AppShell>

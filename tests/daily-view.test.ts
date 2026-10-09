@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  filterBlocksByType,
   groupDailyRoadmap,
   parseDailyBlockTypes,
   serializeDailyBlockTypes,
@@ -101,8 +102,33 @@ describe("daily roadmap", () => {
 });
 
 describe("block type filter", () => {
+  it("filters linked and unlinked calendar blocks, including empty and invalid URL selections", () => {
+    const blocks = [
+      { type: "LEARN", taskId: "task-a" },
+      { type: "REVIEW", taskId: null },
+      { type: "LAB", taskId: null },
+      { type: "BOGUS", taskId: "task-b" },
+    ];
+    expect(filterBlocksByType(blocks, parseDailyBlockTypes(undefined))).toEqual([blocks[0], blocks[2]]);
+    expect(filterBlocksByType(blocks, parseDailyBlockTypes("REVIEW"))).toEqual([blocks[1]]);
+    expect(filterBlocksByType(blocks, parseDailyBlockTypes(""))).toEqual([]);
+    expect(filterBlocksByType(blocks, parseDailyBlockTypes("BOGUS"))).toEqual([]);
+  });
+
+  it("wires calendar URL filter before rendering all days as drop targets", () => {
+    const page = readFileSync(join(process.cwd(), "app/calendar/page.tsx"), "utf8");
+    const filter = readFileSync(join(process.cwd(), "components/roadmap/BlockTypeFilter.tsx"), "utf8");
+
+    expect(page).toContain("parseDailyBlockTypes((await searchParams).types)");
+    expect(page).toContain("filterBlocksByType(e.blocks, types)");
+    expect(page).toContain("for (let d = new Date(start); d <= end;");
+    expect(page).toContain('href="/calendar"');
+    expect(page.indexOf("<BlockTypeFilter")).toBeLessThan(page.indexOf("<CalendarGrid"));
+    expect(filter).toContain('url.searchParams.set("types", serializeDailyBlockTypes(next))');
+  });
+
   it("treats a missing URL param as the default main types and an empty one as no selection", () => {
-    expect(parseDailyBlockTypes(undefined)).toEqual(["LEARN", "DEEP_DIVE", "LAB"]);
+    expect(parseDailyBlockTypes(undefined)).toEqual(["LEARN", "DEEP_DIVE", "LAB", "FAILURE_DRILL"]);
     expect(parseDailyBlockTypes("")).toEqual([]);
     expect(parseDailyBlockTypes([])).toEqual([]);
     expect(parseDailyBlockTypes("REVIEW,LEARN,BOGUS,LEARN")).toEqual(["LEARN", "REVIEW"]);
